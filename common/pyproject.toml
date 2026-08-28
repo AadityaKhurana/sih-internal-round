@@ -1,0 +1,15 @@
+[project]
+name = "anpr-common"
+version = "0.1.0"
+description = "Shared models and DB layer for the City-Wide ANPR platform (API + workers)."
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.6",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["anpr_common"]

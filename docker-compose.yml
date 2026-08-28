@@ -1,0 +1,98 @@
+name: sih-anpr
+
+# Infra-only stack for the City-Wide ANPR prototype.
+# Workers (OCR / persistence / alerts / analytics) are added later.
+#
+# Connection strings are URL-driven (DATABASE_URL / REDIS_URL / S3_*), so moving
+# to managed services (Supabase, Upstash, any S3-compatible store) is a .env edit,
+# not a compose change.
+#
+# Common runs:
+#   docker compose up -d                 # full local infra + API
+#   docker compose up -d postgres redis minio minio-init   # infra only, no API
+#   docker compose up -d api             # API only (point URLs at external providers)
+#   docker compose stop postgres redis   # free local DB/Redis after switching to managed
+
+services:
+  postgres:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-anpr}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-anpr}
+      POSTGRES_DB: ${POSTGRES_DB:-anpr}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # Schema auto-applies ONLY on first init (empty volume). For a managed DB,
+      # apply db/schema.sql manually once.
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-anpr} -d ${POSTGRES_DB:-anpr}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${S3_ACCESS_KEY:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${S3_SECRET_KEY:-minioadmin}
+    ports:
+      - "${MINIO_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
+    volumes:
+      - miniodata:/data
+
+  # One-shot: wait for MinIO, create the media bucket, then exit.
+  minio-init:
+    image: minio/mc:latest
+    depends_on:
+      minio:
+        condition: service_started
+    environment:
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY:-minioadmin}
+      S3_SECRET_KEY: ${S3_SECRET_KEY:-minioadmin}
+      S3_BUCKET: ${S3_BUCKET:-anpr-media}
+    entrypoint: >
+      /bin/sh -c "
+      until mc alias set local http://minio:9000 \"$$S3_ACCESS_KEY\" \"$$S3_SECRET_KEY\"; do
+        echo 'waiting for minio...'; sleep 2;
+      done;
+      mc mb --ignore-existing local/$$S3_BUCKET;
+      mc anonymous set none local/$$S3_BUCKET;
+      echo 'minio bucket ready';
+      "
+
+  api:
+    build: ./backend
+    env_file: .env
+    ports:
+      - "${API_PORT:-8000}:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+        required: false
+      redis:
+        condition: service_healthy
+        required: false
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  redisdata:
+  miniodata:

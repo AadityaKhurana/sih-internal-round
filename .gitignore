@@ -1,0 +1,19 @@
+# Secrets / local env
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# OS / editor
+.DS_Store
+
+# Local sample media (keep the dir + docs, ignore blobs)
+data/*
+!data/README.md
+!data/.gitkeep
+
+.kiro/
