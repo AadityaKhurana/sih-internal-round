@@ -1,0 +1,146 @@
+/* =============================================================================
+   Leaflet theming.
+   -----------------------------------------------------------------------------
+   Leaflet ships light-themed chrome (white popups, white zoom buttons) which
+   looks broken against the dark shell, so its controls are restyled here rather
+   than fought with in components. Only Leaflet's own classes belong in this file.
+   ============================================================================= */
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  background: var(--c-bg-inset);
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  outline: none;
+
+  /* Leaflet's panes use z-index 200–700, which would otherwise compete with the
+     app's floating overlays and the modal layer. `isolation: isolate` gives the
+     container its own stacking context so those values stay contained.
+     Note: do NOT flatten `.leaflet-pane` to a single z-index — that silently
+     breaks the tile/overlay/marker/tooltip/popup ordering and any custom pane. */
+  isolation: isolate;
+  z-index: var(--z-map);
+}
+
+/* --- Zoom + attribution controls ------------------------------------------ */
+
+.leaflet-bar {
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--r-sm);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.leaflet-bar a,
+.leaflet-bar a:hover {
+  background: var(--c-surface-2);
+  color: var(--c-text);
+  border-bottom-color: var(--c-border);
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+}
+
+.leaflet-bar a:hover {
+  background: var(--c-surface-hover);
+}
+
+.leaflet-bar a.leaflet-disabled {
+  background: var(--c-surface);
+  color: var(--c-text-dim);
+}
+
+.leaflet-control-attribution {
+  background: rgb(8 11 15 / 82%) !important;
+  color: var(--c-text-dim);
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: var(--r-xs) 0 0 0;
+}
+
+.leaflet-control-attribution a {
+  color: var(--c-text-muted);
+}
+
+.leaflet-control-scale-line {
+  background: rgb(8 11 15 / 82%);
+  border-color: var(--c-border-strong);
+  color: var(--c-text-muted);
+  font-size: 10px;
+}
+
+/* --- Popups + tooltips ---------------------------------------------------- */
+
+.leaflet-popup-content-wrapper {
+  background: var(--c-surface);
+  color: var(--c-text);
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-lg);
+  padding: 0;
+}
+
+.leaflet-popup-content {
+  margin: 0;
+  padding: var(--sp-3);
+  min-width: 220px;
+  line-height: var(--lh-normal);
+}
+
+.leaflet-popup-tip {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-strong);
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  color: var(--c-text-dim);
+  padding: 6px 6px 0 0;
+}
+
+.leaflet-container a.leaflet-popup-close-button:hover {
+  color: var(--c-text);
+  background: transparent;
+}
+
+.leaflet-tooltip {
+  background: rgb(8 11 15 / 94%);
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--r-sm);
+  color: var(--c-text);
+  box-shadow: var(--shadow-md);
+  font-size: var(--fs-2xs);
+  padding: 3px var(--sp-2);
+}
+
+.leaflet-tooltip-left::before {
+  border-left-color: var(--c-border-strong);
+}
+.leaflet-tooltip-right::before {
+  border-right-color: var(--c-border-strong);
+}
+.leaflet-tooltip-top::before {
+  border-top-color: var(--c-border-strong);
+}
+.leaflet-tooltip-bottom::before {
+  border-bottom-color: var(--c-border-strong);
+}
+
+/* Link labels rendered as borderless tooltips directly on the map. */
+.leaflet-tooltip.map-label {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: var(--c-text-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 0;
+  text-shadow:
+    0 0 3px var(--c-bg),
+    0 0 3px var(--c-bg),
+    0 0 4px var(--c-bg);
+}
+
+.leaflet-tooltip.map-label::before {
+  display: none;
+}

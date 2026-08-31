@@ -1,0 +1,88 @@
+/* =============================================================================
+   Reporting: day×hour heatmap, period picker, export.
+   ============================================================================= */
+
+.heatmap {
+  display: grid;
+  grid-template-columns: 34px repeat(24, minmax(0, 1fr));
+  gap: 2px;
+  min-width: 520px;
+}
+
+.heatmap__corner {
+  grid-column: 1;
+}
+
+.heatmap__hour,
+.heatmap__day {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--c-text-dim);
+  display: flex;
+  align-items: center;
+}
+
+.heatmap__hour {
+  justify-content: flex-start;
+}
+
+.heatmap__day {
+  justify-content: flex-end;
+  padding-right: var(--sp-2);
+  font-size: var(--fs-2xs);
+}
+
+.heatmap__cell {
+  height: 18px;
+  border-radius: 2px;
+  background: var(--c-surface-3);
+}
+
+/* No measurement is hatched, so it cannot read as "clear". */
+.heatmap__cell--empty {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--c-surface-2) 0 3px,
+    transparent 3px 6px
+  );
+}
+
+.heatmap-scroll {
+  overflow-x: auto;
+  padding-bottom: var(--sp-2);
+}
+
+.report-head {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.report-compare {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-xs);
+  color: var(--c-text-muted);
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--c-border);
+  border-left: 3px solid var(--c-accent-strong);
+  border-radius: var(--r-sm);
+  background: var(--c-surface-2);
+}
+
+.report-delta--worse {
+  color: var(--c-danger);
+  font-family: var(--font-mono);
+}
+
+.report-delta--better {
+  color: var(--c-ok);
+  font-family: var(--font-mono);
+}
+
+.report-delta--flat {
+  color: var(--c-text-dim);
+  font-family: var(--font-mono);
+}
