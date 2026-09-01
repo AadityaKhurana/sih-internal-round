@@ -17,3 +17,13 @@ data/*
 !data/.gitkeep
 
 .kiro/
+# OCR worker: model weights + local outputs
+*.pt
+*.onnx
+workers/ocr/plate_model/
+workers/ocr/out*/
+workers/ocr/ocr_testset*/
+workers/ocr/*.log
+workers/ocr/events.jsonl
+workers/ocr/bench_results.json
+workers/ocr/audit*.html
