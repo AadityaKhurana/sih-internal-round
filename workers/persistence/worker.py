@@ -111,6 +111,8 @@ def process_message(
     # 2. Database transaction
     # ---------------------------------------------------------
 
+    new_sighting_id = None
+
     try:
 
         with conn.transaction():
@@ -139,6 +141,17 @@ def process_message(
                 camera_id,
                 plate_id,
             )
+
+            # Capture sighting_id INSIDE the transaction for the live feed.
+            # (A SELECT after the transaction would open a new uncommitted tx
+            #  and stall subsequent inserts — do not move this out.)
+            with conn.cursor() as cur:
+                cur.execute(
+                    "SELECT sighting_id::text FROM sightings WHERE source_event_id = %s",
+                    (event.event_id,),
+                )
+                _row = cur.fetchone()
+                new_sighting_id = _row[0] if _row else None
 
             # Update validation state if necessary
             if validation_status != "pending":
@@ -172,6 +185,15 @@ def process_message(
             f"[OK] event={event.event_id} "
             f"message={message_id}"
         )
+
+        # Notify the live feed (API /ws/live subscribes to sightings:new and
+        # fans out a trimmed LiveSighting). new_sighting_id was captured inside
+        # the committed transaction, so no DB access happens out here.
+        if new_sighting_id:
+            try:
+                redis_client.publish("sightings:new", new_sighting_id)
+            except Exception:
+                pass
 
     except ValueError as exc:
 

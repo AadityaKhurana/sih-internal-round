@@ -157,13 +157,19 @@ def validate_sighting(
     event: PlateSighting,
 ) -> tuple[str, str | None]:
     """
-    Determine the initial validation state.
-
-    The project contract defines the four possible states:
+    Determine the initial validation state:
         pending / accepted / uncertain / conflict
 
-    No project-specific acceptance thresholds were supplied,
-    so we conservatively classify events as pending here.
+    A confident read with a normalized plate is accepted (it becomes part of the
+    route and is eligible for alerts). A missing plate or a low-confidence read is
+    held as `uncertain` so the trajectory endpoint can surface it as excluded
+    rather than trusting it. Cross-sighting conflict detection (a plate seen in two
+    places at once) is the alerts worker's job, not this per-event gate.
     """
+    ACCEPT_MIN_OCR_CONFIDENCE = 0.80
 
-    return "pending", None
+    if not event.normalized_plate:
+        return "uncertain", "no_normalized_plate"
+    if event.ocr_confidence is None or event.ocr_confidence < ACCEPT_MIN_OCR_CONFIDENCE:
+        return "uncertain", "low_ocr_confidence"
+    return "accepted", None

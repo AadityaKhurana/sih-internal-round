@@ -97,6 +97,50 @@ services:
         required: false
     restart: unless-stopped
 
+  # ---- Lane C pipeline workers (share one image built from workers/Dockerfile) ----
+  persistence:
+    image: sih-anpr-worker
+    build: { context: ., dockerfile: workers/Dockerfile }
+    env_file: .env
+    working_dir: /app/workers/persistence
+    command: ["python", "worker.py"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    restart: unless-stopped
+
+  alerts:
+    image: sih-anpr-worker
+    build: { context: ., dockerfile: workers/Dockerfile }
+    env_file: .env
+    working_dir: /app
+    command: ["python", "-m", "workers.alerts.worker"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    restart: unless-stopped
+
+  analytics:
+    image: sih-anpr-worker
+    build: { context: ., dockerfile: workers/Dockerfile }
+    env_file: .env
+    working_dir: /app
+    command: ["python", "-m", "workers.analytics.worker"]
+    depends_on:
+      postgres: { condition: service_healthy }
+    restart: unless-stopped
+
+  # Synthetic OCR stand-in — drives the pipeline for the demo.
+  producer:
+    image: sih-anpr-worker
+    build: { context: ., dockerfile: workers/Dockerfile }
+    env_file: .env
+    working_dir: /app/workers/producer
+    command: ["python", "feed.py"]
+    depends_on:
+      redis: { condition: service_healthy }
+    restart: unless-stopped
+
 volumes:
   pgdata:
   redisdata:
