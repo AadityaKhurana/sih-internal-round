@@ -1,0 +1,149 @@
+/* =============================================================================
+   Design tokens — City-Wide ANPR Platform dashboard
+   -----------------------------------------------------------------------------
+   Single source of truth for colour, type, spacing, elevation and motion.
+   Components never hardcode a hex value; they reference a token. The palette is
+   a dark "control room" theme: low-luminance surfaces so the Leaflet map and
+   status colours carry the visual weight.
+
+   Contrast: body text (--c-text) on --c-bg ≈ 14:1, muted text ≈ 7:1, and every
+   status colour is tested against --c-surface at ≥ 4.5:1 for normal text.
+   ============================================================================= */
+
+:root {
+  color-scheme: dark;
+
+  /* --- Surfaces ----------------------------------------------------------- */
+  --c-bg: #0b0f14;
+  --c-bg-inset: #080b0f;
+  --c-surface: #111823;
+  --c-surface-2: #16202e;
+  --c-surface-3: #1d2937;
+  --c-surface-hover: #1f2c3d;
+  --c-overlay: rgb(4 8 12 / 72%);
+
+  /* --- Borders ------------------------------------------------------------ */
+  --c-border: #22303f;
+  --c-border-strong: #33475e;
+  --c-border-subtle: #1a2431;
+
+  /* --- Text --------------------------------------------------------------- */
+  --c-text: #e6edf5;
+  --c-text-muted: #9db0c6;
+  --c-text-dim: #6f8299;
+  --c-text-inverse: #05080b;
+
+  /* --- Brand / accent ----------------------------------------------------- */
+  --c-accent: #38bdf8;
+  --c-accent-strong: #0ea5e9;
+  --c-accent-dim: rgb(56 189 248 / 14%);
+  --c-focus: #7dd3fc;
+
+  /* --- Status ------------------------------------------------------------- */
+  --c-ok: #34d399;
+  --c-ok-dim: rgb(52 211 153 / 14%);
+  --c-info: #60a5fa;
+  --c-info-dim: rgb(96 165 250 / 14%);
+  --c-warn: #fbbf24;
+  --c-warn-dim: rgb(251 191 36 / 14%);
+  --c-danger: #f87171;
+  --c-danger-dim: rgb(248 113 113 / 14%);
+  --c-critical: #fb7185;
+  --c-critical-dim: rgb(251 113 133 / 16%);
+  --c-violet: #a78bfa;
+  --c-violet-dim: rgb(167 139 250 / 14%);
+
+  /* --- Congestion ramp (link overlay + heatmaps) -------------------------- */
+  --c-congestion-free: #22c55e;
+  --c-congestion-light: #a3e635;
+  --c-congestion-moderate: #facc15;
+  --c-congestion-heavy: #fb923c;
+  --c-congestion-severe: #ef4444;
+  --c-congestion-unknown: #64748b;
+
+  /* --- Map ---------------------------------------------------------------- */
+  --c-map-link: #64748b;
+  --c-map-link-active: #38bdf8;
+  --c-map-route: #f0abfc;
+  --c-map-route-glow: rgb(240 171 252 / 35%);
+
+  /* --- Typography --------------------------------------------------------- */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, 'JetBrains Mono',
+    Menlo, Consolas, monospace;
+
+  --fs-2xs: 0.6875rem; /* 11px — dense table meta, axis labels */
+  --fs-xs: 0.75rem; /* 12px — labels, captions */
+  --fs-sm: 0.8125rem; /* 13px — body in dense panels */
+  --fs-md: 0.875rem; /* 14px — default body */
+  --fs-lg: 1rem; /* 16px — panel titles */
+  --fs-xl: 1.25rem; /* 20px — page titles */
+  --fs-2xl: 1.75rem; /* 28px — KPI values */
+  --fs-3xl: 2.25rem; /* 36px — hero KPI */
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  --lh-tight: 1.2;
+  --lh-normal: 1.5;
+
+  --tracking-wide: 0.04em;
+  --tracking-wider: 0.08em;
+
+  /* --- Spacing (4px base) ------------------------------------------------- */
+  --sp-0: 0;
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.25rem;
+  --sp-6: 1.5rem;
+  --sp-8: 2rem;
+  --sp-10: 2.5rem;
+  --sp-12: 3rem;
+
+  /* --- Radii -------------------------------------------------------------- */
+  --r-xs: 3px;
+  --r-sm: 5px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-xl: 16px;
+  --r-pill: 999px;
+
+  /* --- Elevation ---------------------------------------------------------- */
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
+  --shadow-md: 0 4px 12px rgb(0 0 0 / 45%);
+  --shadow-lg: 0 12px 32px rgb(0 0 0 / 55%);
+  --shadow-glow-accent: 0 0 0 1px var(--c-accent-strong),
+    0 0 18px rgb(56 189 248 / 25%);
+
+  /* --- Motion ------------------------------------------------------------- */
+  --t-fast: 90ms;
+  --t-base: 160ms;
+  --t-slow: 280ms;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* --- Layout ------------------------------------------------------------- */
+  --layout-sidebar-w: 224px;
+  --layout-header-h: 56px;
+  --layout-dock-w: 380px;
+
+  /* --- Z-index scale ------------------------------------------------------ */
+  --z-map: 1;
+  --z-map-overlay: 500;
+  --z-sticky: 700;
+  --z-dock: 800;
+  --z-modal: 1000;
+  --z-toast: 1100;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --t-fast: 0ms;
+    --t-base: 0ms;
+    --t-slow: 0ms;
+  }
+}

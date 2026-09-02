@@ -1,0 +1,38 @@
+{
+  "name": "anpr-dashboard",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "City-Wide ANPR Platform — GIS operations dashboard (Lane D)",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview",
+    "check:fixtures": "tsx scripts/check-fixtures.ts",
+    "check:api": "tsx scripts/check-api.ts",
+    "check:render": "tsx --import ./scripts/css-register.mjs scripts/smoke.tsx",
+    "verify": "npm run typecheck && npm run check:fixtures && npm run check:api && npm run check:render && npm run build"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "5.102.8",
+    "leaflet": "1.9.4",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-leaflet": "5.0.0",
+    "react-router-dom": "7.18.3",
+    "recharts": "3.10.1"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^30.0.0",
+    "@types/leaflet": "1.9.22",
+    "@types/node": "^24.10.1",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.5",
+    "@vitejs/plugin-react": "6.1.1",
+    "jsdom": "^30.0.1",
+    "tsx": "^4.20.6",
+    "typescript": "5.9.3",
+    "vite": "8.2.2"
+  }
+}

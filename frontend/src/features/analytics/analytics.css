@@ -1,0 +1,161 @@
+/* =============================================================================
+   Analytics: charts, matrices and metric tables.
+   ============================================================================= */
+
+.chart-wrap {
+  width: 100%;
+  height: 260px;
+}
+
+.chart-wrap--tall {
+  height: 320px;
+}
+
+/* Recharts renders SVG text with its own defaults; align it with the theme. */
+.chart-wrap .recharts-cartesian-axis-tick-value {
+  fill: var(--c-text-dim);
+  font-size: 10px;
+  font-family: var(--font-mono);
+}
+
+.chart-wrap .recharts-label,
+.chart-wrap .recharts-legend-item-text {
+  fill: var(--c-text-muted);
+  color: var(--c-text-muted) !important;
+  font-size: var(--fs-2xs);
+}
+
+.chart-tooltip {
+  background: rgb(8 11 15 / 96%);
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--r-sm);
+  padding: var(--sp-2) var(--sp-3);
+  box-shadow: var(--shadow-md);
+  font-size: var(--fs-2xs);
+  min-width: 160px;
+}
+
+.chart-tooltip__title {
+  font-family: var(--font-mono);
+  color: var(--c-text);
+  margin-bottom: var(--sp-1);
+}
+
+.chart-tooltip__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  color: var(--c-text-muted);
+}
+
+.chart-tooltip__value {
+  font-family: var(--font-mono);
+  color: var(--c-text);
+}
+
+/* --- Origin–destination matrix -------------------------------------------- */
+
+.od-wrap {
+  overflow: auto;
+  max-height: 520px;
+}
+
+.od-table {
+  border-collapse: separate;
+  border-spacing: 2px;
+  font-size: var(--fs-2xs);
+}
+
+.od-table th {
+  position: sticky;
+  background: var(--c-surface);
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-weight: var(--fw-medium);
+  color: var(--c-text-dim);
+  padding: 2px var(--sp-1);
+  white-space: nowrap;
+}
+
+.od-table thead th {
+  top: 0;
+}
+
+.od-table tbody th {
+  left: 0;
+  text-align: right;
+}
+
+/* The origin/destination corner cell must sit above both sticky edges. */
+.od-table thead th:first-child {
+  left: 0;
+  z-index: 3;
+}
+
+.od-cell {
+  width: 30px;
+  height: 24px;
+  border-radius: var(--r-xs);
+  text-align: center;
+  font-family: var(--font-mono);
+  color: var(--c-text);
+  cursor: default;
+}
+
+.od-cell--empty {
+  background: var(--c-surface-2);
+  color: var(--c-text-dim);
+}
+
+.od-cell--diagonal {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--c-surface-2) 0 3px,
+    transparent 3px 6px
+  );
+}
+
+/* --- Node load bars ------------------------------------------------------- */
+
+.load-row {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr) 74px 62px;
+  gap: var(--sp-2);
+  align-items: center;
+  padding: 3px 0;
+  font-size: var(--fs-xs);
+}
+
+.load-row__code {
+  font-family: var(--font-mono);
+  color: var(--c-accent);
+}
+
+.load-row__name {
+  font-size: var(--fs-2xs);
+  color: var(--c-text-dim);
+}
+
+/* --- Analytics layout ----------------------------------------------------- */
+
+.analytics-map {
+  height: 460px;
+  display: flex;
+  min-height: 0;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  border: 1px solid var(--c-border);
+}
+
+.window-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.sample-warning {
+  color: var(--c-warn);
+  font-size: var(--fs-2xs);
+}
