@@ -156,6 +156,9 @@ services:
       VITE_API_BASE_URL: /api
       VITE_WS_URL: /ws/live
       VITE_PROXY_TARGET: http://api:8000
+      VITE_MAP_CENTER_LAT: "28.5900"
+      VITE_MAP_CENTER_LNG: "77.0470"
+      VITE_MAP_ZOOM: "13"
     command: sh -c "npm ci && npm run dev -- --host 0.0.0.0 --port 5173"
     ports:
       - "5173:5173"

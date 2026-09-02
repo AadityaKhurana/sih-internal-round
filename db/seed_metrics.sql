@@ -22,7 +22,8 @@ SELECT c.camera_id,
        false
 FROM cameras c
 JOIN (VALUES
-    ('CAM-01', 20), ('CAM-02', 35), ('CAM-03', 60), ('CAM-04', 30), ('CAM-05', 15)
+    ('CAM-01', 20), ('CAM-02', 35), ('CAM-03', 60), ('CAM-04', 30),
+    ('CAM-05', 25), ('CAM-06', 40), ('CAM-07', 30), ('CAM-08', 50)
 ) AS base(code, v) ON base.code = c.camera_code
 CROSS JOIN generate_series(0, 11) AS g
 ON CONFLICT (camera_id, window_start) DO NOTHING;

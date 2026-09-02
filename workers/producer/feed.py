@@ -19,9 +19,9 @@ from anpr_common import PlateSighting
 REDIS_URL = os.environ["REDIS_URL"]
 INTERVAL = float(os.getenv("PRODUCER_INTERVAL_SECONDS", "3"))
 
-CAMERAS = ["CAM-01", "CAM-02", "CAM-03", "CAM-04", "CAM-05"]
-# KA05CD5678 is blacklisted in the seed -> exercises the alerts worker live.
-PLATES = ["KA01AB1234", "KA03EF9012", "KA05CD5678", "KA07GH3456", "KA09JK2468"]
+CAMERAS = ["CAM-01", "CAM-02", "CAM-03", "CAM-04", "CAM-05", "CAM-06", "CAM-07", "CAM-08"]
+# DL8CAF5678 is blacklisted in the Dwarka seed -> exercises the alerts worker live.
+PLATES = ["DL3CAB1234", "DL1CAA0007", "DL8CAF5678", "DL4CAD9012", "DL2CAE3456"]
 
 
 def main() -> None:
