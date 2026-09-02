@@ -9,6 +9,9 @@ class Settings(BaseSettings):
 
     app_env: str = "local"
 
+    # Shared bearer token gating the data endpoints. Empty = auth disabled (dev).
+    api_auth_token: str = ""
+
     database_url: str = "postgresql://anpr:anpr@postgres:5432/anpr"
     redis_url: str = "redis://redis:6379/0"
 
