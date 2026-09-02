@@ -106,3 +106,72 @@ def alert_row_to_dict(r: dict[str, Any]) -> dict[str, Any]:
 async def load_alert(alert_id: str) -> dict[str, Any] | None:
     row = await fetch_one(ALERT_SELECT + " WHERE a.alert_id = %(id)s", {"id": alert_id})
     return alert_row_to_dict(row) if row else None
+
+
+def normalize_plate(raw: str | None) -> str | None:
+    if raw is None:
+        return None
+    return "".join(c for c in raw.upper() if c.isalnum()) or None
+
+
+# --- Sighting: one shape for /sightings AND the trajectory endpoint -----------
+SIGHTING_SELECT = """
+    SELECT s.sighting_id::text          AS sighting_id,
+           s.source_event_id,
+           s.camera_id::text            AS camera_id,
+           sc.camera_code,
+           sc.display_name              AS camera_display_name,
+           ST_X(sc.location)::float8    AS s_lng,
+           ST_Y(sc.location)::float8    AS s_lat,
+           s.plate_id::text             AS plate_id,
+           p.normalized_plate           AS normalized_plate,
+           s.raw_plate_text,
+           s.normalized_plate_candidate,
+           s.camera_track_id,
+           s.detection_confidence::float8 AS detection_confidence,
+           s.ocr_confidence::float8     AS ocr_confidence,
+           s.ocr_candidates,
+           s.validation_status,
+           s.validation_reason,
+           s.spotted_at,
+           s.processed_at,
+           s.direction_degrees::float8  AS direction_degrees,
+           s.vehicle_type, s.vehicle_color, s.lane_number,
+           s.quality_flags, s.model_version,
+           s.plate_crop_object_key, s.vehicle_image_object_key, s.context_clip_object_key
+    FROM sightings s
+    JOIN cameras sc ON sc.camera_id = s.camera_id
+    LEFT JOIN plates p ON p.plate_id = s.plate_id
+"""
+
+
+def sighting_row_to_dict(r: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "sighting_id": r["sighting_id"],
+        "source_event_id": r["source_event_id"],
+        "camera_id": r["camera_id"],
+        "camera_code": r["camera_code"],
+        "camera_display_name": r["camera_display_name"],
+        "camera_location": [r["s_lng"], r["s_lat"]],
+        "plate_id": r["plate_id"],
+        "normalized_plate": r["normalized_plate"],
+        "raw_plate_text": r["raw_plate_text"],
+        "normalized_plate_candidate": r["normalized_plate_candidate"],
+        "camera_track_id": r["camera_track_id"],
+        "detection_confidence": r["detection_confidence"],
+        "ocr_confidence": r["ocr_confidence"],
+        "ocr_candidates": r["ocr_candidates"] or [],
+        "validation_status": r["validation_status"],
+        "validation_reason": r["validation_reason"],
+        "spotted_at": iso(r["spotted_at"]),
+        "processed_at": iso(r["processed_at"]),
+        "direction_degrees": r["direction_degrees"],
+        "vehicle_type": r["vehicle_type"],
+        "vehicle_color": r["vehicle_color"],
+        "lane_number": r["lane_number"],
+        "quality_flags": r["quality_flags"] or {},
+        "model_version": r["model_version"],
+        "plate_crop_object_key": r["plate_crop_object_key"],
+        "vehicle_image_object_key": r["vehicle_image_object_key"],
+        "context_clip_object_key": r["context_clip_object_key"],
+    }
