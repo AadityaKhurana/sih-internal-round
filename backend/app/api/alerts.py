@@ -1,139 +1,160 @@
-"""Alerts API: list/filter, fetch one, and acknowledge.
+"""Alerts API — full contract shape.
 
-Alerts are produced by the alerts worker (blacklist + route-anomaly). This
-module only reads them and lets an operator acknowledge — it does not generate
-alerts. Acknowledgement is audited.
+GET /alerts            -> Paginated<Alert>   (rich filters)
+GET /alerts/counts     -> AlertCounts
+POST /alerts/{id}/acknowledge -> Alert       (audited; broadcasts alert_ack)
 """
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Any
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import BaseModel
 
 from ..audit import record_audit
 from ..db import fetch_all, fetch_one
-from ..schemas import AcknowledgeRequest, AlertOut, AlertSightingRef
+from ._common import (
+    ALERT_SELECT,
+    alert_row_to_dict,
+    iso,
+    load_alert,
+    operator_subject,
+    paginate,
+)
 
 router = APIRouter(tags=["alerts"])
 
-_SELECT = """
-    SELECT a.alert_id::text        AS alert_id,
-           a.alert_type, a.status, a.anomaly_reason,
-           a.match_confidence::float8 AS match_confidence,
-           a.dedup_key, a.details,
-           a.created_at, a.delivered_at, a.acknowledged_at, a.acknowledged_by,
-           a.resolution_notes,
-           p.normalized_plate       AS plate,
-           b.reason                 AS blacklist_reason,
-           b.severity               AS severity,
-           s.sighting_id::text      AS s_sighting_id,
-           sc.camera_code           AS s_camera_code,
-           sc.display_name          AS s_display_name,
-           s.spotted_at             AS s_spotted_at,
-           ps.sighting_id::text     AS p_sighting_id,
-           pc.camera_code           AS p_camera_code,
-           pc.display_name          AS p_display_name,
-           ps.spotted_at            AS p_spotted_at
-    FROM alerts a
-    JOIN sightings s  ON s.sighting_id = a.sighting_id
-    JOIN cameras   sc ON sc.camera_id = s.camera_id
-    LEFT JOIN plates p            ON p.plate_id = s.plate_id
-    LEFT JOIN blacklist_entries b ON b.blacklist_entry_id = a.blacklist_entry_id
-    LEFT JOIN sightings ps        ON ps.sighting_id = a.previous_sighting_id
-    LEFT JOIN cameras   pc        ON pc.camera_id = ps.camera_id
+_WHERE = """
+    WHERE (%(alert_type)s::text[]     IS NULL OR a.alert_type = ANY(%(alert_type)s))
+      AND (%(status)s::text[]         IS NULL OR a.status = ANY(%(status)s))
+      AND (%(severity)s::text[]       IS NULL OR b.severity = ANY(%(severity)s))
+      AND (%(anomaly_reason)s::text[] IS NULL OR a.anomaly_reason = ANY(%(anomaly_reason)s))
+      AND (%(plate)s::text            IS NULL OR p.normalized_plate = %(plate)s)
+      AND (%(camera_code)s::text      IS NULL OR sc.camera_code = %(camera_code)s)
+      AND (%(from_ts)s::timestamptz   IS NULL OR a.created_at >= %(from_ts)s)
+      AND (%(to_ts)s::timestamptz     IS NULL OR a.created_at <= %(to_ts)s)
 """
 
-_LIST_SQL = _SELECT + """
-    WHERE (%(status)s::text IS NULL OR a.status = %(status)s)
-      AND (%(alert_type)s::text IS NULL OR a.alert_type = %(alert_type)s)
-    ORDER BY a.created_at DESC
-    LIMIT %(limit)s OFFSET %(offset)s
-"""
 
-_ONE_SQL = _SELECT + " WHERE a.alert_id = %(alert_id)s"
+def _norm(plate: str | None) -> str | None:
+    if plate is None:
+        return None
+    return "".join(ch for ch in plate.upper() if ch.isalnum()) or None
 
 
-def _row_to_alert(row: dict[str, Any]) -> AlertOut:
-    prev = None
-    if row["p_sighting_id"] is not None:
-        prev = AlertSightingRef(
-            sighting_id=row["p_sighting_id"],
-            camera_code=row["p_camera_code"],
-            display_name=row["p_display_name"],
-            spotted_at=row["p_spotted_at"],
-        )
-    return AlertOut(
-        alert_id=row["alert_id"],
-        alert_type=row["alert_type"],
-        status=row["status"],
-        anomaly_reason=row["anomaly_reason"],
-        match_confidence=row["match_confidence"],
-        dedup_key=row["dedup_key"],
-        plate=row["plate"],
-        severity=row["severity"],
-        blacklist_reason=row["blacklist_reason"],
-        details=row["details"] or {},
-        created_at=row["created_at"],
-        delivered_at=row["delivered_at"],
-        acknowledged_at=row["acknowledged_at"],
-        acknowledged_by=row["acknowledged_by"],
-        resolution_notes=row["resolution_notes"],
-        sighting=AlertSightingRef(
-            sighting_id=row["s_sighting_id"],
-            camera_code=row["s_camera_code"],
-            display_name=row["s_display_name"],
-            spotted_at=row["s_spotted_at"],
-        ),
-        previous_sighting=prev,
-    )
+def _filters(alert_type, status, severity, anomaly_reason, plate, camera_code, from_ts, to_ts):
+    return {
+        "alert_type": alert_type or None,
+        "status": status or None,
+        "severity": severity or None,
+        "anomaly_reason": anomaly_reason or None,
+        "plate": _norm(plate),
+        "camera_code": camera_code,
+        "from_ts": from_ts,
+        "to_ts": to_ts,
+    }
 
 
-@router.get("/alerts", response_model=list[AlertOut])
+@router.get("/alerts")
 async def list_alerts(
-    status: str | None = Query(None, description="new | delivered | acknowledged | resolved"),
-    alert_type: str | None = Query(None, description="blacklist | route_anomaly"),
-    limit: int = Query(100, ge=1, le=500),
+    alert_type: list[str] | None = Query(None),
+    status: list[str] | None = Query(None),
+    severity: list[str] | None = Query(None),
+    anomaly_reason: list[str] | None = Query(None),
+    plate: str | None = Query(None),
+    camera_code: str | None = Query(None),
+    from_ts: datetime | None = Query(None, alias="from"),
+    to_ts: datetime | None = Query(None, alias="to"),
+    limit: int = Query(50, ge=1, le=500),
     offset: int = Query(0, ge=0),
-) -> list[AlertOut]:
+) -> dict[str, Any]:
+    f = _filters(alert_type, status, severity, anomaly_reason, plate, camera_code, from_ts, to_ts)
+    total_row = await fetch_one(f"SELECT count(*) AS n FROM ({ALERT_SELECT} {_WHERE}) t", f)
     rows = await fetch_all(
-        _LIST_SQL,
-        {"status": status, "alert_type": alert_type, "limit": limit, "offset": offset},
+        f"{ALERT_SELECT} {_WHERE} ORDER BY a.created_at DESC LIMIT %(limit)s OFFSET %(offset)s",
+        {**f, "limit": limit, "offset": offset},
     )
-    return [_row_to_alert(r) for r in rows]
+    items = [alert_row_to_dict(r) for r in rows]
+    return paginate(items, total_row["n"] if total_row else 0, limit, offset)
 
 
-@router.get("/alerts/{alert_id}", response_model=AlertOut)
-async def get_alert(alert_id: str) -> AlertOut:
-    row = await fetch_one(_ONE_SQL, {"alert_id": alert_id})
-    if row is None:
-        raise HTTPException(status_code=404, detail="Alert not found")
-    return _row_to_alert(row)
+@router.get("/alerts/counts")
+async def alert_counts(
+    from_ts: datetime | None = Query(None, alias="from"),
+    to_ts: datetime | None = Query(None, alias="to"),
+) -> dict[str, Any]:
+    f = _filters(None, None, None, None, None, None, from_ts, to_ts)
+    rows = await fetch_all(
+        f"""
+        SELECT a.status, a.alert_type, a.anomaly_reason, b.severity
+        FROM alerts a
+        JOIN sightings s ON s.sighting_id = a.sighting_id
+        JOIN cameras sc ON sc.camera_id = s.camera_id
+        LEFT JOIN plates p ON p.plate_id = s.plate_id
+        LEFT JOIN blacklist_entries b ON b.blacklist_entry_id = a.blacklist_entry_id
+        {_WHERE}
+        """,
+        f,
+    )
+    sev = {k: 0 for k in ("low", "medium", "high", "critical")}
+    anom = {k: 0 for k in ("impossible_travel_time", "wrong_direction", "suspected_clone")}
+    counts = {"total": len(rows), "new": 0, "acknowledged": 0, "resolved": 0,
+              "blacklist": 0, "route_anomaly": 0}
+    for r in rows:
+        counts[r["status"]] = counts.get(r["status"], 0) + 1
+        counts[r["alert_type"]] = counts.get(r["alert_type"], 0) + 1
+        if r["severity"] in sev:
+            sev[r["severity"]] += 1
+        if r["anomaly_reason"] in anom:
+            anom[r["anomaly_reason"]] += 1
+    counts["by_severity"] = sev
+    counts["by_anomaly_reason"] = anom
+    return counts
 
 
-@router.post("/alerts/{alert_id}/acknowledge", response_model=AlertOut)
-async def acknowledge_alert(alert_id: str, body: AcknowledgeRequest) -> AlertOut:
+class AcknowledgeRequest(BaseModel):
+    acknowledged_by: str
+    resolution_notes: str | None = None
+    status: str = "acknowledged"  # 'acknowledged' | 'resolved'
+
+
+@router.post("/alerts/{alert_id}/acknowledge")
+async def acknowledge_alert(
+    alert_id: str,
+    body: AcknowledgeRequest,
+    operator: str = Depends(operator_subject),
+) -> dict[str, Any]:
+    if body.status not in ("acknowledged", "resolved"):
+        raise HTTPException(status_code=422, detail="status must be acknowledged or resolved")
+    subject = body.acknowledged_by or operator
     updated = await fetch_one(
         """
         UPDATE alerts
-        SET status = 'acknowledged',
-            acknowledged_at = now(),
-            acknowledged_by = %(by)s,
+        SET status = %(status)s, acknowledged_at = now(), acknowledged_by = %(by)s,
             resolution_notes = COALESCE(%(notes)s, resolution_notes)
-        WHERE alert_id = %(alert_id)s
-        RETURNING alert_id::text AS alert_id
+        WHERE alert_id = %(id)s
+        RETURNING alert_id::text AS alert_id, acknowledged_at
         """,
-        {"alert_id": alert_id, "by": body.acknowledged_by, "notes": body.resolution_notes},
+        {"id": alert_id, "status": body.status, "by": subject, "notes": body.resolution_notes},
     )
     if updated is None:
         raise HTTPException(status_code=404, detail="Alert not found")
 
     await record_audit(
-        user_subject=body.acknowledged_by,
-        action="alert_acknowledge",
-        target_type="alert",
-        target_id=alert_id,
-        metadata={"resolution_notes": body.resolution_notes},
+        user_subject=subject, action="alert_acknowledge",
+        target_type="alert", target_id=alert_id,
+        metadata={"status": body.status, "resolution_notes": body.resolution_notes},
     )
 
-    row = await fetch_one(_ONE_SQL, {"alert_id": alert_id})
-    return _row_to_alert(row)  # type: ignore[arg-type]
+    alert = await load_alert(alert_id)
+    # Best-effort live notification (same-process manager).
+    try:
+        from ..realtime import manager
+        await manager.broadcast_json("alerts", {
+            "type": "alert_ack", "alert_id": alert_id, "status": body.status,
+            "acknowledged_by": subject, "acknowledged_at": iso(updated["acknowledged_at"]),
+        })
+    except Exception:  # noqa: BLE001
+        pass
+    return alert  # type: ignore[return-value]

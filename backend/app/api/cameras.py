@@ -1,4 +1,5 @@
-"""Geographic read endpoints: cameras and camera_links as GeoJSON for the map."""
+"""Network read endpoints: cameras and camera_links as GeoJSON for the map,
+with the denormalized properties the dashboard needs (road names, endpoint codes)."""
 from __future__ import annotations
 
 from typing import Any
@@ -6,53 +7,66 @@ from typing import Any
 from fastapi import APIRouter
 
 from ..db import fetch_all
-from ..schemas import GeoFeature, GeoFeatureCollection
+from ._common import iso
 
 router = APIRouter(tags=["geo"])
 
 _CAMERAS_SQL = """
-    SELECT camera_id::text            AS camera_id,
-           camera_code,
-           display_name,
-           heading_degrees::float8    AS heading_degrees,
-           status,
-           stream_uri_ref,
-           last_seen_at,
-           ST_AsGeoJSON(location)::json AS geometry
-    FROM cameras
-    ORDER BY camera_code
+    SELECT c.camera_id::text        AS camera_id,
+           c.camera_code,
+           c.display_name,
+           c.heading_degrees::float8 AS heading_degrees,
+           c.status,
+           c.last_seen_at,
+           ST_AsGeoJSON(c.location)::json AS geometry,
+           (SELECT array_agg(DISTINCT r.name)
+              FROM camera_links cl
+              JOIN roads r ON r.road_id = cl.road_id
+             WHERE (cl.from_camera_id = c.camera_id OR cl.to_camera_id = c.camera_id)
+               AND r.name IS NOT NULL) AS road_names
+    FROM cameras c
+    ORDER BY c.camera_code
 """
 
 _LINKS_SQL = """
-    SELECT camera_link_id::text   AS camera_link_id,
-           from_camera_id::text   AS from_camera_id,
-           to_camera_id::text     AS to_camera_id,
-           road_id::text          AS road_id,
-           direction_label,
-           distance_meters,
-           free_flow_time_seconds,
-           speed_limit_kph,
-           active,
-           ST_AsGeoJSON(path)::json AS geometry
-    FROM camera_links
-    ORDER BY camera_link_id
+    SELECT cl.camera_link_id::text AS camera_link_id,
+           cl.from_camera_id::text AS from_camera_id,
+           cl.to_camera_id::text   AS to_camera_id,
+           fc.camera_code          AS from_camera_code,
+           tc.camera_code          AS to_camera_code,
+           cl.road_id::text        AS road_id,
+           r.name                  AS road_name,
+           cl.direction_label,
+           cl.distance_meters,
+           cl.free_flow_time_seconds,
+           cl.speed_limit_kph,
+           cl.active,
+           ST_AsGeoJSON(cl.path)::json AS geometry
+    FROM camera_links cl
+    JOIN cameras fc ON fc.camera_id = cl.from_camera_id
+    JOIN cameras tc ON tc.camera_id = cl.to_camera_id
+    LEFT JOIN roads r ON r.road_id = cl.road_id
+    ORDER BY cl.camera_link_id
 """
 
 
-def _to_feature_collection(rows: list[dict[str, Any]]) -> GeoFeatureCollection:
-    features = [
-        GeoFeature(geometry=row.pop("geometry", None), properties=row) for row in rows
-    ]
-    return GeoFeatureCollection(features=features)
+def _fc(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    features = []
+    for r in rows:
+        geom = r.pop("geometry", None)
+        if "last_seen_at" in r:
+            r["last_seen_at"] = iso(r["last_seen_at"])
+        if r.get("road_names") is None and "road_names" in r:
+            r["road_names"] = []
+        features.append({"type": "Feature", "geometry": geom, "properties": r})
+    return {"type": "FeatureCollection", "features": features}
 
 
-@router.get("/cameras", response_model=GeoFeatureCollection)
-async def list_cameras() -> GeoFeatureCollection:
-    """All cameras as a GeoJSON FeatureCollection (Point geometry)."""
-    return _to_feature_collection(await fetch_all(_CAMERAS_SQL))
+@router.get("/cameras")
+async def list_cameras() -> dict[str, Any]:
+    return _fc(await fetch_all(_CAMERAS_SQL))
 
 
-@router.get("/camera-links", response_model=GeoFeatureCollection)
-async def list_camera_links() -> GeoFeatureCollection:
-    """All monitored camera-to-camera links as GeoJSON (LineString geometry)."""
-    return _to_feature_collection(await fetch_all(_LINKS_SQL))
+@router.get("/camera-links")
+async def list_camera_links() -> dict[str, Any]:
+    return _fc(await fetch_all(_LINKS_SQL))
