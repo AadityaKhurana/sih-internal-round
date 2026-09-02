@@ -7,6 +7,13 @@
 -- =============================================================================
 BEGIN;
 
+-- Refresh time-anchored demo rows so RE-RUNNING realigns them to "now".
+-- sightings/alerts are inserted at now()-offsets; ON CONFLICT alone can't move
+-- an existing timestamp, so delete the seed-owned rows first and let the inserts
+-- below recreate them fresh. Deleting sightings cascades to their alerts (FK).
+DELETE FROM sightings WHERE source_event_id LIKE 'seed-%';
+DELETE FROM alerts    WHERE dedup_key LIKE 'seed-%';
+
 -- --- Road -------------------------------------------------------------------
 INSERT INTO roads (road_code, name) VALUES
     ('MG-CORR-1', 'MG Road Corridor (W→E)')
