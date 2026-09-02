@@ -93,7 +93,7 @@ async def report(
         "busiest_camera_code": busiest,
         "worst_link_label": worst_link_label,
         "alert_count": alert_count or 0,
-        "total_delay_hours": round(delay, 2) if delay is not None else None,
+        "total_delay_hours": round(float(delay), 2) if delay is not None else None,
     }
 
     # Comparison vs previous period.

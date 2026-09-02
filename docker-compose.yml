@@ -141,6 +141,28 @@ services:
       redis: { condition: service_healthy }
     restart: unless-stopped
 
+  # Frontend in LIVE mode (VITE_USE_MOCK=false). Vite dev proxies /api and /ws
+  # to the api container, so the dashboard talks to the real backend.
+  # Anonymous node_modules volume avoids the host (macOS) install shadowing the
+  # container (linux) install of native deps like esbuild.
+  frontend:
+    image: node:20-slim
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      VITE_USE_MOCK: "false"
+      VITE_API_BASE_URL: /api
+      VITE_WS_URL: /ws/live
+      VITE_PROXY_TARGET: http://api:8000
+    command: sh -c "npm ci && npm run dev -- --host 0.0.0.0 --port 5173"
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+    restart: unless-stopped
+
 volumes:
   pgdata:
   redisdata:
