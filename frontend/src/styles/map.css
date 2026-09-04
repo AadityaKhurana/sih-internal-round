@@ -1,9 +1,6 @@
-/* =============================================================================
-   Leaflet theming.
-   -----------------------------------------------------------------------------
-   Leaflet ships light-themed chrome (white popups, white zoom buttons) which
-   looks broken against the dark shell, so its controls are restyled here rather
-   than fought with in components. Only Leaflet's own classes belong in this file.
+ /* =============================================================================
+   Leaflet theming — light edition.
+   Only Leaflet's own classes belong here.
    ============================================================================= */
 
 .leaflet-container {
@@ -13,17 +10,16 @@
   font-family: var(--font-sans);
   font-size: var(--fs-xs);
   outline: none;
-
-  /* Leaflet's panes use z-index 200–700, which would otherwise compete with the
-     app's floating overlays and the modal layer. `isolation: isolate` gives the
-     container its own stacking context so those values stay contained.
-     Note: do NOT flatten `.leaflet-pane` to a single z-index — that silently
-     breaks the tile/overlay/marker/tooltip/popup ordering and any custom pane. */
   isolation: isolate;
   z-index: var(--z-map);
 }
 
 /* --- Zoom + attribution controls ------------------------------------------ */
+
+.leaflet-top.leaflet-left {
+  top: 50%;
+  transform: translateY(-50%);
+}
 
 .leaflet-bar {
   border: 1px solid var(--c-border-strong);
@@ -34,7 +30,7 @@
 
 .leaflet-bar a,
 .leaflet-bar a:hover {
-  background: var(--c-surface-2);
+  background: var(--c-surface);
   color: var(--c-text);
   border-bottom-color: var(--c-border);
   width: 28px;
@@ -47,24 +43,24 @@
 }
 
 .leaflet-bar a.leaflet-disabled {
-  background: var(--c-surface);
+  background: var(--c-surface-2);
   color: var(--c-text-dim);
 }
 
 .leaflet-control-attribution {
-  background: rgb(8 11 15 / 82%) !important;
-  color: var(--c-text-dim);
+  background: rgb(255 255 255 / 88%) !important;
+  color: var(--c-text-muted);
   font-size: 10px;
   padding: 2px 6px;
   border-radius: var(--r-xs) 0 0 0;
 }
 
 .leaflet-control-attribution a {
-  color: var(--c-text-muted);
+  color: var(--c-accent-strong);
 }
 
 .leaflet-control-scale-line {
-  background: rgb(8 11 15 / 82%);
+  background: rgb(255 255 255 / 88%);
   border-color: var(--c-border-strong);
   color: var(--c-text-muted);
   font-size: 10px;
@@ -104,7 +100,7 @@
 }
 
 .leaflet-tooltip {
-  background: rgb(8 11 15 / 94%);
+  background: rgb(255 255 255 / 96%);
   border: 1px solid var(--c-border-strong);
   border-radius: var(--r-sm);
   color: var(--c-text);
@@ -126,7 +122,7 @@
   border-bottom-color: var(--c-border-strong);
 }
 
-/* Link labels rendered as borderless tooltips directly on the map. */
+/* Camera-code labels placed directly on the map. */
 .leaflet-tooltip.map-label {
   background: transparent;
   border: none;
@@ -135,12 +131,14 @@
   font-family: var(--font-mono);
   font-size: 10px;
   padding: 0;
+  /* Light halo so labels stay readable over light tiles. */
   text-shadow:
-    0 0 3px var(--c-bg),
-    0 0 3px var(--c-bg),
-    0 0 4px var(--c-bg);
+    0 0 3px #fff,
+    0 0 3px #fff,
+    0 0 4px #fff;
 }
 
 .leaflet-tooltip.map-label::before {
   display: none;
 }
+
