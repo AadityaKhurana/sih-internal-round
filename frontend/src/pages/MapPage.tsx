@@ -226,6 +226,16 @@ export function MapPage() {
             </div>
           </MapPanel>
         }
+        overlayBottomRight={
+          view === 'congestion' ? (
+            <CongestionCallout links={worstLinks} loading={congestion.isLoading} />
+          ) : (
+            <LiveFeedCallout
+              sightings={liveSightings}
+              connected={liveState === 'open' || liveState === 'mock'}
+            />
+          )
+        }
         overlayBottomLeft={
           <MapPanel
             title={view === 'congestion' ? 'Travel time vs free flow' : 'Camera status'}
@@ -252,16 +262,6 @@ export function MapPage() {
               </p>
             ) : null}
           </MapPanel>
-        }
-        overlayBottomRight={
-          view === 'congestion' ? (
-            <CongestionCallout links={worstLinks} loading={congestion.isLoading} />
-          ) : (
-            <LiveFeedCallout
-              sightings={liveSightings}
-              connected={liveState === 'open' || liveState === 'mock'}
-            />
-          )
         }
       />
     </div>

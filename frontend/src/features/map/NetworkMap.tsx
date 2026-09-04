@@ -115,7 +115,7 @@ export function NetworkMap({
             attribution={BASEMAP.attribution}
           />
 
-          <ZoomControl position="bottomright" />
+          <ZoomControl position="topleft" />
           <ScaleControl position="bottomleft" imperial={false} />
           <AttributionControl position="bottomright" prefix={false} />
 

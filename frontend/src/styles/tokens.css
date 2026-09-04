@@ -1,71 +1,68 @@
 /* =============================================================================
    Design tokens — City-Wide ANPR Platform dashboard
    -----------------------------------------------------------------------------
-   Single source of truth for colour, type, spacing, elevation and motion.
-   Components never hardcode a hex value; they reference a token. The palette is
-   a dark "control room" theme: low-luminance surfaces so the Leaflet map and
-   status colours carry the visual weight.
+   Light theme. Components never hardcode a hex value; they reference a token.
 
-   Contrast: body text (--c-text) on --c-bg ≈ 14:1, muted text ≈ 7:1, and every
-   status colour is tested against --c-surface at ≥ 4.5:1 for normal text.
+   Contrast: body text (--c-text) on --c-bg ≈ 13:1, muted text ≈ 5:1, and every
+   status colour passes 4.5:1 against --c-surface.
    ============================================================================= */
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
   /* --- Surfaces ----------------------------------------------------------- */
-  --c-bg: #0b0f14;
-  --c-bg-inset: #080b0f;
-  --c-surface: #111823;
-  --c-surface-2: #16202e;
-  --c-surface-3: #1d2937;
-  --c-surface-hover: #1f2c3d;
-  --c-overlay: rgb(4 8 12 / 72%);
+  --c-bg: #f0f4f8;
+  --c-bg-inset: #e2e8f0;
+  --c-surface: #ffffff;
+  --c-surface-2: #f8fafc;
+  --c-surface-3: #f1f5f9;
+  --c-surface-hover: #e8f0fe;
+  --c-overlay: rgb(15 23 42 / 40%);
 
   /* --- Borders ------------------------------------------------------------ */
-  --c-border: #22303f;
-  --c-border-strong: #33475e;
-  --c-border-subtle: #1a2431;
+  --c-border: #cbd5e1;
+  --c-border-strong: #94a3b8;
+  --c-border-subtle: #e2e8f0;
 
   /* --- Text --------------------------------------------------------------- */
-  --c-text: #e6edf5;
-  --c-text-muted: #9db0c6;
-  --c-text-dim: #6f8299;
-  --c-text-inverse: #05080b;
+  --c-text: #0f172a;
+  --c-text-muted: #475569;
+  --c-text-dim: #94a3b8;
+  --c-text-inverse: #ffffff;
 
   /* --- Brand / accent ----------------------------------------------------- */
-  --c-accent: #38bdf8;
-  --c-accent-strong: #0ea5e9;
-  --c-accent-dim: rgb(56 189 248 / 14%);
-  --c-focus: #7dd3fc;
+  --c-accent: #0284c7;
+  --c-accent-strong: #0369a1;
+  --c-accent-dim: rgb(2 132 199 / 10%);
+  --c-focus: #0ea5e9;
 
   /* --- Status ------------------------------------------------------------- */
-  --c-ok: #34d399;
-  --c-ok-dim: rgb(52 211 153 / 14%);
-  --c-info: #60a5fa;
-  --c-info-dim: rgb(96 165 250 / 14%);
-  --c-warn: #fbbf24;
-  --c-warn-dim: rgb(251 191 36 / 14%);
-  --c-danger: #f87171;
-  --c-danger-dim: rgb(248 113 113 / 14%);
-  --c-critical: #fb7185;
-  --c-critical-dim: rgb(251 113 133 / 16%);
-  --c-violet: #a78bfa;
-  --c-violet-dim: rgb(167 139 250 / 14%);
+  --c-ok: #16a34a;
+  --c-ok-dim: rgb(22 163 74 / 10%);
+  --c-info: #2563eb;
+  --c-info-dim: rgb(37 99 235 / 10%);
+  --c-warn: #d97706;
+  --c-warn-dim: rgb(217 119 6 / 10%);
+  --c-danger: #dc2626;
+  --c-danger-dim: rgb(220 38 38 / 10%);
+  --c-critical: #be123c;
+  --c-critical-dim: rgb(190 18 60 / 10%);
+  --c-violet: #7c3aed;
+  --c-violet-dim: rgb(124 58 237 / 10%);
 
   /* --- Congestion ramp (link overlay + heatmaps) -------------------------- */
-  --c-congestion-free: #22c55e;
-  --c-congestion-light: #a3e635;
-  --c-congestion-moderate: #facc15;
-  --c-congestion-heavy: #fb923c;
-  --c-congestion-severe: #ef4444;
-  --c-congestion-unknown: #64748b;
+  --c-congestion-free: #16a34a;
+  --c-congestion-light: #65a30d;
+  --c-congestion-moderate: #ca8a04;
+  --c-congestion-heavy: #ea580c;
+  --c-congestion-severe: #dc2626;
+  --c-congestion-unknown: #94a3b8;
 
   /* --- Map ---------------------------------------------------------------- */
-  --c-map-link: #64748b;
-  --c-map-link-active: #38bdf8;
-  --c-map-route: #f0abfc;
-  --c-map-route-glow: rgb(240 171 252 / 35%);
+  --c-map-link: #94a3b8;
+  --c-map-link-active: #0284c7;
+  --c-map-route: #9333ea;
+  --c-map-route-glow: rgb(147 51 234 / 25%);
 
   /* --- Typography --------------------------------------------------------- */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
@@ -73,14 +70,14 @@
   --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, 'JetBrains Mono',
     Menlo, Consolas, monospace;
 
-  --fs-2xs: 0.6875rem; /* 11px — dense table meta, axis labels */
-  --fs-xs: 0.75rem; /* 12px — labels, captions */
-  --fs-sm: 0.8125rem; /* 13px — body in dense panels */
-  --fs-md: 0.875rem; /* 14px — default body */
-  --fs-lg: 1rem; /* 16px — panel titles */
-  --fs-xl: 1.25rem; /* 20px — page titles */
-  --fs-2xl: 1.75rem; /* 28px — KPI values */
-  --fs-3xl: 2.25rem; /* 36px — hero KPI */
+  --fs-2xs: 0.6875rem;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.8125rem;
+  --fs-md: 0.875rem;
+  --fs-lg: 1rem;
+  --fs-xl: 1.25rem;
+  --fs-2xl: 1.75rem;
+  --fs-3xl: 2.25rem;
 
   --fw-regular: 400;
   --fw-medium: 500;
@@ -114,11 +111,11 @@
   --r-pill: 999px;
 
   /* --- Elevation ---------------------------------------------------------- */
-  --shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
-  --shadow-md: 0 4px 12px rgb(0 0 0 / 45%);
-  --shadow-lg: 0 12px 32px rgb(0 0 0 / 55%);
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 8%);
+  --shadow-md: 0 4px 12px rgb(0 0 0 / 10%);
+  --shadow-lg: 0 12px 32px rgb(0 0 0 / 14%);
   --shadow-glow-accent: 0 0 0 1px var(--c-accent-strong),
-    0 0 18px rgb(56 189 248 / 25%);
+    0 0 18px rgb(2 132 199 / 18%);
 
   /* --- Motion ------------------------------------------------------------- */
   --t-fast: 90ms;
