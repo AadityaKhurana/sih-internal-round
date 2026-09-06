@@ -73,16 +73,6 @@ FROM cameras f, cameras t, roads r
 WHERE f.camera_code='JCT-17' AND t.camera_code='JCT-02' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'road',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.042208, 28.601849], [77.042635, 28.602341], [77.043092, 28.602748], [77.043664, 28.60323], [77.044355, 28.603666], [77.044799, 28.603923], [77.044649, 28.604055], [77.043646, 28.60338], [77.043571, 28.603326], [77.043278, 28.603117], [77.042591, 28.602485], [77.042488, 28.602419], [77.042386, 28.602366], [77.042271, 28.602331], [77.042155, 28.602318], [77.04202, 28.60232], [77.041909, 28.602337], [77.041773, 28.60239], [77.041647, 28.602458], [77.041051, 28.602853], [77.04045, 28.60325], [77.039661, 28.603772], [77.039557, 28.603646], [77.041631, 28.602218], [77.042203, 28.601843], [77.042322, 28.601766], [77.042265, 28.601683], [77.041812, 28.601182], [77.041524, 28.600844], [77.040582, 28.599735], [77.038506, 28.597294], [77.038426, 28.597208], [77.036889, 28.595387], [77.036779, 28.595257], [77.036827, 28.5952], [77.036871, 28.595097], [77.036871, 28.595036], [77.036872, 28.594982], [77.036813, 28.594853], [77.036708, 28.594763], [77.036633, 28.594737], [77.036575, 28.594716], [77.036441, 28.594716], [77.036323, 28.594752], [77.035267, 28.593528], [77.035032, 28.593256], [77.034849, 28.593043], [77.034527, 28.59267], [77.034469, 28.592604], [77.034376, 28.592662], [77.033847, 28.593016], [77.033031, 28.593561], [77.031299, 28.594719], [77.031213, 28.594776], [77.031277, 28.59485], [77.031363, 28.594794], [77.033331, 28.59347], [77.033921, 28.593073], [77.034389, 28.592758]]}'), 4326), 3430, 311, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='JCT-03' AND t.camera_code='JCT-04' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'road',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.034389, 28.592758], [77.033921, 28.593073], [77.033331, 28.59347], [77.031363, 28.594794], [77.031277, 28.59485], [77.031213, 28.594776], [77.031299, 28.594719], [77.033031, 28.593561], [77.033847, 28.593016], [77.034376, 28.592662], [77.034469, 28.592604], [77.034527, 28.59267], [77.034849, 28.593043], [77.035032, 28.593256], [77.035267, 28.593528], [77.036323, 28.594752], [77.036441, 28.594716], [77.036575, 28.594716], [77.036633, 28.594737], [77.036708, 28.594763], [77.036813, 28.594853], [77.036872, 28.594982], [77.036871, 28.595036], [77.036871, 28.595097], [77.036827, 28.5952], [77.036779, 28.595257], [77.036889, 28.595387], [77.038426, 28.597208], [77.038506, 28.597294], [77.040582, 28.599735], [77.041524, 28.600844], [77.041812, 28.601182], [77.042265, 28.601683], [77.042322, 28.601766], [77.042203, 28.601843], [77.041631, 28.602218], [77.039557, 28.603646], [77.039661, 28.603772], [77.04045, 28.60325], [77.041051, 28.602853], [77.041647, 28.602458], [77.041773, 28.60239], [77.041909, 28.602337], [77.04202, 28.60232], [77.042155, 28.602318], [77.042271, 28.602331], [77.042386, 28.602366], [77.042488, 28.602419], [77.042591, 28.602485], [77.043278, 28.603117], [77.043571, 28.603326], [77.043646, 28.60338], [77.044649, 28.604055], [77.044799, 28.603923], [77.044355, 28.603666], [77.043664, 28.60323], [77.043092, 28.602748], [77.042635, 28.602341], [77.042208, 28.601849]]}'), 4326), 3430, 311, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='JCT-04' AND t.camera_code='JCT-03' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'road',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.042208, 28.601849], [77.042635, 28.602341], [77.043092, 28.602748], [77.043664, 28.60323], [77.044355, 28.603666], [77.044799, 28.603923], [77.045006, 28.604043], [77.045778, 28.604404], [77.046498, 28.60469], [77.046921, 28.60483], [77.047401, 28.604956], [77.048206, 28.605121], [77.049327, 28.605292], [77.050229, 28.605312], [77.050653, 28.605304], [77.051511, 28.605211], [77.051902, 28.605143], [77.052371, 28.605045], [77.052862, 28.604921], [77.053378, 28.604762], [77.053901, 28.604571], [77.054156, 28.604455], [77.054248, 28.604412], [77.054789, 28.60415], [77.055268, 28.603883], [77.0558, 28.603552], [77.055837, 28.603528], [77.055887, 28.603495], [77.055847, 28.60338], [77.055721, 28.603458]]}'), 4326), 1532, 110, 50
 FROM cameras f, cameras t, roads r
 WHERE f.camera_code='JCT-03' AND t.camera_code='JCT-08' AND r.road_code='DWK-NET-1';
@@ -269,38 +259,36 @@ INSERT INTO approach_cameras (camera_code, junction_code, from_road, location, h
   ('CAM-04', 'JCT-02', 'Azad Hind Fauj Marg (south)', ST_SetSRID(ST_MakePoint(77.035778, 28.606148), 4326), 128, 308),
   ('CAM-05', 'JCT-17', 'Azad Hind Fauj Marg (north)', ST_SetSRID(ST_MakePoint(77.028028, 28.597189), 4326), 32, 212),
   ('CAM-06', 'JCT-02', 'Road 205 junction', ST_SetSRID(ST_MakePoint(77.035424, 28.606102), 4326), 217, 37),
-  ('CAM-07', 'JCT-04', 'Azad Hind Fauj Marg (south)', ST_SetSRID(ST_MakePoint(77.034241, 28.592914), 4326), 307, 127),
-  ('CAM-08', 'JCT-03', 'Sector 13 (south)', ST_SetSRID(ST_MakePoint(77.042385, 28.601979), 4326), 37, 217),
-  ('CAM-09', 'JCT-08', 'Azad Hind Fauj Marg (south)', ST_SetSRID(ST_MakePoint(77.055738, 28.603646), 4326), 305, 125),
-  ('CAM-10', 'JCT-03', 'Palam Najafgarh Road', ST_SetSRID(ST_MakePoint(77.042385, 28.601979), 4326), 37, 217),
-  ('CAM-11', 'JCT-06', 'Sector 13 (south)', ST_SetSRID(ST_MakePoint(77.042275, 28.587754), 4326), 314, 134),
-  ('CAM-12', 'JCT-04', 'Sector 11', ST_SetSRID(ST_MakePoint(77.03454, 28.592605), 4326), 127, 307),
-  ('CAM-13', 'JCT-17', 'Sector 13 (south)', ST_SetSRID(ST_MakePoint(77.027843, 28.596963), 4326), 127, 307),
-  ('CAM-14', 'JCT-04', 'Road 205 junction', ST_SetSRID(ST_MakePoint(77.034453, 28.59266), 4326), 218, 38),
-  ('CAM-15', 'JCT-06', 'KM Chowk', ST_SetSRID(ST_MakePoint(77.042506, 28.58771), 4326), 37, 217),
-  ('CAM-17', 'JCT-07', 'KM Chowk', ST_SetSRID(ST_MakePoint(77.049752, 28.596541), 4326), 217, 37),
-  ('CAM-19', 'JCT-16', 'Sector 11', ST_SetSRID(ST_MakePoint(77.049829, 28.582518), 4326), 308, 128),
-  ('CAM-20', 'JCT-06', 'Road 221 junction', ST_SetSRID(ST_MakePoint(77.042449, 28.587476), 4326), 137, 317),
-  ('CAM-21', 'JCT-08', 'Sector 13/14 corner', ST_SetSRID(ST_MakePoint(77.055552, 28.603319), 4326), 214, 34),
-  ('CAM-22', 'JCT-07', 'Palam Najafgarh Road', ST_SetSRID(ST_MakePoint(77.050114, 28.596793), 4326), 40, 220),
-  ('CAM-23', 'JCT-09', 'Sector 13/14 corner', ST_SetSRID(ST_MakePoint(77.057957, 28.591625), 4326), 36, 216),
-  ('CAM-24', 'JCT-07', 'Sector 10', ST_SetSRID(ST_MakePoint(77.050071, 28.596574), 4326), 129, 309),
-  ('CAM-25', 'JCT-14', 'Palam Najafgarh Road', ST_SetSRID(ST_MakePoint(77.063882, 28.598557), 4326), 37, 217),
-  ('CAM-26', 'JCT-08', 'Nala Road junction', ST_SetSRID(ST_MakePoint(77.055875, 28.603447), 4326), 126, 306),
-  ('CAM-27', 'JCT-10', 'Sector 10', ST_SetSRID(ST_MakePoint(77.065331, 28.586514), 4326), 307, 127),
-  ('CAM-28', 'JCT-09', 'Rd 224 (south)', ST_SetSRID(ST_MakePoint(77.057897, 28.591332), 4326), 126, 306),
-  ('CAM-29', 'JCT-14', 'Sector 10', ST_SetSRID(ST_MakePoint(77.063882, 28.598557), 4326), 37, 217),
-  ('CAM-30', 'JCT-09', 'Nala Road junction', ST_SetSRID(ST_MakePoint(77.057673, 28.591455), 4326), 311, 131),
-  ('CAM-31', 'JCT-16', 'Sector 10', ST_SetSRID(ST_MakePoint(77.049808, 28.582369), 4326), 214, 34),
-  ('CAM-32', 'JCT-09', 'Road 221 junction', ST_SetSRID(ST_MakePoint(77.057609, 28.59136), 4326), 218, 38),
-  ('CAM-34', 'JCT-10', 'Rd 224 (mid)', ST_SetSRID(ST_MakePoint(77.0656, 28.586468), 4326), 37, 217),
-  ('CAM-36', 'JCT-10', 'Sector 17', ST_SetSRID(ST_MakePoint(77.065427, 28.586221), 4326), 217, 37),
-  ('CAM-37', 'JCT-12', 'Rd 224 (mid)', ST_SetSRID(ST_MakePoint(77.071593, 28.594482), 4326), 199, 19),
-  ('CAM-39', 'JCT-14', 'Rd 224 (north)', ST_SetSRID(ST_MakePoint(77.063882, 28.598557), 4326), 37, 217),
-  ('CAM-40', 'JCT-12', 'Nala Road junction', ST_SetSRID(ST_MakePoint(77.071705, 28.594872), 4326), 295, 115),
-  ('CAM-41', 'JCT-15', 'Sector 17', ST_SetSRID(ST_MakePoint(77.057919, 28.577256), 4326), 37, 217),
-  ('CAM-43', 'JCT-16', 'Road 224 junction', ST_SetSRID(ST_MakePoint(77.049808, 28.582369), 4326), 214, 34),
-  ('CAM-44', 'JCT-15', 'Road 221 junction', ST_SetSRID(ST_MakePoint(77.057612, 28.5772), 4326), 308, 128);
+  ('CAM-07', 'JCT-08', 'Azad Hind Fauj Marg (south)', ST_SetSRID(ST_MakePoint(77.055738, 28.603646), 4326), 305, 125),
+  ('CAM-08', 'JCT-03', 'Palam Najafgarh Road', ST_SetSRID(ST_MakePoint(77.042385, 28.601979), 4326), 37, 217),
+  ('CAM-09', 'JCT-06', 'Sector 13 (south)', ST_SetSRID(ST_MakePoint(77.042275, 28.587754), 4326), 314, 134),
+  ('CAM-10', 'JCT-04', 'Sector 11', ST_SetSRID(ST_MakePoint(77.03454, 28.592605), 4326), 127, 307),
+  ('CAM-11', 'JCT-17', 'Sector 13 (south)', ST_SetSRID(ST_MakePoint(77.027843, 28.596963), 4326), 127, 307),
+  ('CAM-12', 'JCT-04', 'Road 205 junction', ST_SetSRID(ST_MakePoint(77.034453, 28.59266), 4326), 218, 38),
+  ('CAM-13', 'JCT-06', 'KM Chowk', ST_SetSRID(ST_MakePoint(77.042506, 28.58771), 4326), 37, 217),
+  ('CAM-15', 'JCT-07', 'KM Chowk', ST_SetSRID(ST_MakePoint(77.049752, 28.596541), 4326), 217, 37),
+  ('CAM-17', 'JCT-16', 'Sector 11', ST_SetSRID(ST_MakePoint(77.049829, 28.582518), 4326), 308, 128),
+  ('CAM-18', 'JCT-06', 'Road 221 junction', ST_SetSRID(ST_MakePoint(77.042449, 28.587476), 4326), 137, 317),
+  ('CAM-19', 'JCT-08', 'Sector 13/14 corner', ST_SetSRID(ST_MakePoint(77.055552, 28.603319), 4326), 214, 34),
+  ('CAM-20', 'JCT-07', 'Palam Najafgarh Road', ST_SetSRID(ST_MakePoint(77.050114, 28.596793), 4326), 40, 220),
+  ('CAM-21', 'JCT-09', 'Sector 13/14 corner', ST_SetSRID(ST_MakePoint(77.057957, 28.591625), 4326), 36, 216),
+  ('CAM-22', 'JCT-07', 'Sector 10', ST_SetSRID(ST_MakePoint(77.050071, 28.596574), 4326), 129, 309),
+  ('CAM-23', 'JCT-14', 'Palam Najafgarh Road', ST_SetSRID(ST_MakePoint(77.063882, 28.598557), 4326), 37, 217),
+  ('CAM-24', 'JCT-08', 'Nala Road junction', ST_SetSRID(ST_MakePoint(77.055875, 28.603447), 4326), 126, 306),
+  ('CAM-25', 'JCT-10', 'Sector 10', ST_SetSRID(ST_MakePoint(77.065331, 28.586514), 4326), 307, 127),
+  ('CAM-26', 'JCT-09', 'Rd 224 (south)', ST_SetSRID(ST_MakePoint(77.057897, 28.591332), 4326), 126, 306),
+  ('CAM-27', 'JCT-14', 'Sector 10', ST_SetSRID(ST_MakePoint(77.063882, 28.598557), 4326), 37, 217),
+  ('CAM-28', 'JCT-09', 'Nala Road junction', ST_SetSRID(ST_MakePoint(77.057673, 28.591455), 4326), 311, 131),
+  ('CAM-29', 'JCT-16', 'Sector 10', ST_SetSRID(ST_MakePoint(77.049808, 28.582369), 4326), 214, 34),
+  ('CAM-30', 'JCT-09', 'Road 221 junction', ST_SetSRID(ST_MakePoint(77.057609, 28.59136), 4326), 218, 38),
+  ('CAM-32', 'JCT-10', 'Rd 224 (mid)', ST_SetSRID(ST_MakePoint(77.0656, 28.586468), 4326), 37, 217),
+  ('CAM-34', 'JCT-10', 'Sector 17', ST_SetSRID(ST_MakePoint(77.065427, 28.586221), 4326), 217, 37),
+  ('CAM-35', 'JCT-12', 'Rd 224 (mid)', ST_SetSRID(ST_MakePoint(77.071593, 28.594482), 4326), 199, 19),
+  ('CAM-37', 'JCT-14', 'Rd 224 (north)', ST_SetSRID(ST_MakePoint(77.063882, 28.598557), 4326), 37, 217),
+  ('CAM-38', 'JCT-12', 'Nala Road junction', ST_SetSRID(ST_MakePoint(77.071705, 28.594872), 4326), 295, 115),
+  ('CAM-39', 'JCT-15', 'Sector 17', ST_SetSRID(ST_MakePoint(77.057919, 28.577256), 4326), 37, 217),
+  ('CAM-41', 'JCT-16', 'Road 224 junction', ST_SetSRID(ST_MakePoint(77.049808, 28.582369), 4326), 214, 34),
+  ('CAM-42', 'JCT-15', 'Road 221 junction', ST_SetSRID(ST_MakePoint(77.057612, 28.5772), 4326), 308, 128);
 
 INSERT INTO plates (normalized_plate) VALUES ('DL3CAB1234'), ('DL8CAF5678');
 

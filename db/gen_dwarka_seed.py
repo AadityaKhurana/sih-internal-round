@@ -182,13 +182,17 @@ def main():
     # is used ONLY as a coarse prune to skip far pairs, never to decide adjacency. ----
     PASS_M = 45.0            # a junction this close to a route lies ON it
     PRUNE_M = 2600.0         # skip obviously-far pairs (performance only)
+    MAX_DETOUR = 1.9         # reject links whose road route winds > this x straight-line
     seg = {}
     for i in range(n):
         for j in range(i + 1, n):
-            if haversine(jpt(i), jpt(j)) > PRUNE_M:
+            straight = haversine(jpt(i), jpt(j))
+            if straight > PRUNE_M:
                 continue
             coords, dist, ff = route(("", JUNC[i][1], JUNC[i][2]), ("", JUNC[j][1], JUNC[j][2]))
             time.sleep(0.2)
+            if straight > 0 and dist / straight > MAX_DETOUR:
+                continue  # no clean direct road -> not a real 1-edge neighbour
             through = any(
                 k not in (i, j) and
                 min(haversine(jpt(k), (c[1], c[0])) for c in coords) < PASS_M
