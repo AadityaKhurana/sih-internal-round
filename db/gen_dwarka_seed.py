@@ -155,6 +155,28 @@ def main():
         for j in dists[:KNN]:
             pairs.add((min(i, j), max(i, j)))
 
+    # Connectivity pass: KNN alone can leave disconnected islands. Bridge separate
+    # components by their shortest cross-component camera pair until the graph is one.
+    parent = list(range(len(CAMERAS)))
+    def find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]; x = parent[x]
+        return x
+    def union(a, b):
+        parent[find(a)] = find(b)
+    for (i, j) in pairs:
+        union(i, j)
+    while len({find(i) for i in range(len(CAMERAS))}) > 1:
+        best = None
+        for i in range(len(CAMERAS)):
+            for j in range(i + 1, len(CAMERAS)):
+                if find(i) != find(j):
+                    d = haversine((CAMERAS[i][3], CAMERAS[i][2]), (CAMERAS[j][3], CAMERAS[j][2]))
+                    if best is None or d < best[0]:
+                        best = (d, i, j)
+        _, i, j = best
+        pairs.add((min(i, j), max(i, j))); union(i, j)
+
     edge = {}   # (i,j) -> (geometry, dist, ff)
     links = []  # (from_code, to_code, dir, geometry, dist, ff)
     for (i, j) in sorted(pairs):
