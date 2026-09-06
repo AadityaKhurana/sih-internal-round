@@ -5,10 +5,12 @@ network map, plate trajectory reconstruction and replay, live blacklist and
 route-anomaly alerts, macro traffic analytics, and weekly/monthly congestion
 reporting.
 
-> **The camera network is simulated.** Twelve fictional cameras placed on real road
-> geometry in central Bengaluru, fed by generated observations. Every screen that
-> shows camera positions, plate movements or traffic figures says so on the page —
-> that labelling is deliberate and should not be removed.
+> **The network is simulated but geographically genuine.** Junctions on real
+> **Dwarka (New Delhi)** roads, fed by generated observations. The map shows one
+> circle per **junction**; the per-approach cameras that source the data are
+> aggregated up to junctions behind the scenes. Every screen that shows positions,
+> plate movements or traffic figures says so on the page — that labelling is
+> deliberate and should not be removed.
 
 ## Quickstart
 
