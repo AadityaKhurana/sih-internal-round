@@ -21,7 +21,8 @@ import time
 from pathlib import Path
 
 OSRM = "https://router.project-osrm.org"
-OFFSET_M = 18.0         # camera set-back from the junction along its approach (a few m)
+OFFSET_M = 22.0         # camera set-back from the junction along its approach (a few m)
+MIN_CLEAR = 16.0        # min straight-line clearance so a camera never sits on the junction
 LAT_M = 5.0             # lateral offset onto the incoming (left) carriageway
 
 PLATES_TRIP = "DL3CAB1234"
@@ -107,23 +108,27 @@ def sql_str(s):
 
 
 def approach(coords, end_is_last):
-    """Camera on the INCOMING (left) carriageway, OFFSET_M before the junction end
-    of `coords`. Uses the LOCAL road tangent (the polyline segment the camera sits
-    on) — not the straight chord to the junction — so on curved approaches the
-    camera lands on the correct (left) side. Returns (lon, lat, travel_dir) with
-    travel_dir = incoming vehicles' heading toward the junction."""
+    """Camera on the INCOMING (left) carriageway, set back from the junction end of
+    `coords`. Walks back along the road until BOTH the arc set-back (OFFSET_M) and a
+    straight-line clearance from the junction (MIN_CLEAR) are met — so even on
+    roundabouts/curves the camera sits a clear few metres before the junction, on
+    the road. Uses the LOCAL road tangent for heading + the left-side offset.
+    Returns (lon, lat, travel_dir) with travel_dir = incoming heading toward junction."""
     pts = coords if end_is_last else coords[::-1]   # pts[-1] = junction approached
-    near, far = pts[-1], (pts[-2] if len(pts) >= 2 else pts[-1])
-    acc = 0.0; pos = near
+    jx = pts[-1]
+    acc = 0.0; pos = pts[0]; near, far = pts[-1], (pts[-2] if len(pts) >= 2 else pts[-1])
     for k in range(len(pts) - 1, 0, -1):
         near_k, far_k = pts[k], pts[k - 1]
         d = haversine((near_k[1], near_k[0]), (far_k[1], far_k[0]))
-        if d > 0 and acc + d >= OFFSET_M:
-            t = (OFFSET_M - acc) / d
-            pos = (near_k[0] + (far_k[0] - near_k[0]) * t, near_k[1] + (far_k[1] - near_k[1]) * t)
-            near, far = near_k, far_k
-            break
-        acc += d; pos = far_k; near, far = near_k, far_k
+        if d <= 0:
+            continue
+        if acc + d >= OFFSET_M:
+            t = min(1.0, (OFFSET_M - acc) / d)
+            cand = (near_k[0] + (far_k[0] - near_k[0]) * t, near_k[1] + (far_k[1] - near_k[1]) * t)
+            if haversine((cand[1], cand[0]), (jx[1], jx[0])) >= MIN_CLEAR:
+                pos, near, far = cand, near_k, far_k
+                break
+        acc += d; pos, near, far = far_k, near_k, far_k
     td = bearing((far[1], far[0]), (near[1], near[0]))     # local travel dir toward junction
     la, lo = move(pos[1], pos[0], (td - 90) % 360, LAT_M)  # onto the left carriageway
     return round(lo, 6), round(la, 6), td
@@ -188,15 +193,18 @@ def main():
     # ---- Per-approach cameras: one arrival camera at each end of each edge ----
     cam_of = {}   # (junction j, from-neighbour i) -> camera index
     CAM = []      # (code, name, lon, lat, facing, travel_dir)
+    cam_junc = [] # camera index -> junction index (the junction it guards)
     for (i, j) in sorted(pairs):
         coords, dist, ff = seg[(i, j)]
         lon, lat, td = approach(coords, True)    # arrival at j, from i (i->j flow)
-        cam_of[(j, i)] = len(CAM)
+        cam_of[(j, i)] = len(CAM); cam_junc.append(j)
         CAM.append((None, f"{JUNC[j][0]} <- {JUNC[i][0]}"[:60], lon, lat, (td + 180) % 360, td))
         lon, lat, td = approach(coords, False)   # arrival at i, from j (j->i flow)
-        cam_of[(i, j)] = len(CAM)
+        cam_of[(i, j)] = len(CAM); cam_junc.append(i)
         CAM.append((None, f"{JUNC[i][0]} <- {JUNC[j][0]}"[:60], lon, lat, (td + 180) % 360, td))
     CAM = [(f"CAM-{k + 1:02d}", nm, lon, lat, fac, td) for k, (_, nm, lon, lat, fac, td) in enumerate(CAM)]
+    sb = sorted(haversine((CAM[k][3], CAM[k][2]), jpt(cam_junc[k])) for k in range(len(CAM)))
+    print(f"set-back from junction (m): min {sb[0]:.0f}, median {sb[len(sb)//2]:.0f}, max {sb[-1]:.0f}")
     code_at = {jk: CAM[idx][0] for jk, idx in cam_of.items()}
 
     # ---- Through-links: arrival at j from i -> arrival at k from j (segment j->k) ----

@@ -12,58 +12,58 @@ TRUNCATE cameras, roads, plates, camera_links, sightings, blacklist_entries,
 INSERT INTO roads (road_code, name) VALUES ('DWK-NET-1', 'Dwarka Sector Network');
 
 INSERT INTO cameras (camera_code, display_name, location, heading_degrees, status) VALUES
-  ('CAM-01', 'Azad Hind Fauj Marg (north) <- Dwarka Mor', ST_SetSRID(ST_MakePoint(77.035737, 28.60632), 4326), 333, 'active'),
-  ('CAM-02', 'Dwarka Mor <- Azad Hind Fauj Marg (north)', ST_SetSRID(ST_MakePoint(77.031593, 28.618868), 4326), 168, 'active'),
-  ('CAM-03', 'Azad Hind Fauj Marg (south) <- Azad Hind Fauj Marg (north)', ST_SetSRID(ST_MakePoint(77.042093, 28.601971), 4326), 307, 'active'),
-  ('CAM-04', 'Azad Hind Fauj Marg (north) <- Azad Hind Fauj Marg (south)', ST_SetSRID(ST_MakePoint(77.035559, 28.606278), 4326), 337, 'active'),
-  ('CAM-05', 'Sector 13 (south) <- Azad Hind Fauj Marg (north)', ST_SetSRID(ST_MakePoint(77.034274, 28.592892), 4326), 307, 'active'),
-  ('CAM-06', 'Azad Hind Fauj Marg (north) <- Sector 13 (south)', ST_SetSRID(ST_MakePoint(77.035449, 28.60613), 4326), 217, 'active'),
-  ('CAM-07', 'Sector 14 / Vegas Mall <- Azad Hind Fauj Marg (north)', ST_SetSRID(ST_MakePoint(77.02938, 28.599552), 4326), 187, 'active'),
-  ('CAM-08', 'Azad Hind Fauj Marg (north) <- Sector 14 / Vegas Mall', ST_SetSRID(ST_MakePoint(77.035449, 28.60613), 4326), 217, 'active'),
-  ('CAM-09', 'Sector 13 (north) <- Azad Hind Fauj Marg (south)', ST_SetSRID(ST_MakePoint(77.03632, 28.595364), 4326), 249, 'active'),
-  ('CAM-10', 'Azad Hind Fauj Marg (south) <- Sector 13 (north)', ST_SetSRID(ST_MakePoint(77.042361, 28.601951), 4326), 37, 'active'),
-  ('CAM-11', 'Palam Najafgarh Road <- Azad Hind Fauj Marg (south)', ST_SetSRID(ST_MakePoint(77.055905, 28.603392), 4326), 17, 'active'),
-  ('CAM-12', 'Azad Hind Fauj Marg (south) <- Palam Najafgarh Road', ST_SetSRID(ST_MakePoint(77.042361, 28.601951), 4326), 37, 'active'),
-  ('CAM-13', 'Sector 13 (south) <- Sector 13 (north)', ST_SetSRID(ST_MakePoint(77.034274, 28.592892), 4326), 307, 'active'),
-  ('CAM-14', 'Sector 13 (north) <- Sector 13 (south)', ST_SetSRID(ST_MakePoint(77.036662, 28.595283), 4326), 125, 'active'),
-  ('CAM-15', 'Sector 14 / Vegas Mall <- Sector 13 (north)', ST_SetSRID(ST_MakePoint(77.02938, 28.599552), 4326), 187, 'active'),
-  ('CAM-16', 'Sector 13 (north) <- Sector 14 / Vegas Mall', ST_SetSRID(ST_MakePoint(77.036662, 28.595283), 4326), 125, 'active'),
-  ('CAM-17', 'Sector 11 <- Sector 13 (north)', ST_SetSRID(ST_MakePoint(77.042304, 28.587729), 4326), 314, 'active'),
-  ('CAM-18', 'Sector 13 (north) <- Sector 11', ST_SetSRID(ST_MakePoint(77.036662, 28.595283), 4326), 125, 'active'),
-  ('CAM-19', 'Sector 14 / Vegas Mall <- Sector 13 (south)', ST_SetSRID(ST_MakePoint(77.02938, 28.599552), 4326), 187, 'active'),
-  ('CAM-20', 'Sector 13 (south) <- Sector 14 / Vegas Mall', ST_SetSRID(ST_MakePoint(77.034478, 28.592688), 4326), 218, 'active'),
-  ('CAM-21', 'Sector 11 <- Sector 13 (south)', ST_SetSRID(ST_MakePoint(77.042304, 28.587729), 4326), 314, 'active'),
-  ('CAM-22', 'Sector 13 (south) <- Sector 11', ST_SetSRID(ST_MakePoint(77.034507, 28.592627), 4326), 127, 'active'),
-  ('CAM-23', 'Sector 11 <- KM Chowk', ST_SetSRID(ST_MakePoint(77.042481, 28.587682), 4326), 37, 'active'),
-  ('CAM-24', 'KM Chowk <- Sector 11', ST_SetSRID(ST_MakePoint(77.04616, 28.592193), 4326), 38, 'active'),
-  ('CAM-25', 'Sector 13/14 corner <- KM Chowk', ST_SetSRID(ST_MakePoint(77.049776, 28.59657), 4326), 217, 'active'),
-  ('CAM-26', 'KM Chowk <- Sector 13/14 corner', ST_SetSRID(ST_MakePoint(77.04616, 28.592193), 4326), 38, 'active'),
-  ('CAM-27', 'Road 221 junction <- Sector 11', ST_SetSRID(ST_MakePoint(77.049894, 28.582474), 4326), 308, 'active'),
-  ('CAM-28', 'Sector 11 <- Road 221 junction', ST_SetSRID(ST_MakePoint(77.042233, 28.587628), 4326), 312, 'active'),
-  ('CAM-29', 'Palam Najafgarh Road <- Sector 13/14 corner', ST_SetSRID(ST_MakePoint(77.055575, 28.603349), 4326), 214, 'active'),
-  ('CAM-30', 'Sector 13/14 corner <- Palam Najafgarh Road', ST_SetSRID(ST_MakePoint(77.050088, 28.596765), 4326), 40, 'active'),
-  ('CAM-31', 'Sector 10 <- Sector 13/14 corner', ST_SetSRID(ST_MakePoint(77.057933, 28.591596), 4326), 36, 'active'),
-  ('CAM-32', 'Sector 13/14 corner <- Sector 10', ST_SetSRID(ST_MakePoint(77.050039, 28.596597), 4326), 129, 'active'),
-  ('CAM-33', 'Nala Road junction <- Palam Najafgarh Road', ST_SetSRID(ST_MakePoint(77.063857, 28.598529), 4326), 37, 'active'),
-  ('CAM-34', 'Palam Najafgarh Road <- Nala Road junction', ST_SetSRID(ST_MakePoint(77.055841, 28.603469), 4326), 127, 'active'),
-  ('CAM-35', 'Rd 224 (south) <- Sector 10', ST_SetSRID(ST_MakePoint(77.065431, 28.58619), 4326), 129, 'active'),
-  ('CAM-36', 'Sector 10 <- Rd 224 (south)', ST_SetSRID(ST_MakePoint(77.057864, 28.591353), 4326), 126, 'active'),
-  ('CAM-37', 'Nala Road junction <- Sector 10', ST_SetSRID(ST_MakePoint(77.063857, 28.598529), 4326), 37, 'active'),
-  ('CAM-38', 'Sector 10 <- Nala Road junction', ST_SetSRID(ST_MakePoint(77.057704, 28.591431), 4326), 311, 'active'),
-  ('CAM-39', 'Road 221 junction <- Sector 10', ST_SetSRID(ST_MakePoint(77.049831, 28.582399), 4326), 214, 'active'),
-  ('CAM-40', 'Sector 10 <- Road 221 junction', ST_SetSRID(ST_MakePoint(77.057634, 28.591389), 4326), 218, 'active'),
-  ('CAM-41', 'Rd 224 (mid) <- Rd 224 (south)', ST_SetSRID(ST_MakePoint(77.06908, 28.590676), 4326), 217, 'active'),
-  ('CAM-42', 'Rd 224 (south) <- Rd 224 (mid)', ST_SetSRID(ST_MakePoint(77.065576, 28.586439), 4326), 37, 'active'),
-  ('CAM-43', 'Sector 17 <- Rd 224 (south)', ST_SetSRID(ST_MakePoint(77.061515, 28.581753), 4326), 128, 'active'),
-  ('CAM-44', 'Rd 224 (south) <- Sector 17', ST_SetSRID(ST_MakePoint(77.065534, 28.586271), 4326), 125, 'active'),
-  ('CAM-45', 'Rd 224 (north) <- Rd 224 (mid)', ST_SetSRID(ST_MakePoint(77.071606, 28.594516), 4326), 199, 'active'),
-  ('CAM-46', 'Rd 224 (mid) <- Rd 224 (north)', ST_SetSRID(ST_MakePoint(77.069372, 28.590888), 4326), 36, 'active'),
-  ('CAM-47', 'Nala Road junction <- Rd 224 (north)', ST_SetSRID(ST_MakePoint(77.063857, 28.598529), 4326), 37, 'active'),
-  ('CAM-48', 'Rd 224 (north) <- Nala Road junction', ST_SetSRID(ST_MakePoint(77.071742, 28.594856), 4326), 295, 'active'),
-  ('CAM-49', 'Road 224 junction <- Sector 17', ST_SetSRID(ST_MakePoint(77.057895, 28.577227), 4326), 37, 'active'),
-  ('CAM-50', 'Sector 17 <- Road 224 junction', ST_SetSRID(ST_MakePoint(77.061602, 28.581736), 4326), 217, 'active'),
-  ('CAM-51', 'Road 221 junction <- Road 224 junction', ST_SetSRID(ST_MakePoint(77.049831, 28.582399), 4326), 214, 'active'),
-  ('CAM-52', 'Road 224 junction <- Road 221 junction', ST_SetSRID(ST_MakePoint(77.057645, 28.577176), 4326), 310, 'active');
+  ('CAM-01', 'Azad Hind Fauj Marg (north) <- Dwarka Mor', ST_SetSRID(ST_MakePoint(77.03581, 28.60637), 4326), 342, 'active'),
+  ('CAM-02', 'Dwarka Mor <- Azad Hind Fauj Marg (north)', ST_SetSRID(ST_MakePoint(77.031602, 28.618832), 4326), 168, 'active'),
+  ('CAM-03', 'Azad Hind Fauj Marg (south) <- Azad Hind Fauj Marg (north)', ST_SetSRID(ST_MakePoint(77.04206, 28.601993), 4326), 307, 'active'),
+  ('CAM-04', 'Azad Hind Fauj Marg (north) <- Azad Hind Fauj Marg (south)', ST_SetSRID(ST_MakePoint(77.035561, 28.606425), 4326), 153, 'active'),
+  ('CAM-05', 'Sector 13 (south) <- Azad Hind Fauj Marg (north)', ST_SetSRID(ST_MakePoint(77.034241, 28.592914), 4326), 307, 'active'),
+  ('CAM-06', 'Azad Hind Fauj Marg (north) <- Sector 13 (south)', ST_SetSRID(ST_MakePoint(77.035424, 28.606102), 4326), 217, 'active'),
+  ('CAM-07', 'Sector 14 / Vegas Mall <- Azad Hind Fauj Marg (north)', ST_SetSRID(ST_MakePoint(77.029384, 28.599502), 4326), 168, 'active'),
+  ('CAM-08', 'Azad Hind Fauj Marg (north) <- Sector 14 / Vegas Mall', ST_SetSRID(ST_MakePoint(77.035424, 28.606102), 4326), 217, 'active'),
+  ('CAM-09', 'Sector 13 (north) <- Azad Hind Fauj Marg (south)', ST_SetSRID(ST_MakePoint(77.036267, 28.595338), 4326), 226, 'active'),
+  ('CAM-10', 'Azad Hind Fauj Marg (south) <- Sector 13 (north)', ST_SetSRID(ST_MakePoint(77.042385, 28.601979), 4326), 37, 'active'),
+  ('CAM-11', 'Palam Najafgarh Road <- Azad Hind Fauj Marg (south)', ST_SetSRID(ST_MakePoint(77.05597, 28.603496), 4326), 307, 'active'),
+  ('CAM-12', 'Azad Hind Fauj Marg (south) <- Palam Najafgarh Road', ST_SetSRID(ST_MakePoint(77.042385, 28.601979), 4326), 37, 'active'),
+  ('CAM-13', 'Sector 13 (south) <- Sector 13 (north)', ST_SetSRID(ST_MakePoint(77.034241, 28.592914), 4326), 307, 'active'),
+  ('CAM-14', 'Sector 13 (north) <- Sector 13 (south)', ST_SetSRID(ST_MakePoint(77.03669, 28.595264), 4326), 131, 'active'),
+  ('CAM-15', 'Sector 14 / Vegas Mall <- Sector 13 (north)', ST_SetSRID(ST_MakePoint(77.029384, 28.599502), 4326), 168, 'active'),
+  ('CAM-16', 'Sector 13 (north) <- Sector 14 / Vegas Mall', ST_SetSRID(ST_MakePoint(77.03669, 28.595264), 4326), 131, 'active'),
+  ('CAM-17', 'Sector 11 <- Sector 13 (north)', ST_SetSRID(ST_MakePoint(77.042275, 28.587754), 4326), 314, 'active'),
+  ('CAM-18', 'Sector 13 (north) <- Sector 11', ST_SetSRID(ST_MakePoint(77.03669, 28.595264), 4326), 131, 'active'),
+  ('CAM-19', 'Sector 14 / Vegas Mall <- Sector 13 (south)', ST_SetSRID(ST_MakePoint(77.029384, 28.599502), 4326), 168, 'active'),
+  ('CAM-20', 'Sector 13 (south) <- Sector 14 / Vegas Mall', ST_SetSRID(ST_MakePoint(77.034453, 28.59266), 4326), 218, 'active'),
+  ('CAM-21', 'Sector 11 <- Sector 13 (south)', ST_SetSRID(ST_MakePoint(77.042275, 28.587754), 4326), 314, 'active'),
+  ('CAM-22', 'Sector 13 (south) <- Sector 11', ST_SetSRID(ST_MakePoint(77.03454, 28.592605), 4326), 127, 'active'),
+  ('CAM-23', 'Sector 11 <- KM Chowk', ST_SetSRID(ST_MakePoint(77.042506, 28.58771), 4326), 37, 'active'),
+  ('CAM-24', 'KM Chowk <- Sector 11', ST_SetSRID(ST_MakePoint(77.046222, 28.592243), 4326), 218, 'active'),
+  ('CAM-25', 'Sector 13/14 corner <- KM Chowk', ST_SetSRID(ST_MakePoint(77.049752, 28.596541), 4326), 217, 'active'),
+  ('CAM-26', 'KM Chowk <- Sector 13/14 corner', ST_SetSRID(ST_MakePoint(77.046172, 28.592231), 4326), 37, 'active'),
+  ('CAM-27', 'Road 221 junction <- Sector 11', ST_SetSRID(ST_MakePoint(77.049824, 28.582453), 4326), 308, 'active'),
+  ('CAM-28', 'Sector 11 <- Road 221 junction', ST_SetSRID(ST_MakePoint(77.042159, 28.587727), 4326), 134, 'active'),
+  ('CAM-29', 'Palam Najafgarh Road <- Sector 13/14 corner', ST_SetSRID(ST_MakePoint(77.055552, 28.603319), 4326), 214, 'active'),
+  ('CAM-30', 'Sector 13/14 corner <- Palam Najafgarh Road', ST_SetSRID(ST_MakePoint(77.050114, 28.596793), 4326), 40, 'active'),
+  ('CAM-31', 'Sector 10 <- Sector 13/14 corner', ST_SetSRID(ST_MakePoint(77.057957, 28.591625), 4326), 36, 'active'),
+  ('CAM-32', 'Sector 13/14 corner <- Sector 10', ST_SetSRID(ST_MakePoint(77.050071, 28.596574), 4326), 129, 'active'),
+  ('CAM-33', 'Nala Road junction <- Palam Najafgarh Road', ST_SetSRID(ST_MakePoint(77.063882, 28.598557), 4326), 37, 'active'),
+  ('CAM-34', 'Palam Najafgarh Road <- Nala Road junction', ST_SetSRID(ST_MakePoint(77.055875, 28.603447), 4326), 126, 'active'),
+  ('CAM-35', 'Rd 224 (south) <- Sector 10', ST_SetSRID(ST_MakePoint(77.065694, 28.586282), 4326), 305, 'active'),
+  ('CAM-36', 'Sector 10 <- Rd 224 (south)', ST_SetSRID(ST_MakePoint(77.057897, 28.591332), 4326), 126, 'active'),
+  ('CAM-37', 'Nala Road junction <- Sector 10', ST_SetSRID(ST_MakePoint(77.063882, 28.598557), 4326), 37, 'active'),
+  ('CAM-38', 'Sector 10 <- Nala Road junction', ST_SetSRID(ST_MakePoint(77.057673, 28.591455), 4326), 311, 'active'),
+  ('CAM-39', 'Road 221 junction <- Sector 10', ST_SetSRID(ST_MakePoint(77.049808, 28.582369), 4326), 214, 'active'),
+  ('CAM-40', 'Sector 10 <- Road 221 junction', ST_SetSRID(ST_MakePoint(77.057609, 28.59136), 4326), 218, 'active'),
+  ('CAM-41', 'Rd 224 (mid) <- Rd 224 (south)', ST_SetSRID(ST_MakePoint(77.069056, 28.590647), 4326), 217, 'active'),
+  ('CAM-42', 'Rd 224 (south) <- Rd 224 (mid)', ST_SetSRID(ST_MakePoint(77.0656, 28.586468), 4326), 37, 'active'),
+  ('CAM-43', 'Sector 17 <- Rd 224 (south)', ST_SetSRID(ST_MakePoint(77.061638, 28.581626), 4326), 36, 'active'),
+  ('CAM-44', 'Rd 224 (south) <- Sector 17', ST_SetSRID(ST_MakePoint(77.066798, 28.578244), 4326), 308, 'active'),
+  ('CAM-45', 'Rd 224 (north) <- Rd 224 (mid)', ST_SetSRID(ST_MakePoint(77.071593, 28.594482), 4326), 199, 'active'),
+  ('CAM-46', 'Rd 224 (mid) <- Rd 224 (north)', ST_SetSRID(ST_MakePoint(77.069397, 28.590917), 4326), 36, 'active'),
+  ('CAM-47', 'Nala Road junction <- Rd 224 (north)', ST_SetSRID(ST_MakePoint(77.063882, 28.598557), 4326), 37, 'active'),
+  ('CAM-48', 'Rd 224 (north) <- Nala Road junction', ST_SetSRID(ST_MakePoint(77.071705, 28.594872), 4326), 295, 'active'),
+  ('CAM-49', 'Road 224 junction <- Sector 17', ST_SetSRID(ST_MakePoint(77.057919, 28.577256), 4326), 37, 'active'),
+  ('CAM-50', 'Sector 17 <- Road 224 junction', ST_SetSRID(ST_MakePoint(77.061578, 28.581708), 4326), 217, 'active'),
+  ('CAM-51', 'Road 221 junction <- Road 224 junction', ST_SetSRID(ST_MakePoint(77.049808, 28.582369), 4326), 214, 'active'),
+  ('CAM-52', 'Road 224 junction <- Road 221 junction', ST_SetSRID(ST_MakePoint(77.057612, 28.5772), 4326), 308, 'active');
 
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
@@ -630,16 +630,16 @@ INSERT INTO plates (normalized_plate) VALUES ('DL3CAB1234'), ('DL8CAF5678');
 
 INSERT INTO sightings (source_event_id, camera_id, plate_id, raw_plate_text, normalized_plate_candidate, detection_confidence, ocr_confidence, ocr_candidates, validation_status, spotted_at, direction_degrees, vehicle_type, vehicle_color, lane_number, model_version)
 VALUES
-  ('seed-DL3CAB1234-CAM-01', (SELECT camera_id FROM cameras WHERE camera_code='CAM-01'), (SELECT plate_id FROM plates WHERE normalized_plate='DL3CAB1234'), 'DL3CAB1234', 'DL3CAB1234', 0.96, 0.93, '[]'::jsonb, 'accepted', now() - make_interval(secs => 688), 153, 'car', 'white', 2, 'anpr-v1'),
+  ('seed-DL3CAB1234-CAM-01', (SELECT camera_id FROM cameras WHERE camera_code='CAM-01'), (SELECT plate_id FROM plates WHERE normalized_plate='DL3CAB1234'), 'DL3CAB1234', 'DL3CAB1234', 0.96, 0.93, '[]'::jsonb, 'accepted', now() - make_interval(secs => 688), 162, 'car', 'white', 2, 'anpr-v1'),
   ('seed-DL3CAB1234-CAM-03', (SELECT camera_id FROM cameras WHERE camera_code='CAM-03'), (SELECT plate_id FROM plates WHERE normalized_plate='DL3CAB1234'), 'DL3CAB1234', 'DL3CAB1234', 0.96, 0.93, '[]'::jsonb, 'accepted', now() - make_interval(secs => 568), 127, 'car', 'white', 2, 'anpr-v1'),
-  ('seed-DL3CAB1234-CAM-09', (SELECT camera_id FROM cameras WHERE camera_code='CAM-09'), (SELECT plate_id FROM plates WHERE normalized_plate='DL3CAB1234'), 'DL3CAB1234', 'DL3CAB1234', 0.96, 0.93, '[]'::jsonb, 'accepted', now() - make_interval(secs => 482), 69, 'car', 'white', 2, 'anpr-v1'),
+  ('seed-DL3CAB1234-CAM-09', (SELECT camera_id FROM cameras WHERE camera_code='CAM-09'), (SELECT plate_id FROM plates WHERE normalized_plate='DL3CAB1234'), 'DL3CAB1234', 'DL3CAB1234', 0.96, 0.93, '[]'::jsonb, 'accepted', now() - make_interval(secs => 482), 46, 'car', 'white', 2, 'anpr-v1'),
   ('seed-DL3CAB1234-CAM-13', (SELECT camera_id FROM cameras WHERE camera_code='CAM-13'), (SELECT plate_id FROM plates WHERE normalized_plate='DL3CAB1234'), 'DL3CAB1234', 'DL3CAB1234', 0.96, 0.93, '[]'::jsonb, 'accepted', now() - make_interval(secs => 211), 127, 'car', 'white', 2, 'anpr-v1'),
-  ('seed-DL3CAB1234-CAM-19', (SELECT camera_id FROM cameras WHERE camera_code='CAM-19'), (SELECT plate_id FROM plates WHERE normalized_plate='DL3CAB1234'), 'DL3CAB1234', 'DL3CAB1234', 0.96, 0.93, '[]'::jsonb, 'accepted', now() - make_interval(secs => 108), 7, 'car', 'white', 2, 'anpr-v1');
+  ('seed-DL3CAB1234-CAM-19', (SELECT camera_id FROM cameras WHERE camera_code='CAM-19'), (SELECT plate_id FROM plates WHERE normalized_plate='DL3CAB1234'), 'DL3CAB1234', 'DL3CAB1234', 0.96, 0.93, '[]'::jsonb, 'accepted', now() - make_interval(secs => 108), 348, 'car', 'white', 2, 'anpr-v1');
 
 INSERT INTO sightings (source_event_id, camera_id, plate_id, raw_plate_text, normalized_plate_candidate, detection_confidence, ocr_confidence, ocr_candidates, validation_status, spotted_at, direction_degrees, vehicle_type, vehicle_color, lane_number, model_version)
 VALUES
-  ('seed-DL8CAF5678-CAM-01', (SELECT camera_id FROM cameras WHERE camera_code='CAM-01'), (SELECT plate_id FROM plates WHERE normalized_plate='DL8CAF5678'), 'DL8CAF5678', 'DL8CAF5678', 0.93, 0.88, '[]'::jsonb, 'accepted', now() - make_interval(secs => 600), 153, 'car', 'black', 3, 'anpr-v1'),
-  ('seed-DL8CAF5678-CAM-49', (SELECT camera_id FROM cameras WHERE camera_code='CAM-49'), (SELECT plate_id FROM plates WHERE normalized_plate='DL8CAF5678'), 'DL8CAF5678', 'DL8CAF5678', 0.93, 0.88, '[]'::jsonb, 'accepted', now() - make_interval(secs => 595), 217, 'car', 'black', 3, 'anpr-v1');
+  ('seed-DL8CAF5678-CAM-01', (SELECT camera_id FROM cameras WHERE camera_code='CAM-01'), (SELECT plate_id FROM plates WHERE normalized_plate='DL8CAF5678'), 'DL8CAF5678', 'DL8CAF5678', 0.93, 0.88, '[]'::jsonb, 'accepted', now() - make_interval(secs => 600), 162, 'car', 'black', 3, 'anpr-v1'),
+  ('seed-DL8CAF5678-CAM-44', (SELECT camera_id FROM cameras WHERE camera_code='CAM-44'), (SELECT plate_id FROM plates WHERE normalized_plate='DL8CAF5678'), 'DL8CAF5678', 'DL8CAF5678', 0.93, 0.88, '[]'::jsonb, 'accepted', now() - make_interval(secs => 595), 128, 'car', 'black', 3, 'anpr-v1');
 
 INSERT INTO blacklist_entries (plate_id, reason, severity, status, added_by, case_reference)
 SELECT plate_id, 'Reported stolen (demo)', 'high', 'active', 'seed', 'DWK-CASE-001' FROM plates WHERE normalized_plate='DL8CAF5678';
@@ -653,6 +653,6 @@ WHERE s.source_event_id='seed-DL8CAF5678-CAM-01';
 INSERT INTO alerts (dedup_key, alert_type, sighting_id, previous_sighting_id, anomaly_reason, status, match_confidence, details)
 SELECT 'seed-anom-DL8CAF5678', 'route_anomaly', cur.sighting_id, prev.sighting_id, 'impossible_travel_time', 'new', 0.98, jsonb_build_object('observed_seconds',5)
 FROM sightings cur JOIN sightings prev ON prev.source_event_id='seed-DL8CAF5678-CAM-01'
-WHERE cur.source_event_id='seed-DL8CAF5678-CAM-49';
+WHERE cur.source_event_id='seed-DL8CAF5678-CAM-44';
 
 COMMIT;
