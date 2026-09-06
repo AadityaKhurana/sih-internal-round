@@ -22,23 +22,23 @@ INSERT INTO roads (road_code, name) VALUES ('DWK-NET-1', 'Dwarka Sector Network'
 
 -- Map nodes = junctions
 INSERT INTO cameras (camera_code, display_name, location, heading_degrees, status) VALUES
-  ('JCT-01', 'Dwarka Mor', ST_SetSRID(ST_MakePoint(77.031604, 28.619035), 4326), 0, 'active'),
-  ('JCT-02', 'Azad Hind Fauj Marg (north)', ST_SetSRID(ST_MakePoint(77.035627, 28.606203), 4326), 0, 'active'),
-  ('JCT-03', 'Azad Hind Fauj Marg (south)', ST_SetSRID(ST_MakePoint(77.042208, 28.601849), 4326), 0, 'active'),
-  ('JCT-04', 'Sector 13 (south)', ST_SetSRID(ST_MakePoint(77.034389, 28.592758), 4326), 0, 'active'),
-  ('JCT-05', 'KM Chowk', ST_SetSRID(ST_MakePoint(77.046116, 28.592108), 4326), 0, 'active'),
-  ('JCT-06', 'Sector 11', ST_SetSRID(ST_MakePoint(77.042327, 28.587581), 4326), 0, 'active'),
-  ('JCT-07', 'Sector 13/14 corner', ST_SetSRID(ST_MakePoint(77.049931, 28.59667), 4326), 0, 'active'),
-  ('JCT-08', 'Palam Najafgarh Road', ST_SetSRID(ST_MakePoint(77.055721, 28.603458), 4326), 0, 'active'),
-  ('JCT-09', 'Sector 10', ST_SetSRID(ST_MakePoint(77.057784, 28.591491), 4326), 0, 'active'),
-  ('JCT-10', 'Rd 224 (south)', ST_SetSRID(ST_MakePoint(77.065424, 28.586337), 4326), 0, 'active'),
-  ('JCT-11', 'Rd 224 (mid)', ST_SetSRID(ST_MakePoint(77.069232, 28.590778), 4326), 0, 'active'),
-  ('JCT-12', 'Rd 224 (north)', ST_SetSRID(ST_MakePoint(77.071697, 28.594659), 4326), 0, 'active'),
-  ('JCT-13', 'Sector 17', ST_SetSRID(ST_MakePoint(77.061669, 28.581829), 4326), 0, 'active'),
-  ('JCT-14', 'Nala Road junction', ST_SetSRID(ST_MakePoint(77.063704, 28.598427), 4326), 0, 'active'),
-  ('JCT-15', 'Road 224 junction', ST_SetSRID(ST_MakePoint(77.057743, 28.577125), 4326), 0, 'active'),
-  ('JCT-16', 'Road 221 junction', ST_SetSRID(ST_MakePoint(77.049985, 28.582503), 4326), 0, 'active'),
-  ('JCT-17', 'Road 205 junction', ST_SetSRID(ST_MakePoint(77.027806, 28.597154), 4326), 0, 'active');
+  ('JCT-01', 'Dwarka Mor', ST_SetSRID(ST_MakePoint(77.031604, 28.619035), 4326), NULL, 'active'),
+  ('JCT-02', 'Azad Hind Fauj Marg (north)', ST_SetSRID(ST_MakePoint(77.035627, 28.606203), 4326), NULL, 'active'),
+  ('JCT-03', 'Azad Hind Fauj Marg (south)', ST_SetSRID(ST_MakePoint(77.042208, 28.601849), 4326), NULL, 'active'),
+  ('JCT-04', 'Sector 13 (south)', ST_SetSRID(ST_MakePoint(77.034389, 28.592758), 4326), NULL, 'active'),
+  ('JCT-05', 'KM Chowk', ST_SetSRID(ST_MakePoint(77.046116, 28.592108), 4326), NULL, 'active'),
+  ('JCT-06', 'Sector 11', ST_SetSRID(ST_MakePoint(77.042327, 28.587581), 4326), NULL, 'active'),
+  ('JCT-07', 'Sector 13/14 corner', ST_SetSRID(ST_MakePoint(77.049931, 28.59667), 4326), NULL, 'active'),
+  ('JCT-08', 'Palam Najafgarh Road', ST_SetSRID(ST_MakePoint(77.055721, 28.603458), 4326), NULL, 'active'),
+  ('JCT-09', 'Sector 10', ST_SetSRID(ST_MakePoint(77.057784, 28.591491), 4326), NULL, 'active'),
+  ('JCT-10', 'Rd 224 (south)', ST_SetSRID(ST_MakePoint(77.065424, 28.586337), 4326), NULL, 'active'),
+  ('JCT-11', 'Rd 224 (mid)', ST_SetSRID(ST_MakePoint(77.069232, 28.590778), 4326), NULL, 'active'),
+  ('JCT-12', 'Rd 224 (north)', ST_SetSRID(ST_MakePoint(77.071697, 28.594659), 4326), NULL, 'active'),
+  ('JCT-13', 'Sector 17', ST_SetSRID(ST_MakePoint(77.061669, 28.581829), 4326), NULL, 'active'),
+  ('JCT-14', 'Nala Road junction', ST_SetSRID(ST_MakePoint(77.063704, 28.598427), 4326), NULL, 'active'),
+  ('JCT-15', 'Road 224 junction', ST_SetSRID(ST_MakePoint(77.057743, 28.577125), 4326), NULL, 'active'),
+  ('JCT-16', 'Road 221 junction', ST_SetSRID(ST_MakePoint(77.049985, 28.582503), 4326), NULL, 'active'),
+  ('JCT-17', 'Road 205 junction', ST_SetSRID(ST_MakePoint(77.027806, 28.597154), 4326), NULL, 'active');
 
 -- Junction-to-junction links (every 1-edge road neighbour), both directions
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)

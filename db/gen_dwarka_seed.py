@@ -298,7 +298,7 @@ def main():
     w("-- Map nodes = junctions")
     w("INSERT INTO cameras (camera_code, display_name, location, heading_degrees, status) VALUES")
     w(",\n".join(f"  ({sql_str(JCODE[i])}, {sql_str(JUNC[i][0])}, "
-                 f"ST_SetSRID(ST_MakePoint({JUNC[i][1]}, {JUNC[i][2]}), 4326), 0, 'active')"
+                 f"ST_SetSRID(ST_MakePoint({JUNC[i][1]}, {JUNC[i][2]}), 4326), NULL, 'active')"
                  for i in range(n)) + ";")
     w("")
     w("-- Junction-to-junction links (every 1-edge road neighbour), both directions")
