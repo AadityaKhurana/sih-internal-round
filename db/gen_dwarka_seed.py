@@ -25,6 +25,20 @@ OFFSET_M = 22.0         # camera set-back from the junction along its approach (
 MIN_CLEAR = 16.0        # min straight-line clearance so a camera never sits on the junction
 MAX_ARC = 70.0          # never set a camera back further than this (prevents overshoot)
 LAT_M = 5.0             # lateral offset onto the incoming (left) carriageway
+# Cameras to omit, keyed by their stable arm identity ("<junction> <- <from>"),
+# so curation survives adding/removing junctions (which renumbers CAM codes).
+DROP_ARM = {
+    "Dwarka Mor <- Azad Hind Fauj Marg (north)",
+    "Sector 13 (north) <- Azad Hind Fauj Marg (south)",
+    "Sector 13 (north) <- Sector 11",
+    "Sector 14 / Vegas Mall <- Sector 13 (south)",
+    "KM Chowk <- Sector 11",
+    "KM Chowk <- Sector 13/14 corner",
+    "Rd 224 (mid) <- Rd 224 (south)",
+    "Rd 224 (mid) <- Rd 224 (north)",
+    "Sector 17 <- Rd 224 (south)",
+    "Sector 17 <- Road 224 junction",
+}
 
 PLATES_TRIP = "DL3CAB1234"
 PLATE_BLACK = "DL8CAF5678"
@@ -51,6 +65,7 @@ USER_POINTS = [
     ("",                           28.598420, 77.063715),
     ("",                           28.577145, 77.057713),
     ("",                           28.582473, 77.050029),
+    ("",                           28.597179, 77.027827),
 ]
 
 
@@ -230,22 +245,33 @@ def main():
                               {"type": "LineString", "coordinates": jk}, dist, ff))
     print(f"{n} junctions, {len(pairs)} roads -> {len(CAM)} approach cameras, {len(links)} through-links")
 
-    # ---- Trajectory: walk junction graph; sighting at each = arrival cam from predecessor ----
-    path, cur, seen = [0], 0, {0}
-    while len(path) < min(7, n):
-        cand = [x for x in adjj.get(cur, []) if x not in seen]
-        if not cand:
+    # ---- Curation: drop cameras by arm identity (keep others) and links touching them ----
+    if DROP_ARM:
+        drop_codes = {c[0] for c in CAM if c[1] in DROP_ARM}
+        CAM = [c for c in CAM if c[0] not in drop_codes]
+        links = [l for l in links if l[0] not in drop_codes and l[1] not in drop_codes]
+        print(f"dropped {len(drop_codes)} cameras -> {len(CAM)} cameras, {len(links)} links")
+
+    # ---- Trajectory: walk the (surviving) camera-link graph ----
+    cadj = {}
+    for fc, tc, g, dist, ff in links:
+        cadj.setdefault(fc, []).append((tc, ff))
+    pos_of = {c[0]: (c[3], c[2]) for c in CAM}   # code -> (lat, lon)
+    tdir_of = {c[0]: c[5] for c in CAM}          # code -> travel direction
+    start = next((c[0] for c in CAM if cadj.get(c[0])), CAM[0][0])
+    trip_codes = [start]; seen = {start}; ffs = []; cur = start
+    while len(trip_codes) < 6:
+        nxt = [(tc, ff) for (tc, ff) in cadj.get(cur, []) if tc not in seen]
+        if not nxt:
             break
-        nxt = min(cand, key=lambda x: haversine(jpt(cur), jpt(x)))
-        path.append(nxt); seen.add(nxt); cur = nxt
-    trip = [cam_of[(path[t], path[t - 1])] for t in range(1, len(path))]
-    ffs = [seg[(min(path[t - 1], path[t]), max(path[t - 1], path[t]))][2] for t in range(1, len(path))]
+        tc, ff = min(nxt, key=lambda e: e[1])
+        trip_codes.append(tc); seen.add(tc); ffs.append(ff); cur = tc
     offs = [0]
     for f in ffs:
         offs.append(offs[-1] + round(f * 1.15))
     total = offs[-1]
-    b1 = trip[0]
-    b2 = max(range(len(CAM)), key=lambda x: haversine((CAM[b1][3], CAM[b1][2]), (CAM[x][3], CAM[x][2])))
+    c1 = trip_codes[0]
+    c2 = max((c[0] for c in CAM), key=lambda cc: haversine(pos_of[c1], pos_of[cc]))
 
     # ---- Emit SQL ----
     out = []; w = out.append
@@ -281,16 +307,16 @@ def main():
       "normalized_plate_candidate, detection_confidence, ocr_confidence, ocr_candidates, "
       "validation_status, spotted_at, direction_degrees, vehicle_type, vehicle_color, lane_number, model_version)")
     tr = []
-    for k, idx in enumerate(trip):
-        code, td = CAM[idx][0], CAM[idx][5]
+    for k, code in enumerate(trip_codes):
+        td = tdir_of[code]
         tr.append(f"  ({sql_str('seed-'+PLATES_TRIP+'-'+code)}, (SELECT camera_id FROM cameras WHERE camera_code={sql_str(code)}), "
                   f"(SELECT plate_id FROM plates WHERE normalized_plate={sql_str(PLATES_TRIP)}), "
                   f"{sql_str(PLATES_TRIP)}, {sql_str(PLATES_TRIP)}, 0.96, 0.93, '[]'::jsonb, 'accepted', "
                   f"now() - make_interval(secs => {total - offs[k]}), {td}, 'car', 'white', 2, 'anpr-v1')")
     w("VALUES\n" + ",\n".join(tr) + ";")
     w("")
-    c1, h1 = CAM[b1][0], CAM[b1][5]
-    c2, h2 = CAM[b2][0], CAM[b2][5]
+    h1 = tdir_of[c1]
+    h2 = tdir_of[c2]
     w("INSERT INTO sightings (source_event_id, camera_id, plate_id, raw_plate_text, "
       "normalized_plate_candidate, detection_confidence, ocr_confidence, ocr_candidates, "
       "validation_status, spotted_at, direction_degrees, vehicle_type, vehicle_color, lane_number, model_version)")
@@ -321,7 +347,7 @@ def main():
     w("")
     w("COMMIT;")
     Path("db/seed_dwarka.sql").write_text("\n".join(out) + "\n")
-    print(f"wrote db/seed_dwarka.sql ({len(CAM)} cameras, {len(links)} links, trip {len(trip)} sightings)")
+    print(f"wrote db/seed_dwarka.sql ({len(CAM)} cameras, {len(links)} links, trip {len(trip_codes)} sightings)")
 
 
 if __name__ == "__main__":
