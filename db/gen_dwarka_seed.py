@@ -118,10 +118,18 @@ def snap(lat, lon):
 
 
 def route(a, b):  # a,b = (name,lon,lat) with lon@1, lat@2
-    d = json.loads(curl(f"{OSRM}/route/v1/driving/{a[1]},{a[2]};{b[1]},{b[2]}"
-                        f"?overview=full&geometries=geojson"))
-    rt = d["routes"][0]
-    return rt["geometry"]["coordinates"], round(rt["distance"]), max(1, round(rt["duration"]))
+    # Hint OSRM to depart AND arrive heading toward the destination, so it snaps to
+    # the correct carriageway/direction instead of departing the wrong way and
+    # U-turning. Try tight cone, then wider, then unhinted as a fallback.
+    B = bearing((a[2], a[1]), (b[2], b[1]))
+    base = (f"{OSRM}/route/v1/driving/{a[1]},{a[2]};{b[1]},{b[2]}"
+            f"?overview=full&geometries=geojson")
+    for suffix in (f"&bearings={B},45;{B},45", f"&bearings={B},90;{B},90", ""):
+        d = json.loads(curl(base + suffix))
+        if d.get("routes"):
+            rt = d["routes"][0]
+            return rt["geometry"]["coordinates"], round(rt["distance"]), max(1, round(rt["duration"]))
+    raise RuntimeError(f"no route {a[1]},{a[2]} -> {b[1]},{b[2]}")
 
 
 def sql_str(s):
