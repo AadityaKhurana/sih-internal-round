@@ -42,6 +42,8 @@ DROP_ARM = {
     "Sector 13 (north) <- Sector 14 / Vegas Mall",
     "Sector 14 / Vegas Mall <- Road 205 junction",
 }
+# Whole junctions to remove entirely (all their approach cameras), by resolved name.
+DROP_JUNCTION = {"Sector 14 / Vegas Mall", "Sector 13 (north)"}
 
 PLATES_TRIP = "DL3CAB1234"
 PLATE_BLACK = "DL8CAF5678"
@@ -166,6 +168,9 @@ def main():
         nm = label or (f"{rd} junction" if rd else "Dwarka junction")
         JUNC.append((nm[:60], slon, slat))
         print(f"snapped {nm} -> {slat:.5f},{slon:.5f} ({rd or 'road'})")
+    if DROP_JUNCTION:
+        JUNC = [j for j in JUNC if j[0] not in DROP_JUNCTION]
+        print(f"dropped {len(DROP_JUNCTION)} whole junctions -> {len(JUNC)} junctions")
     n = len(JUNC)
 
     def jpt(i):

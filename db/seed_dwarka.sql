@@ -15,51 +15,46 @@ INSERT INTO cameras (camera_code, display_name, location, heading_degrees, statu
   ('CAM-01', 'Azad Hind Fauj Marg (north) <- Dwarka Mor', ST_SetSRID(ST_MakePoint(77.035712, 28.60638), 4326), 344, 'active'),
   ('CAM-03', 'Azad Hind Fauj Marg (south) <- Azad Hind Fauj Marg (north)', ST_SetSRID(ST_MakePoint(77.04206, 28.601993), 4326), 307, 'active'),
   ('CAM-04', 'Azad Hind Fauj Marg (north) <- Azad Hind Fauj Marg (south)', ST_SetSRID(ST_MakePoint(77.035778, 28.606148), 4326), 128, 'active'),
-  ('CAM-05', 'Sector 14 / Vegas Mall <- Azad Hind Fauj Marg (north)', ST_SetSRID(ST_MakePoint(77.029384, 28.599502), 4326), 168, 'active'),
-  ('CAM-06', 'Azad Hind Fauj Marg (north) <- Sector 14 / Vegas Mall', ST_SetSRID(ST_MakePoint(77.035424, 28.606102), 4326), 217, 'active'),
-  ('CAM-07', 'Road 205 junction <- Azad Hind Fauj Marg (north)', ST_SetSRID(ST_MakePoint(77.028028, 28.597189), 4326), 32, 'active'),
-  ('CAM-08', 'Azad Hind Fauj Marg (north) <- Road 205 junction', ST_SetSRID(ST_MakePoint(77.035424, 28.606102), 4326), 217, 'active'),
-  ('CAM-10', 'Azad Hind Fauj Marg (south) <- Sector 13 (north)', ST_SetSRID(ST_MakePoint(77.042385, 28.601979), 4326), 37, 'active'),
-  ('CAM-11', 'Palam Najafgarh Road <- Azad Hind Fauj Marg (south)', ST_SetSRID(ST_MakePoint(77.055738, 28.603646), 4326), 305, 'active'),
-  ('CAM-12', 'Azad Hind Fauj Marg (south) <- Palam Najafgarh Road', ST_SetSRID(ST_MakePoint(77.042385, 28.601979), 4326), 37, 'active'),
-  ('CAM-13', 'Sector 13 (south) <- Sector 13 (north)', ST_SetSRID(ST_MakePoint(77.034241, 28.592914), 4326), 307, 'active'),
-  ('CAM-14', 'Sector 13 (north) <- Sector 13 (south)', ST_SetSRID(ST_MakePoint(77.03669, 28.595264), 4326), 131, 'active'),
-  ('CAM-17', 'Sector 11 <- Sector 13 (north)', ST_SetSRID(ST_MakePoint(77.042275, 28.587754), 4326), 314, 'active'),
-  ('CAM-19', 'Sector 11 <- Sector 13 (south)', ST_SetSRID(ST_MakePoint(77.042275, 28.587754), 4326), 314, 'active'),
-  ('CAM-20', 'Sector 13 (south) <- Sector 11', ST_SetSRID(ST_MakePoint(77.03454, 28.592605), 4326), 127, 'active'),
-  ('CAM-21', 'Road 205 junction <- Sector 13 (south)', ST_SetSRID(ST_MakePoint(77.027843, 28.596963), 4326), 127, 'active'),
-  ('CAM-22', 'Sector 13 (south) <- Road 205 junction', ST_SetSRID(ST_MakePoint(77.034453, 28.59266), 4326), 218, 'active'),
-  ('CAM-23', 'Road 205 junction <- Sector 14 / Vegas Mall', ST_SetSRID(ST_MakePoint(77.028028, 28.597189), 4326), 32, 'active'),
-  ('CAM-25', 'Sector 11 <- KM Chowk', ST_SetSRID(ST_MakePoint(77.042506, 28.58771), 4326), 37, 'active'),
-  ('CAM-27', 'Sector 13/14 corner <- KM Chowk', ST_SetSRID(ST_MakePoint(77.049752, 28.596541), 4326), 217, 'active'),
-  ('CAM-29', 'Road 221 junction <- Sector 11', ST_SetSRID(ST_MakePoint(77.049829, 28.582518), 4326), 308, 'active'),
-  ('CAM-30', 'Sector 11 <- Road 221 junction', ST_SetSRID(ST_MakePoint(77.042449, 28.587476), 4326), 137, 'active'),
-  ('CAM-31', 'Palam Najafgarh Road <- Sector 13/14 corner', ST_SetSRID(ST_MakePoint(77.055552, 28.603319), 4326), 214, 'active'),
-  ('CAM-32', 'Sector 13/14 corner <- Palam Najafgarh Road', ST_SetSRID(ST_MakePoint(77.050114, 28.596793), 4326), 40, 'active'),
-  ('CAM-33', 'Sector 10 <- Sector 13/14 corner', ST_SetSRID(ST_MakePoint(77.057957, 28.591625), 4326), 36, 'active'),
-  ('CAM-34', 'Sector 13/14 corner <- Sector 10', ST_SetSRID(ST_MakePoint(77.050071, 28.596574), 4326), 129, 'active'),
-  ('CAM-35', 'Nala Road junction <- Palam Najafgarh Road', ST_SetSRID(ST_MakePoint(77.063882, 28.598557), 4326), 37, 'active'),
-  ('CAM-36', 'Palam Najafgarh Road <- Nala Road junction', ST_SetSRID(ST_MakePoint(77.055875, 28.603447), 4326), 126, 'active'),
-  ('CAM-37', 'Rd 224 (south) <- Sector 10', ST_SetSRID(ST_MakePoint(77.065331, 28.586514), 4326), 307, 'active'),
-  ('CAM-38', 'Sector 10 <- Rd 224 (south)', ST_SetSRID(ST_MakePoint(77.057897, 28.591332), 4326), 126, 'active'),
-  ('CAM-39', 'Nala Road junction <- Sector 10', ST_SetSRID(ST_MakePoint(77.063882, 28.598557), 4326), 37, 'active'),
-  ('CAM-40', 'Sector 10 <- Nala Road junction', ST_SetSRID(ST_MakePoint(77.057673, 28.591455), 4326), 311, 'active'),
-  ('CAM-41', 'Road 221 junction <- Sector 10', ST_SetSRID(ST_MakePoint(77.049808, 28.582369), 4326), 214, 'active'),
-  ('CAM-42', 'Sector 10 <- Road 221 junction', ST_SetSRID(ST_MakePoint(77.057609, 28.59136), 4326), 218, 'active'),
-  ('CAM-44', 'Rd 224 (south) <- Rd 224 (mid)', ST_SetSRID(ST_MakePoint(77.0656, 28.586468), 4326), 37, 'active'),
-  ('CAM-46', 'Rd 224 (south) <- Sector 17', ST_SetSRID(ST_MakePoint(77.065427, 28.586221), 4326), 217, 'active'),
-  ('CAM-47', 'Rd 224 (north) <- Rd 224 (mid)', ST_SetSRID(ST_MakePoint(77.071593, 28.594482), 4326), 199, 'active'),
-  ('CAM-49', 'Nala Road junction <- Rd 224 (north)', ST_SetSRID(ST_MakePoint(77.063882, 28.598557), 4326), 37, 'active'),
-  ('CAM-50', 'Rd 224 (north) <- Nala Road junction', ST_SetSRID(ST_MakePoint(77.071705, 28.594872), 4326), 295, 'active'),
-  ('CAM-51', 'Road 224 junction <- Sector 17', ST_SetSRID(ST_MakePoint(77.057919, 28.577256), 4326), 37, 'active'),
-  ('CAM-53', 'Road 221 junction <- Road 224 junction', ST_SetSRID(ST_MakePoint(77.049808, 28.582369), 4326), 214, 'active'),
-  ('CAM-54', 'Road 224 junction <- Road 221 junction', ST_SetSRID(ST_MakePoint(77.057612, 28.5772), 4326), 308, 'active');
+  ('CAM-05', 'Road 205 junction <- Azad Hind Fauj Marg (north)', ST_SetSRID(ST_MakePoint(77.028028, 28.597189), 4326), 32, 'active'),
+  ('CAM-06', 'Azad Hind Fauj Marg (north) <- Road 205 junction', ST_SetSRID(ST_MakePoint(77.035424, 28.606102), 4326), 217, 'active'),
+  ('CAM-07', 'Sector 13 (south) <- Azad Hind Fauj Marg (south)', ST_SetSRID(ST_MakePoint(77.034241, 28.592914), 4326), 307, 'active'),
+  ('CAM-08', 'Azad Hind Fauj Marg (south) <- Sector 13 (south)', ST_SetSRID(ST_MakePoint(77.042385, 28.601979), 4326), 37, 'active'),
+  ('CAM-09', 'Palam Najafgarh Road <- Azad Hind Fauj Marg (south)', ST_SetSRID(ST_MakePoint(77.055738, 28.603646), 4326), 305, 'active'),
+  ('CAM-10', 'Azad Hind Fauj Marg (south) <- Palam Najafgarh Road', ST_SetSRID(ST_MakePoint(77.042385, 28.601979), 4326), 37, 'active'),
+  ('CAM-11', 'Sector 11 <- Sector 13 (south)', ST_SetSRID(ST_MakePoint(77.042275, 28.587754), 4326), 314, 'active'),
+  ('CAM-12', 'Sector 13 (south) <- Sector 11', ST_SetSRID(ST_MakePoint(77.03454, 28.592605), 4326), 127, 'active'),
+  ('CAM-13', 'Road 205 junction <- Sector 13 (south)', ST_SetSRID(ST_MakePoint(77.027843, 28.596963), 4326), 127, 'active'),
+  ('CAM-14', 'Sector 13 (south) <- Road 205 junction', ST_SetSRID(ST_MakePoint(77.034453, 28.59266), 4326), 218, 'active'),
+  ('CAM-15', 'Sector 11 <- KM Chowk', ST_SetSRID(ST_MakePoint(77.042506, 28.58771), 4326), 37, 'active'),
+  ('CAM-17', 'Sector 13/14 corner <- KM Chowk', ST_SetSRID(ST_MakePoint(77.049752, 28.596541), 4326), 217, 'active'),
+  ('CAM-19', 'Road 221 junction <- Sector 11', ST_SetSRID(ST_MakePoint(77.049829, 28.582518), 4326), 308, 'active'),
+  ('CAM-20', 'Sector 11 <- Road 221 junction', ST_SetSRID(ST_MakePoint(77.042449, 28.587476), 4326), 137, 'active'),
+  ('CAM-21', 'Palam Najafgarh Road <- Sector 13/14 corner', ST_SetSRID(ST_MakePoint(77.055552, 28.603319), 4326), 214, 'active'),
+  ('CAM-22', 'Sector 13/14 corner <- Palam Najafgarh Road', ST_SetSRID(ST_MakePoint(77.050114, 28.596793), 4326), 40, 'active'),
+  ('CAM-23', 'Sector 10 <- Sector 13/14 corner', ST_SetSRID(ST_MakePoint(77.057957, 28.591625), 4326), 36, 'active'),
+  ('CAM-24', 'Sector 13/14 corner <- Sector 10', ST_SetSRID(ST_MakePoint(77.050071, 28.596574), 4326), 129, 'active'),
+  ('CAM-25', 'Nala Road junction <- Palam Najafgarh Road', ST_SetSRID(ST_MakePoint(77.063882, 28.598557), 4326), 37, 'active'),
+  ('CAM-26', 'Palam Najafgarh Road <- Nala Road junction', ST_SetSRID(ST_MakePoint(77.055875, 28.603447), 4326), 126, 'active'),
+  ('CAM-27', 'Rd 224 (south) <- Sector 10', ST_SetSRID(ST_MakePoint(77.065331, 28.586514), 4326), 307, 'active'),
+  ('CAM-28', 'Sector 10 <- Rd 224 (south)', ST_SetSRID(ST_MakePoint(77.057897, 28.591332), 4326), 126, 'active'),
+  ('CAM-29', 'Nala Road junction <- Sector 10', ST_SetSRID(ST_MakePoint(77.063882, 28.598557), 4326), 37, 'active'),
+  ('CAM-30', 'Sector 10 <- Nala Road junction', ST_SetSRID(ST_MakePoint(77.057673, 28.591455), 4326), 311, 'active'),
+  ('CAM-31', 'Road 221 junction <- Sector 10', ST_SetSRID(ST_MakePoint(77.049808, 28.582369), 4326), 214, 'active'),
+  ('CAM-32', 'Sector 10 <- Road 221 junction', ST_SetSRID(ST_MakePoint(77.057609, 28.59136), 4326), 218, 'active'),
+  ('CAM-34', 'Rd 224 (south) <- Rd 224 (mid)', ST_SetSRID(ST_MakePoint(77.0656, 28.586468), 4326), 37, 'active'),
+  ('CAM-36', 'Rd 224 (south) <- Sector 17', ST_SetSRID(ST_MakePoint(77.065427, 28.586221), 4326), 217, 'active'),
+  ('CAM-37', 'Rd 224 (north) <- Rd 224 (mid)', ST_SetSRID(ST_MakePoint(77.071593, 28.594482), 4326), 199, 'active'),
+  ('CAM-39', 'Nala Road junction <- Rd 224 (north)', ST_SetSRID(ST_MakePoint(77.063882, 28.598557), 4326), 37, 'active'),
+  ('CAM-40', 'Rd 224 (north) <- Nala Road junction', ST_SetSRID(ST_MakePoint(77.071705, 28.594872), 4326), 295, 'active'),
+  ('CAM-41', 'Road 224 junction <- Sector 17', ST_SetSRID(ST_MakePoint(77.057919, 28.577256), 4326), 37, 'active'),
+  ('CAM-43', 'Road 221 junction <- Road 224 junction', ST_SetSRID(ST_MakePoint(77.049808, 28.582369), 4326), 214, 'active'),
+  ('CAM-44', 'Road 224 junction <- Road 221 junction', ST_SetSRID(ST_MakePoint(77.057612, 28.5772), 4326), 308, 'active');
 
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.035627, 28.606203], [77.035553, 28.606176], [77.035443, 28.606049], [77.035438, 28.606043], [77.035426, 28.606029], [77.035265, 28.605842], [77.034457, 28.6049], [77.033532, 28.603831], [77.033458, 28.603748], [77.031788, 28.601791], [77.031159, 28.601057], [77.030193, 28.599907], [77.030114, 28.599667], [77.030143, 28.599545], [77.030118, 28.599428], [77.030039, 28.599323], [77.029917, 28.599252], [77.029784, 28.599231], [77.029634, 28.599205], [77.028897, 28.598335], [77.028778, 28.598199], [77.02867, 28.598068], [77.028173, 28.597473], [77.027898, 28.597093], [77.027827, 28.59703], [77.027661, 28.597136], [77.027724, 28.597209], [77.027806, 28.597154]]}'), 4326), 1329, 125, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-01' AND t.camera_code='CAM-07' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-01' AND t.camera_code='CAM-05' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.035627, 28.606203], [77.035553, 28.606176], [77.035526, 28.60623], [77.035507, 28.60627], [77.035592, 28.606307], [77.035676, 28.606326], [77.035697, 28.60629], [77.035726, 28.60624], [77.038302, 28.604483], [77.039469, 28.603704], [77.039557, 28.603646], [77.041631, 28.602218], [77.042203, 28.601843], [77.042208, 28.601849]]}'), 4326), 848, 75, 50
@@ -67,44 +62,34 @@ FROM cameras f, cameras t, roads r
 WHERE f.camera_code='CAM-01' AND t.camera_code='CAM-03' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.035627, 28.606203], [77.035553, 28.606176], [77.035443, 28.606049], [77.035438, 28.606043], [77.035426, 28.606029], [77.035265, 28.605842], [77.034457, 28.6049], [77.033532, 28.603831], [77.033458, 28.603748], [77.031788, 28.601791], [77.031159, 28.601057], [77.030193, 28.599907], [77.030114, 28.599667], [77.030143, 28.599545], [77.030118, 28.599428], [77.030039, 28.599323], [77.029917, 28.599252], [77.029784, 28.599231], [77.029624, 28.599265], [77.029491, 28.599373], [77.029454, 28.599429], [77.029429, 28.599531], [77.029442, 28.599628], [77.029488, 28.599697]]}'), 4326), 1047, 94, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-01' AND t.camera_code='CAM-05' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.035627, 28.606203], [77.035553, 28.606176], [77.035526, 28.60623], [77.035507, 28.60627], [77.035592, 28.606307], [77.035676, 28.606326], [77.035697, 28.60629], [77.035726, 28.60624], [77.038302, 28.604483], [77.039469, 28.603704], [77.039557, 28.603646], [77.041631, 28.602218], [77.042203, 28.601843], [77.042208, 28.601849]]}'), 4326), 848, 75, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-08' AND t.camera_code='CAM-03' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.035627, 28.606203], [77.035553, 28.606176], [77.035443, 28.606049], [77.035438, 28.606043], [77.035426, 28.606029], [77.035265, 28.605842], [77.034457, 28.6049], [77.033532, 28.603831], [77.033458, 28.603748], [77.031788, 28.601791], [77.031159, 28.601057], [77.030193, 28.599907], [77.030114, 28.599667], [77.030143, 28.599545], [77.030118, 28.599428], [77.030039, 28.599323], [77.029917, 28.599252], [77.029784, 28.599231], [77.029624, 28.599265], [77.029491, 28.599373], [77.029454, 28.599429], [77.029429, 28.599531], [77.029442, 28.599628], [77.029488, 28.599697]]}'), 4326), 1047, 94, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-08' AND t.camera_code='CAM-05' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.035627, 28.606203], [77.035553, 28.606176], [77.035443, 28.606049], [77.035438, 28.606043], [77.035426, 28.606029], [77.035265, 28.605842], [77.034457, 28.6049], [77.033532, 28.603831], [77.033458, 28.603748], [77.031788, 28.601791], [77.031159, 28.601057], [77.030193, 28.599907], [77.030114, 28.599667], [77.030143, 28.599545], [77.030118, 28.599428], [77.030039, 28.599323], [77.029917, 28.599252], [77.029784, 28.599231], [77.029634, 28.599205], [77.028897, 28.598335], [77.028778, 28.598199], [77.02867, 28.598068], [77.028173, 28.597473], [77.027898, 28.597093], [77.027827, 28.59703], [77.027661, 28.597136], [77.027724, 28.597209], [77.027806, 28.597154]]}'), 4326), 1329, 125, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-04' AND t.camera_code='CAM-07' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.035627, 28.606203], [77.035553, 28.606176], [77.035443, 28.606049], [77.035438, 28.606043], [77.035426, 28.606029], [77.035265, 28.605842], [77.034457, 28.6049], [77.033532, 28.603831], [77.033458, 28.603748], [77.031788, 28.601791], [77.031159, 28.601057], [77.030193, 28.599907], [77.030114, 28.599667], [77.030143, 28.599545], [77.030118, 28.599428], [77.030039, 28.599323], [77.029917, 28.599252], [77.029784, 28.599231], [77.029624, 28.599265], [77.029491, 28.599373], [77.029454, 28.599429], [77.029429, 28.599531], [77.029442, 28.599628], [77.029488, 28.599697]]}'), 4326), 1047, 94, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-04' AND t.camera_code='CAM-05' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.035627, 28.606203], [77.035553, 28.606176], [77.035443, 28.606049], [77.035438, 28.606043], [77.035426, 28.606029], [77.035265, 28.605842], [77.034457, 28.6049], [77.033532, 28.603831], [77.033458, 28.603748], [77.031788, 28.601791], [77.031159, 28.601057], [77.030193, 28.599907], [77.030114, 28.599667], [77.030143, 28.599545], [77.030118, 28.599428], [77.030039, 28.599323], [77.029917, 28.599252], [77.029784, 28.599231], [77.029634, 28.599205], [77.028897, 28.598335], [77.028778, 28.598199], [77.02867, 28.598068], [77.028173, 28.597473], [77.027898, 28.597093], [77.027827, 28.59703], [77.027661, 28.597136], [77.027724, 28.597209], [77.027806, 28.597154]]}'), 4326), 1329, 125, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-06' AND t.camera_code='CAM-07' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.035627, 28.606203], [77.035553, 28.606176], [77.035526, 28.60623], [77.035507, 28.60627], [77.035592, 28.606307], [77.035676, 28.606326], [77.035697, 28.60629], [77.035726, 28.60624], [77.038302, 28.604483], [77.039469, 28.603704], [77.039557, 28.603646], [77.041631, 28.602218], [77.042203, 28.601843], [77.042208, 28.601849]]}'), 4326), 848, 75, 50
 FROM cameras f, cameras t, roads r
 WHERE f.camera_code='CAM-06' AND t.camera_code='CAM-03' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.035627, 28.606203], [77.035553, 28.606176], [77.035443, 28.606049], [77.035438, 28.606043], [77.035426, 28.606029], [77.035265, 28.605842], [77.034457, 28.6049], [77.033532, 28.603831], [77.033458, 28.603748], [77.031788, 28.601791], [77.031159, 28.601057], [77.030193, 28.599907], [77.030114, 28.599667], [77.030143, 28.599545], [77.030118, 28.599428], [77.030039, 28.599323], [77.029917, 28.599252], [77.029784, 28.599231], [77.029634, 28.599205], [77.028897, 28.598335], [77.028778, 28.598199], [77.02867, 28.598068], [77.028173, 28.597473], [77.027898, 28.597093], [77.027827, 28.59703], [77.027661, 28.597136], [77.027724, 28.597209], [77.027806, 28.597154]]}'), 4326), 1329, 125, 50
+FROM cameras f, cameras t, roads r
+WHERE f.camera_code='CAM-04' AND t.camera_code='CAM-05' AND r.road_code='DWK-NET-1';
+INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
+SELECT f.camera_id, t.camera_id, r.road_id, 'through',
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.042208, 28.601849], [77.042635, 28.602341], [77.043092, 28.602748], [77.043664, 28.60323], [77.044355, 28.603666], [77.044799, 28.603923], [77.044649, 28.604055], [77.043646, 28.60338], [77.043571, 28.603326], [77.043278, 28.603117], [77.042591, 28.602485], [77.042488, 28.602419], [77.042386, 28.602366], [77.042271, 28.602331], [77.042155, 28.602318], [77.04202, 28.60232], [77.041909, 28.602337], [77.041773, 28.60239], [77.041647, 28.602458], [77.041051, 28.602853], [77.04045, 28.60325], [77.039661, 28.603772], [77.039557, 28.603646], [77.041631, 28.602218], [77.042203, 28.601843], [77.042322, 28.601766], [77.042265, 28.601683], [77.041812, 28.601182], [77.041524, 28.600844], [77.040582, 28.599735], [77.038506, 28.597294], [77.038426, 28.597208], [77.036889, 28.595387], [77.036779, 28.595257], [77.036827, 28.5952], [77.036871, 28.595097], [77.036871, 28.595036], [77.036872, 28.594982], [77.036813, 28.594853], [77.036708, 28.594763], [77.036633, 28.594737], [77.036575, 28.594716], [77.036441, 28.594716], [77.036323, 28.594752], [77.035267, 28.593528], [77.035032, 28.593256], [77.034849, 28.593043], [77.034527, 28.59267], [77.034469, 28.592604], [77.034376, 28.592662], [77.033847, 28.593016], [77.033031, 28.593561], [77.031299, 28.594719], [77.031213, 28.594776], [77.031277, 28.59485], [77.031363, 28.594794], [77.033331, 28.59347], [77.033921, 28.593073], [77.034389, 28.592758]]}'), 4326), 3430, 311, 50
+FROM cameras f, cameras t, roads r
+WHERE f.camera_code='CAM-03' AND t.camera_code='CAM-07' AND r.road_code='DWK-NET-1';
+INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
+SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.042208, 28.601849], [77.042635, 28.602341], [77.043092, 28.602748], [77.043664, 28.60323], [77.044355, 28.603666], [77.044799, 28.603923], [77.045006, 28.604043], [77.045778, 28.604404], [77.046498, 28.60469], [77.046921, 28.60483], [77.047401, 28.604956], [77.048206, 28.605121], [77.049327, 28.605292], [77.050229, 28.605312], [77.050653, 28.605304], [77.051511, 28.605211], [77.051902, 28.605143], [77.052371, 28.605045], [77.052862, 28.604921], [77.053378, 28.604762], [77.053901, 28.604571], [77.054156, 28.604455], [77.054248, 28.604412], [77.054789, 28.60415], [77.055268, 28.603883], [77.0558, 28.603552], [77.055837, 28.603528], [77.055887, 28.603495], [77.055847, 28.60338], [77.055721, 28.603458]]}'), 4326), 1532, 110, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-03' AND t.camera_code='CAM-11' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-03' AND t.camera_code='CAM-09' AND r.road_code='DWK-NET-1';
+INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
+SELECT f.camera_id, t.camera_id, r.road_id, 'through',
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.042208, 28.601849], [77.042203, 28.601843], [77.041631, 28.602218], [77.039557, 28.603646], [77.039469, 28.603704], [77.038302, 28.604483], [77.035726, 28.60624], [77.035697, 28.60629], [77.035676, 28.606326], [77.035592, 28.606307], [77.035507, 28.60627], [77.035526, 28.60623], [77.035553, 28.606176], [77.035627, 28.606203]]}'), 4326), 848, 75, 50
+FROM cameras f, cameras t, roads r
+WHERE f.camera_code='CAM-08' AND t.camera_code='CAM-04' AND r.road_code='DWK-NET-1';
+INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
+SELECT f.camera_id, t.camera_id, r.road_id, 'through',
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.042208, 28.601849], [77.042635, 28.602341], [77.043092, 28.602748], [77.043664, 28.60323], [77.044355, 28.603666], [77.044799, 28.603923], [77.045006, 28.604043], [77.045778, 28.604404], [77.046498, 28.60469], [77.046921, 28.60483], [77.047401, 28.604956], [77.048206, 28.605121], [77.049327, 28.605292], [77.050229, 28.605312], [77.050653, 28.605304], [77.051511, 28.605211], [77.051902, 28.605143], [77.052371, 28.605045], [77.052862, 28.604921], [77.053378, 28.604762], [77.053901, 28.604571], [77.054156, 28.604455], [77.054248, 28.604412], [77.054789, 28.60415], [77.055268, 28.603883], [77.0558, 28.603552], [77.055837, 28.603528], [77.055887, 28.603495], [77.055847, 28.60338], [77.055721, 28.603458]]}'), 4326), 1532, 110, 50
+FROM cameras f, cameras t, roads r
+WHERE f.camera_code='CAM-08' AND t.camera_code='CAM-09' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.042208, 28.601849], [77.042203, 28.601843], [77.041631, 28.602218], [77.039557, 28.603646], [77.039469, 28.603704], [77.038302, 28.604483], [77.035726, 28.60624], [77.035697, 28.60629], [77.035676, 28.606326], [77.035592, 28.606307], [77.035507, 28.60627], [77.035526, 28.60623], [77.035553, 28.606176], [77.035627, 28.606203]]}'), 4326), 848, 75, 50
@@ -112,299 +97,259 @@ FROM cameras f, cameras t, roads r
 WHERE f.camera_code='CAM-10' AND t.camera_code='CAM-04' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.042208, 28.601849], [77.042635, 28.602341], [77.043092, 28.602748], [77.043664, 28.60323], [77.044355, 28.603666], [77.044799, 28.603923], [77.045006, 28.604043], [77.045778, 28.604404], [77.046498, 28.60469], [77.046921, 28.60483], [77.047401, 28.604956], [77.048206, 28.605121], [77.049327, 28.605292], [77.050229, 28.605312], [77.050653, 28.605304], [77.051511, 28.605211], [77.051902, 28.605143], [77.052371, 28.605045], [77.052862, 28.604921], [77.053378, 28.604762], [77.053901, 28.604571], [77.054156, 28.604455], [77.054248, 28.604412], [77.054789, 28.60415], [77.055268, 28.603883], [77.0558, 28.603552], [77.055837, 28.603528], [77.055887, 28.603495], [77.055847, 28.60338], [77.055721, 28.603458]]}'), 4326), 1532, 110, 50
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.042208, 28.601849], [77.042635, 28.602341], [77.043092, 28.602748], [77.043664, 28.60323], [77.044355, 28.603666], [77.044799, 28.603923], [77.044649, 28.604055], [77.043646, 28.60338], [77.043571, 28.603326], [77.043278, 28.603117], [77.042591, 28.602485], [77.042488, 28.602419], [77.042386, 28.602366], [77.042271, 28.602331], [77.042155, 28.602318], [77.04202, 28.60232], [77.041909, 28.602337], [77.041773, 28.60239], [77.041647, 28.602458], [77.041051, 28.602853], [77.04045, 28.60325], [77.039661, 28.603772], [77.039557, 28.603646], [77.041631, 28.602218], [77.042203, 28.601843], [77.042322, 28.601766], [77.042265, 28.601683], [77.041812, 28.601182], [77.041524, 28.600844], [77.040582, 28.599735], [77.038506, 28.597294], [77.038426, 28.597208], [77.036889, 28.595387], [77.036779, 28.595257], [77.036827, 28.5952], [77.036871, 28.595097], [77.036871, 28.595036], [77.036872, 28.594982], [77.036813, 28.594853], [77.036708, 28.594763], [77.036633, 28.594737], [77.036575, 28.594716], [77.036441, 28.594716], [77.036323, 28.594752], [77.035267, 28.593528], [77.035032, 28.593256], [77.034849, 28.593043], [77.034527, 28.59267], [77.034469, 28.592604], [77.034376, 28.592662], [77.033847, 28.593016], [77.033031, 28.593561], [77.031299, 28.594719], [77.031213, 28.594776], [77.031277, 28.59485], [77.031363, 28.594794], [77.033331, 28.59347], [77.033921, 28.593073], [77.034389, 28.592758]]}'), 4326), 3430, 311, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-10' AND t.camera_code='CAM-11' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-10' AND t.camera_code='CAM-07' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.042208, 28.601849], [77.042203, 28.601843], [77.041631, 28.602218], [77.039557, 28.603646], [77.039469, 28.603704], [77.038302, 28.604483], [77.035726, 28.60624], [77.035697, 28.60629], [77.035676, 28.606326], [77.035592, 28.606307], [77.035507, 28.60627], [77.035526, 28.60623], [77.035553, 28.606176], [77.035627, 28.606203]]}'), 4326), 848, 75, 50
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.034389, 28.592758], [77.033921, 28.593073], [77.033331, 28.59347], [77.031363, 28.594794], [77.031277, 28.59485], [77.031213, 28.594776], [77.031299, 28.594719], [77.033031, 28.593561], [77.033847, 28.593016], [77.034376, 28.592662], [77.034469, 28.592604], [77.034527, 28.59267], [77.034849, 28.593043], [77.035032, 28.593256], [77.035267, 28.593528], [77.036323, 28.594752], [77.036441, 28.594716], [77.036575, 28.594716], [77.036633, 28.594737], [77.036708, 28.594763], [77.036813, 28.594853], [77.036872, 28.594982], [77.036871, 28.595036], [77.036871, 28.595097], [77.036827, 28.5952], [77.036779, 28.595257], [77.036889, 28.595387], [77.038426, 28.597208], [77.038506, 28.597294], [77.040582, 28.599735], [77.041524, 28.600844], [77.041812, 28.601182], [77.042265, 28.601683], [77.042322, 28.601766], [77.042203, 28.601843], [77.041631, 28.602218], [77.039557, 28.603646], [77.039661, 28.603772], [77.04045, 28.60325], [77.041051, 28.602853], [77.041647, 28.602458], [77.041773, 28.60239], [77.041909, 28.602337], [77.04202, 28.60232], [77.042155, 28.602318], [77.042271, 28.602331], [77.042386, 28.602366], [77.042488, 28.602419], [77.042591, 28.602485], [77.043278, 28.603117], [77.043571, 28.603326], [77.043646, 28.60338], [77.044649, 28.604055], [77.044799, 28.603923], [77.044355, 28.603666], [77.043664, 28.60323], [77.043092, 28.602748], [77.042635, 28.602341], [77.042208, 28.601849]]}'), 4326), 3430, 311, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-12' AND t.camera_code='CAM-04' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.036515, 28.595355], [77.036437, 28.595356], [77.036365, 28.595331], [77.03631, 28.595312], [77.0362, 28.59522], [77.036141, 28.595093], [77.036142, 28.594976], [77.036188, 28.594869], [77.036226, 28.594822], [77.036298, 28.594767], [77.036323, 28.594752], [77.036441, 28.594716], [77.036575, 28.594716], [77.036633, 28.594737], [77.036708, 28.594763], [77.036813, 28.594853], [77.036872, 28.594982], [77.036871, 28.595036], [77.036871, 28.595097], [77.036827, 28.5952], [77.036779, 28.595257], [77.036889, 28.595387], [77.038426, 28.597208], [77.038506, 28.597294], [77.040582, 28.599735], [77.041524, 28.600844], [77.041812, 28.601182], [77.042265, 28.601683], [77.042322, 28.601766], [77.042203, 28.601843], [77.041631, 28.602218], [77.039557, 28.603646], [77.039661, 28.603772], [77.04045, 28.60325], [77.041051, 28.602853], [77.041647, 28.602458], [77.041773, 28.60239], [77.041909, 28.602337], [77.04202, 28.60232], [77.042155, 28.602318], [77.042271, 28.602331], [77.042386, 28.602366], [77.042488, 28.602419], [77.042591, 28.602485], [77.043278, 28.603117], [77.043571, 28.603326], [77.043646, 28.60338], [77.044649, 28.604055], [77.044799, 28.603923], [77.044355, 28.603666], [77.043664, 28.60323], [77.043092, 28.602748], [77.042635, 28.602341], [77.042208, 28.601849]]}'), 4326), 2434, 236, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-14' AND t.camera_code='CAM-10' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.036515, 28.595355], [77.03658, 28.595355], [77.03667, 28.595333], [77.036715, 28.595305], [77.036779, 28.595257], [77.036827, 28.5952], [77.036871, 28.595097], [77.036871, 28.595036], [77.036872, 28.594982], [77.036813, 28.594853], [77.036708, 28.594763], [77.036633, 28.594737], [77.036575, 28.594716], [77.036441, 28.594716], [77.036323, 28.594752], [77.035267, 28.593528], [77.035032, 28.593256], [77.034849, 28.593043], [77.034842, 28.592931], [77.034849, 28.592823], [77.034874, 28.5927], [77.034923, 28.592557], [77.034987, 28.592417], [77.035046, 28.592322], [77.037094, 28.590951], [77.039495, 28.589348], [77.03959, 28.589286], [77.04044, 28.588716], [77.040591, 28.588636], [77.040657, 28.588612], [77.040811, 28.588557], [77.041127, 28.588437], [77.041482, 28.588251], [77.041837, 28.588026], [77.042093, 28.587846], [77.042271, 28.587695], [77.042362, 28.587619], [77.042327, 28.587581]]}'), 4326), 1346, 100, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-14' AND t.camera_code='CAM-17' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.034389, 28.592758], [77.033921, 28.593073], [77.033331, 28.59347], [77.031363, 28.594794], [77.031277, 28.59485], [77.031213, 28.594776], [77.031299, 28.594719], [77.033031, 28.593561], [77.033847, 28.593016], [77.034376, 28.592662], [77.034469, 28.592604], [77.034527, 28.59267], [77.034849, 28.593043], [77.035032, 28.593256], [77.035267, 28.593528], [77.036323, 28.594752], [77.036441, 28.594716], [77.036575, 28.594716], [77.036633, 28.594737], [77.036708, 28.594763], [77.036813, 28.594853], [77.036872, 28.594982], [77.036871, 28.595036], [77.036871, 28.595097], [77.036827, 28.5952], [77.036779, 28.595257], [77.036715, 28.595305], [77.03667, 28.595333], [77.03658, 28.595355], [77.036515, 28.595355]]}'), 4326), 1223, 90, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-22' AND t.camera_code='CAM-14' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-14' AND t.camera_code='CAM-08' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.034389, 28.592758], [77.034431, 28.59273], [77.034527, 28.59267], [77.035046, 28.592322], [77.037094, 28.590951], [77.039495, 28.589348], [77.03959, 28.589286], [77.04044, 28.588716], [77.040591, 28.588636], [77.040657, 28.588612], [77.040811, 28.588557], [77.041127, 28.588437], [77.041482, 28.588251], [77.041837, 28.588026], [77.042093, 28.587846], [77.042271, 28.587695], [77.042362, 28.587619], [77.042327, 28.587581]]}'), 4326), 974, 66, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-22' AND t.camera_code='CAM-19' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-14' AND t.camera_code='CAM-11' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.034389, 28.592758], [77.034431, 28.59273], [77.034527, 28.59267], [77.034469, 28.592604], [77.034376, 28.592662], [77.033847, 28.593016], [77.033031, 28.593561], [77.031299, 28.594719], [77.031213, 28.594776], [77.030537, 28.595231], [77.029846, 28.595695], [77.028871, 28.596335], [77.028821, 28.596368], [77.028095, 28.596854], [77.027997, 28.596918], [77.027982, 28.596928], [77.027827, 28.59703], [77.027661, 28.597136], [77.027724, 28.597209], [77.027806, 28.597154]]}'), 4326), 880, 66, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-13' AND t.camera_code='CAM-21' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-07' AND t.camera_code='CAM-13' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.034389, 28.592758], [77.034431, 28.59273], [77.034527, 28.59267], [77.035046, 28.592322], [77.037094, 28.590951], [77.039495, 28.589348], [77.03959, 28.589286], [77.04044, 28.588716], [77.040591, 28.588636], [77.040657, 28.588612], [77.040811, 28.588557], [77.041127, 28.588437], [77.041482, 28.588251], [77.041837, 28.588026], [77.042093, 28.587846], [77.042271, 28.587695], [77.042362, 28.587619], [77.042327, 28.587581]]}'), 4326), 974, 66, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-13' AND t.camera_code='CAM-19' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-07' AND t.camera_code='CAM-11' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.034389, 28.592758], [77.034431, 28.59273], [77.034527, 28.59267], [77.034469, 28.592604], [77.034376, 28.592662], [77.033847, 28.593016], [77.033031, 28.593561], [77.031299, 28.594719], [77.031213, 28.594776], [77.030537, 28.595231], [77.029846, 28.595695], [77.028871, 28.596335], [77.028821, 28.596368], [77.028095, 28.596854], [77.027997, 28.596918], [77.027982, 28.596928], [77.027827, 28.59703], [77.027661, 28.597136], [77.027724, 28.597209], [77.027806, 28.597154]]}'), 4326), 880, 66, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-20' AND t.camera_code='CAM-21' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-12' AND t.camera_code='CAM-13' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.034389, 28.592758], [77.033921, 28.593073], [77.033331, 28.59347], [77.031363, 28.594794], [77.031277, 28.59485], [77.031213, 28.594776], [77.031299, 28.594719], [77.033031, 28.593561], [77.033847, 28.593016], [77.034376, 28.592662], [77.034469, 28.592604], [77.034527, 28.59267], [77.034849, 28.593043], [77.035032, 28.593256], [77.035267, 28.593528], [77.036323, 28.594752], [77.036441, 28.594716], [77.036575, 28.594716], [77.036633, 28.594737], [77.036708, 28.594763], [77.036813, 28.594853], [77.036872, 28.594982], [77.036871, 28.595036], [77.036871, 28.595097], [77.036827, 28.5952], [77.036779, 28.595257], [77.036715, 28.595305], [77.03667, 28.595333], [77.03658, 28.595355], [77.036515, 28.595355]]}'), 4326), 1223, 90, 50
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.034389, 28.592758], [77.033921, 28.593073], [77.033331, 28.59347], [77.031363, 28.594794], [77.031277, 28.59485], [77.031213, 28.594776], [77.031299, 28.594719], [77.033031, 28.593561], [77.033847, 28.593016], [77.034376, 28.592662], [77.034469, 28.592604], [77.034527, 28.59267], [77.034849, 28.593043], [77.035032, 28.593256], [77.035267, 28.593528], [77.036323, 28.594752], [77.036441, 28.594716], [77.036575, 28.594716], [77.036633, 28.594737], [77.036708, 28.594763], [77.036813, 28.594853], [77.036872, 28.594982], [77.036871, 28.595036], [77.036871, 28.595097], [77.036827, 28.5952], [77.036779, 28.595257], [77.036889, 28.595387], [77.038426, 28.597208], [77.038506, 28.597294], [77.040582, 28.599735], [77.041524, 28.600844], [77.041812, 28.601182], [77.042265, 28.601683], [77.042322, 28.601766], [77.042203, 28.601843], [77.041631, 28.602218], [77.039557, 28.603646], [77.039661, 28.603772], [77.04045, 28.60325], [77.041051, 28.602853], [77.041647, 28.602458], [77.041773, 28.60239], [77.041909, 28.602337], [77.04202, 28.60232], [77.042155, 28.602318], [77.042271, 28.602331], [77.042386, 28.602366], [77.042488, 28.602419], [77.042591, 28.602485], [77.043278, 28.603117], [77.043571, 28.603326], [77.043646, 28.60338], [77.044649, 28.604055], [77.044799, 28.603923], [77.044355, 28.603666], [77.043664, 28.60323], [77.043092, 28.602748], [77.042635, 28.602341], [77.042208, 28.601849]]}'), 4326), 3430, 311, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-20' AND t.camera_code='CAM-14' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.029488, 28.599697], [77.029533, 28.599765], [77.029624, 28.599823], [77.029724, 28.599853], [77.029816, 28.599862], [77.029865, 28.59985], [77.029922, 28.599834], [77.030037, 28.599767], [77.030114, 28.599667], [77.030143, 28.599545], [77.030118, 28.599428], [77.030039, 28.599323], [77.029917, 28.599252], [77.029784, 28.599231], [77.029634, 28.599205], [77.028897, 28.598335], [77.028778, 28.598199], [77.02867, 28.598068], [77.028173, 28.597473], [77.027898, 28.597093], [77.027827, 28.59703], [77.027661, 28.597136], [77.027724, 28.597209], [77.027806, 28.597154]]}'), 4326), 500, 50, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-05' AND t.camera_code='CAM-23' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.042327, 28.587581], [77.042362, 28.587619], [77.042271, 28.587695], [77.042093, 28.587846], [77.041837, 28.588026], [77.041482, 28.588251], [77.041127, 28.588437], [77.040811, 28.588557], [77.040657, 28.588612], [77.040591, 28.588636], [77.04044, 28.588716], [77.03959, 28.589286], [77.039495, 28.589348], [77.037094, 28.590951], [77.035046, 28.592322], [77.034527, 28.59267], [77.034431, 28.59273], [77.034389, 28.592758]]}'), 4326), 974, 66, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-30' AND t.camera_code='CAM-20' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-12' AND t.camera_code='CAM-08' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.042327, 28.587581], [77.04228, 28.58753], [77.042189, 28.587603], [77.042271, 28.587695], [77.042362, 28.587619], [77.042482, 28.587511], [77.042663, 28.587341], [77.042847, 28.587149], [77.043052, 28.587011], [77.04455, 28.58599], [77.04617, 28.584926], [77.04626, 28.584866], [77.048015, 28.583702], [77.049569, 28.582639], [77.049902, 28.582411], [77.049985, 28.582503]]}'), 4326), 995, 78, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-17' AND t.camera_code='CAM-29' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-11' AND t.camera_code='CAM-19' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.042327, 28.587581], [77.042362, 28.587619], [77.042271, 28.587695], [77.042093, 28.587846], [77.041837, 28.588026], [77.041482, 28.588251], [77.041127, 28.588437], [77.040811, 28.588557], [77.040657, 28.588612], [77.040591, 28.588636], [77.04044, 28.588716], [77.03959, 28.589286], [77.039495, 28.589348], [77.037094, 28.590951], [77.035046, 28.592322], [77.034527, 28.59267], [77.034431, 28.59273], [77.034389, 28.592758]]}'), 4326), 974, 66, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-17' AND t.camera_code='CAM-20' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-15' AND t.camera_code='CAM-12' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.042327, 28.587581], [77.04228, 28.58753], [77.042189, 28.587603], [77.042271, 28.587695], [77.042362, 28.587619], [77.042482, 28.587511], [77.042663, 28.587341], [77.042847, 28.587149], [77.043052, 28.587011], [77.04455, 28.58599], [77.04617, 28.584926], [77.04626, 28.584866], [77.048015, 28.583702], [77.049569, 28.582639], [77.049902, 28.582411], [77.049985, 28.582503]]}'), 4326), 995, 78, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-19' AND t.camera_code='CAM-29' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.042327, 28.587581], [77.04228, 28.58753], [77.042189, 28.587603], [77.042271, 28.587695], [77.042362, 28.587619], [77.042482, 28.587511], [77.042663, 28.587341], [77.042847, 28.587149], [77.043052, 28.587011], [77.04455, 28.58599], [77.04617, 28.584926], [77.04626, 28.584866], [77.048015, 28.583702], [77.049569, 28.582639], [77.049902, 28.582411], [77.049985, 28.582503]]}'), 4326), 995, 78, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-25' AND t.camera_code='CAM-29' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-15' AND t.camera_code='CAM-19' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.042327, 28.587581], [77.042362, 28.587619], [77.042271, 28.587695], [77.042093, 28.587846], [77.041837, 28.588026], [77.041482, 28.588251], [77.041127, 28.588437], [77.040811, 28.588557], [77.040657, 28.588612], [77.040591, 28.588636], [77.04044, 28.588716], [77.03959, 28.589286], [77.039495, 28.589348], [77.037094, 28.590951], [77.035046, 28.592322], [77.034527, 28.59267], [77.034431, 28.59273], [77.034389, 28.592758]]}'), 4326), 974, 66, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-25' AND t.camera_code='CAM-20' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.049931, 28.59667], [77.049963, 28.596703], [77.050053, 28.596644], [77.050333, 28.596448], [77.050991, 28.595988], [77.053227, 28.594491], [77.0536, 28.594244], [77.054201, 28.593857], [77.054534, 28.593642], [77.05499, 28.593347], [77.05507, 28.593295], [77.057439, 28.591693], [77.057667, 28.591538], [77.057768, 28.591471], [77.058239, 28.591167], [77.058813, 28.590783], [77.058885, 28.590734], [77.058984, 28.590847], [77.059049, 28.590911], [77.058875, 28.591025], [77.058806, 28.591076], [77.058653, 28.591178], [77.058608, 28.591209], [77.058533, 28.591262], [77.058486, 28.591315], [77.058466, 28.591356], [77.058444, 28.591469], [77.058441, 28.591592], [77.058434, 28.5917], [77.058431, 28.591789], [77.058438, 28.591835], [77.058459, 28.591879], [77.05848, 28.591914], [77.058578, 28.592044], [77.058479, 28.592107], [77.05836, 28.592169], [77.058123, 28.591906], [77.057784, 28.591491]]}'), 4326), 1401, 130, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-32' AND t.camera_code='CAM-33' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-20' AND t.camera_code='CAM-12' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.049931, 28.59667], [77.049963, 28.596703], [77.050192, 28.596946], [77.050691, 28.597473], [77.051014, 28.597815], [77.052051, 28.599096], [77.052798, 28.600007], [77.052873, 28.600088], [77.054033, 28.601442], [77.054191, 28.601626], [77.05456, 28.602057], [77.055373, 28.603006], [77.055721, 28.603458]]}'), 4326), 942, 85, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-34' AND t.camera_code='CAM-31' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.049931, 28.59667], [77.049963, 28.596703], [77.050192, 28.596946], [77.050691, 28.597473], [77.051014, 28.597815], [77.052051, 28.599096], [77.052798, 28.600007], [77.052873, 28.600088], [77.054033, 28.601442], [77.054191, 28.601626], [77.05456, 28.602057], [77.055373, 28.603006], [77.055721, 28.603458]]}'), 4326), 942, 85, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-27' AND t.camera_code='CAM-31' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-24' AND t.camera_code='CAM-21' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.049931, 28.59667], [77.049963, 28.596703], [77.050053, 28.596644], [77.050333, 28.596448], [77.050991, 28.595988], [77.053227, 28.594491], [77.0536, 28.594244], [77.054201, 28.593857], [77.054534, 28.593642], [77.05499, 28.593347], [77.05507, 28.593295], [77.057439, 28.591693], [77.057667, 28.591538], [77.057768, 28.591471], [77.058239, 28.591167], [77.058813, 28.590783], [77.058885, 28.590734], [77.058984, 28.590847], [77.059049, 28.590911], [77.058875, 28.591025], [77.058806, 28.591076], [77.058653, 28.591178], [77.058608, 28.591209], [77.058533, 28.591262], [77.058486, 28.591315], [77.058466, 28.591356], [77.058444, 28.591469], [77.058441, 28.591592], [77.058434, 28.5917], [77.058431, 28.591789], [77.058438, 28.591835], [77.058459, 28.591879], [77.05848, 28.591914], [77.058578, 28.592044], [77.058479, 28.592107], [77.05836, 28.592169], [77.058123, 28.591906], [77.057784, 28.591491]]}'), 4326), 1401, 130, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-27' AND t.camera_code='CAM-33' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-17' AND t.camera_code='CAM-23' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.055721, 28.603458], [77.055847, 28.60338], [77.055887, 28.603495], [77.055837, 28.603528], [77.0558, 28.603552], [77.055268, 28.603883], [77.054789, 28.60415], [77.054248, 28.604412], [77.054156, 28.604455], [77.053901, 28.604571], [77.053378, 28.604762], [77.052862, 28.604921], [77.052371, 28.605045], [77.051902, 28.605143], [77.051511, 28.605211], [77.050653, 28.605304], [77.050229, 28.605312], [77.049327, 28.605292], [77.048206, 28.605121], [77.047401, 28.604956], [77.046921, 28.60483], [77.046498, 28.60469], [77.045778, 28.604404], [77.045006, 28.604043], [77.044799, 28.603923], [77.044355, 28.603666], [77.043664, 28.60323], [77.043092, 28.602748], [77.042635, 28.602341], [77.042208, 28.601849]]}'), 4326), 1532, 110, 50
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.049931, 28.59667], [77.049963, 28.596703], [77.050192, 28.596946], [77.050691, 28.597473], [77.051014, 28.597815], [77.052051, 28.599096], [77.052798, 28.600007], [77.052873, 28.600088], [77.054033, 28.601442], [77.054191, 28.601626], [77.05456, 28.602057], [77.055373, 28.603006], [77.055721, 28.603458]]}'), 4326), 942, 85, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-31' AND t.camera_code='CAM-12' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-17' AND t.camera_code='CAM-21' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.055721, 28.603458], [77.055837, 28.603528], [77.055887, 28.603495], [77.055928, 28.603469], [77.056458, 28.603144], [77.05656, 28.603074], [77.058287, 28.601899], [77.058366, 28.601846], [77.059763, 28.600899], [77.060172, 28.600615], [77.061059, 28.600041], [77.061085, 28.600024], [77.06111, 28.600008], [77.061695, 28.599643], [77.061882, 28.599526], [77.061996, 28.599441], [77.062079, 28.599392], [77.062327, 28.599245], [77.062977, 28.598814], [77.063241, 28.598638], [77.063551, 28.598426], [77.063927, 28.598857], [77.064713, 28.599757], [77.064801, 28.599857], [77.06484, 28.599902], [77.065005, 28.600091], [77.065168, 28.599964], [77.064909, 28.599817], [77.06399, 28.598756], [77.063704, 28.598427]]}'), 4326), 1435, 108, 50
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.049931, 28.59667], [77.049963, 28.596703], [77.050053, 28.596644], [77.050333, 28.596448], [77.050991, 28.595988], [77.053227, 28.594491], [77.0536, 28.594244], [77.054201, 28.593857], [77.054534, 28.593642], [77.05499, 28.593347], [77.05507, 28.593295], [77.057439, 28.591693], [77.057667, 28.591538], [77.057768, 28.591471], [77.058239, 28.591167], [77.058813, 28.590783], [77.058885, 28.590734], [77.058984, 28.590847], [77.059049, 28.590911], [77.058875, 28.591025], [77.058806, 28.591076], [77.058653, 28.591178], [77.058608, 28.591209], [77.058533, 28.591262], [77.058486, 28.591315], [77.058466, 28.591356], [77.058444, 28.591469], [77.058441, 28.591592], [77.058434, 28.5917], [77.058431, 28.591789], [77.058438, 28.591835], [77.058459, 28.591879], [77.05848, 28.591914], [77.058578, 28.592044], [77.058479, 28.592107], [77.05836, 28.592169], [77.058123, 28.591906], [77.057784, 28.591491]]}'), 4326), 1401, 130, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-31' AND t.camera_code='CAM-35' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.055721, 28.603458], [77.055373, 28.603006], [77.05456, 28.602057], [77.054191, 28.601626], [77.054033, 28.601442], [77.052873, 28.600088], [77.052798, 28.600007], [77.052051, 28.599096], [77.051014, 28.597815], [77.050691, 28.597473], [77.050192, 28.596946], [77.049963, 28.596703], [77.049931, 28.59667]]}'), 4326), 942, 85, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-11' AND t.camera_code='CAM-32' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-22' AND t.camera_code='CAM-23' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.055721, 28.603458], [77.055837, 28.603528], [77.055887, 28.603495], [77.055928, 28.603469], [77.056458, 28.603144], [77.05656, 28.603074], [77.058287, 28.601899], [77.058366, 28.601846], [77.059763, 28.600899], [77.060172, 28.600615], [77.061059, 28.600041], [77.061085, 28.600024], [77.06111, 28.600008], [77.061695, 28.599643], [77.061882, 28.599526], [77.061996, 28.599441], [77.062079, 28.599392], [77.062327, 28.599245], [77.062977, 28.598814], [77.063241, 28.598638], [77.063551, 28.598426], [77.063927, 28.598857], [77.064713, 28.599757], [77.064801, 28.599857], [77.06484, 28.599902], [77.065005, 28.600091], [77.065168, 28.599964], [77.064909, 28.599817], [77.06399, 28.598756], [77.063704, 28.598427]]}'), 4326), 1435, 108, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-11' AND t.camera_code='CAM-35' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-09' AND t.camera_code='CAM-25' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.055721, 28.603458], [77.055373, 28.603006], [77.05456, 28.602057], [77.054191, 28.601626], [77.054033, 28.601442], [77.052873, 28.600088], [77.052798, 28.600007], [77.052051, 28.599096], [77.051014, 28.597815], [77.050691, 28.597473], [77.050192, 28.596946], [77.049963, 28.596703], [77.049931, 28.59667]]}'), 4326), 942, 85, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-36' AND t.camera_code='CAM-32' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-09' AND t.camera_code='CAM-22' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.055721, 28.603458], [77.055847, 28.60338], [77.055887, 28.603495], [77.055837, 28.603528], [77.0558, 28.603552], [77.055268, 28.603883], [77.054789, 28.60415], [77.054248, 28.604412], [77.054156, 28.604455], [77.053901, 28.604571], [77.053378, 28.604762], [77.052862, 28.604921], [77.052371, 28.605045], [77.051902, 28.605143], [77.051511, 28.605211], [77.050653, 28.605304], [77.050229, 28.605312], [77.049327, 28.605292], [77.048206, 28.605121], [77.047401, 28.604956], [77.046921, 28.60483], [77.046498, 28.60469], [77.045778, 28.604404], [77.045006, 28.604043], [77.044799, 28.603923], [77.044355, 28.603666], [77.043664, 28.60323], [77.043092, 28.602748], [77.042635, 28.602341], [77.042208, 28.601849]]}'), 4326), 1532, 110, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-36' AND t.camera_code='CAM-12' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-26' AND t.camera_code='CAM-10' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.057784, 28.591491], [77.057768, 28.591471], [77.057692, 28.591381], [77.057319, 28.59096], [77.056762, 28.590298], [77.055806, 28.589165], [77.054893, 28.588086], [77.054838, 28.588017], [77.05229, 28.585072], [77.05232, 28.585036], [77.052336, 28.584994], [77.052326, 28.584906], [77.052265, 28.584832], [77.052198, 28.584801], [77.052116, 28.58476], [77.052065, 28.58474], [77.052037, 28.584724], [77.05202, 28.584696], [77.052003, 28.584657], [77.051997, 28.584608], [77.051985, 28.584562], [77.051972, 28.584469], [77.051938, 28.584422], [77.051895, 28.584385], [77.051825, 28.584362], [77.051747, 28.584364], [77.05064, 28.583081], [77.050503, 28.582923], [77.050285, 28.58267], [77.050035, 28.582318], [77.049983, 28.582239], [77.049843, 28.582334], [77.049902, 28.582411], [77.049985, 28.582503]]}'), 4326), 1336, 94, 50
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.055721, 28.603458], [77.055373, 28.603006], [77.05456, 28.602057], [77.054191, 28.601626], [77.054033, 28.601442], [77.052873, 28.600088], [77.052798, 28.600007], [77.052051, 28.599096], [77.051014, 28.597815], [77.050691, 28.597473], [77.050192, 28.596946], [77.049963, 28.596703], [77.049931, 28.59667]]}'), 4326), 942, 85, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-33' AND t.camera_code='CAM-41' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-26' AND t.camera_code='CAM-22' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.057784, 28.591491], [77.057768, 28.591471], [77.058239, 28.591167], [77.058813, 28.590783], [77.058885, 28.590734], [77.060143, 28.589886], [77.061526, 28.588955], [77.061634, 28.588882], [77.063463, 28.587687], [77.064863, 28.586767], [77.065457, 28.586374], [77.065566, 28.586306], [77.065482, 28.586211], [77.065378, 28.586285], [77.065424, 28.586337]]}'), 4326), 990, 77, 50
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.055721, 28.603458], [77.055847, 28.60338], [77.055887, 28.603495], [77.055837, 28.603528], [77.0558, 28.603552], [77.055268, 28.603883], [77.054789, 28.60415], [77.054248, 28.604412], [77.054156, 28.604455], [77.053901, 28.604571], [77.053378, 28.604762], [77.052862, 28.604921], [77.052371, 28.605045], [77.051902, 28.605143], [77.051511, 28.605211], [77.050653, 28.605304], [77.050229, 28.605312], [77.049327, 28.605292], [77.048206, 28.605121], [77.047401, 28.604956], [77.046921, 28.60483], [77.046498, 28.60469], [77.045778, 28.604404], [77.045006, 28.604043], [77.044799, 28.603923], [77.044355, 28.603666], [77.043664, 28.60323], [77.043092, 28.602748], [77.042635, 28.602341], [77.042208, 28.601849]]}'), 4326), 1532, 110, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-33' AND t.camera_code='CAM-37' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-21' AND t.camera_code='CAM-10' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.057784, 28.591491], [77.057768, 28.591471], [77.057692, 28.591381], [77.057595, 28.591454], [77.057667, 28.591538], [77.057843, 28.591737], [77.058129, 28.592071], [77.059597, 28.593781], [77.060518, 28.594854], [77.060589, 28.594945], [77.060693, 28.595067], [77.061726, 28.596286], [77.062706, 28.597441], [77.063164, 28.597982], [77.063483, 28.598335], [77.063551, 28.598426], [77.063927, 28.598857], [77.064713, 28.599757], [77.064801, 28.599857], [77.06484, 28.599902], [77.065005, 28.600091], [77.065168, 28.599964], [77.064909, 28.599817], [77.06399, 28.598756], [77.063704, 28.598427]]}'), 4326), 1474, 109, 50
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.055721, 28.603458], [77.055837, 28.603528], [77.055887, 28.603495], [77.055928, 28.603469], [77.056458, 28.603144], [77.05656, 28.603074], [77.058287, 28.601899], [77.058366, 28.601846], [77.059763, 28.600899], [77.060172, 28.600615], [77.061059, 28.600041], [77.061085, 28.600024], [77.06111, 28.600008], [77.061695, 28.599643], [77.061882, 28.599526], [77.061996, 28.599441], [77.062079, 28.599392], [77.062327, 28.599245], [77.062977, 28.598814], [77.063241, 28.598638], [77.063551, 28.598426], [77.063927, 28.598857], [77.064713, 28.599757], [77.064801, 28.599857], [77.06484, 28.599902], [77.065005, 28.600091], [77.065168, 28.599964], [77.064909, 28.599817], [77.06399, 28.598756], [77.063704, 28.598427]]}'), 4326), 1435, 108, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-33' AND t.camera_code='CAM-39' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.057784, 28.591491], [77.058123, 28.591906], [77.05836, 28.592169], [77.058479, 28.592107], [77.058578, 28.592044], [77.05848, 28.591914], [77.058459, 28.591879], [77.058438, 28.591835], [77.058431, 28.591789], [77.058434, 28.5917], [77.058441, 28.591592], [77.058444, 28.591469], [77.058466, 28.591356], [77.058486, 28.591315], [77.058533, 28.591262], [77.058608, 28.591209], [77.058653, 28.591178], [77.058806, 28.591076], [77.058875, 28.591025], [77.059049, 28.590911], [77.058984, 28.590847], [77.058885, 28.590734], [77.058813, 28.590783], [77.058239, 28.591167], [77.057768, 28.591471], [77.057667, 28.591538], [77.057439, 28.591693], [77.05507, 28.593295], [77.05499, 28.593347], [77.054534, 28.593642], [77.054201, 28.593857], [77.0536, 28.594244], [77.053227, 28.594491], [77.050991, 28.595988], [77.050333, 28.596448], [77.050053, 28.596644], [77.049963, 28.596703], [77.049931, 28.59667]]}'), 4326), 1401, 130, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-42' AND t.camera_code='CAM-34' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.057784, 28.591491], [77.057768, 28.591471], [77.058239, 28.591167], [77.058813, 28.590783], [77.058885, 28.590734], [77.060143, 28.589886], [77.061526, 28.588955], [77.061634, 28.588882], [77.063463, 28.587687], [77.064863, 28.586767], [77.065457, 28.586374], [77.065566, 28.586306], [77.065482, 28.586211], [77.065378, 28.586285], [77.065424, 28.586337]]}'), 4326), 990, 77, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-42' AND t.camera_code='CAM-37' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-21' AND t.camera_code='CAM-25' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.057784, 28.591491], [77.057768, 28.591471], [77.057692, 28.591381], [77.057595, 28.591454], [77.057667, 28.591538], [77.057843, 28.591737], [77.058129, 28.592071], [77.059597, 28.593781], [77.060518, 28.594854], [77.060589, 28.594945], [77.060693, 28.595067], [77.061726, 28.596286], [77.062706, 28.597441], [77.063164, 28.597982], [77.063483, 28.598335], [77.063551, 28.598426], [77.063927, 28.598857], [77.064713, 28.599757], [77.064801, 28.599857], [77.06484, 28.599902], [77.065005, 28.600091], [77.065168, 28.599964], [77.064909, 28.599817], [77.06399, 28.598756], [77.063704, 28.598427]]}'), 4326), 1474, 109, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-42' AND t.camera_code='CAM-39' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-28' AND t.camera_code='CAM-29' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.057784, 28.591491], [77.058123, 28.591906], [77.05836, 28.592169], [77.058479, 28.592107], [77.058578, 28.592044], [77.05848, 28.591914], [77.058459, 28.591879], [77.058438, 28.591835], [77.058431, 28.591789], [77.058434, 28.5917], [77.058441, 28.591592], [77.058444, 28.591469], [77.058466, 28.591356], [77.058486, 28.591315], [77.058533, 28.591262], [77.058608, 28.591209], [77.058653, 28.591178], [77.058806, 28.591076], [77.058875, 28.591025], [77.059049, 28.590911], [77.058984, 28.590847], [77.058885, 28.590734], [77.058813, 28.590783], [77.058239, 28.591167], [77.057768, 28.591471], [77.057667, 28.591538], [77.057439, 28.591693], [77.05507, 28.593295], [77.05499, 28.593347], [77.054534, 28.593642], [77.054201, 28.593857], [77.0536, 28.594244], [77.053227, 28.594491], [77.050991, 28.595988], [77.050333, 28.596448], [77.050053, 28.596644], [77.049963, 28.596703], [77.049931, 28.59667]]}'), 4326), 1401, 130, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-38' AND t.camera_code='CAM-34' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-28' AND t.camera_code='CAM-24' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.057784, 28.591491], [77.057768, 28.591471], [77.057692, 28.591381], [77.057319, 28.59096], [77.056762, 28.590298], [77.055806, 28.589165], [77.054893, 28.588086], [77.054838, 28.588017], [77.05229, 28.585072], [77.05232, 28.585036], [77.052336, 28.584994], [77.052326, 28.584906], [77.052265, 28.584832], [77.052198, 28.584801], [77.052116, 28.58476], [77.052065, 28.58474], [77.052037, 28.584724], [77.05202, 28.584696], [77.052003, 28.584657], [77.051997, 28.584608], [77.051985, 28.584562], [77.051972, 28.584469], [77.051938, 28.584422], [77.051895, 28.584385], [77.051825, 28.584362], [77.051747, 28.584364], [77.05064, 28.583081], [77.050503, 28.582923], [77.050285, 28.58267], [77.050035, 28.582318], [77.049983, 28.582239], [77.049843, 28.582334], [77.049902, 28.582411], [77.049985, 28.582503]]}'), 4326), 1336, 94, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-38' AND t.camera_code='CAM-41' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.057784, 28.591491], [77.057768, 28.591471], [77.057692, 28.591381], [77.057595, 28.591454], [77.057667, 28.591538], [77.057843, 28.591737], [77.058129, 28.592071], [77.059597, 28.593781], [77.060518, 28.594854], [77.060589, 28.594945], [77.060693, 28.595067], [77.061726, 28.596286], [77.062706, 28.597441], [77.063164, 28.597982], [77.063483, 28.598335], [77.063551, 28.598426], [77.063927, 28.598857], [77.064713, 28.599757], [77.064801, 28.599857], [77.06484, 28.599902], [77.065005, 28.600091], [77.065168, 28.599964], [77.064909, 28.599817], [77.06399, 28.598756], [77.063704, 28.598427]]}'), 4326), 1474, 109, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-38' AND t.camera_code='CAM-39' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.057784, 28.591491], [77.058123, 28.591906], [77.05836, 28.592169], [77.058479, 28.592107], [77.058578, 28.592044], [77.05848, 28.591914], [77.058459, 28.591879], [77.058438, 28.591835], [77.058431, 28.591789], [77.058434, 28.5917], [77.058441, 28.591592], [77.058444, 28.591469], [77.058466, 28.591356], [77.058486, 28.591315], [77.058533, 28.591262], [77.058608, 28.591209], [77.058653, 28.591178], [77.058806, 28.591076], [77.058875, 28.591025], [77.059049, 28.590911], [77.058984, 28.590847], [77.058885, 28.590734], [77.058813, 28.590783], [77.058239, 28.591167], [77.057768, 28.591471], [77.057667, 28.591538], [77.057439, 28.591693], [77.05507, 28.593295], [77.05499, 28.593347], [77.054534, 28.593642], [77.054201, 28.593857], [77.0536, 28.594244], [77.053227, 28.594491], [77.050991, 28.595988], [77.050333, 28.596448], [77.050053, 28.596644], [77.049963, 28.596703], [77.049931, 28.59667]]}'), 4326), 1401, 130, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-40' AND t.camera_code='CAM-34' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.057784, 28.591491], [77.057768, 28.591471], [77.057692, 28.591381], [77.057319, 28.59096], [77.056762, 28.590298], [77.055806, 28.589165], [77.054893, 28.588086], [77.054838, 28.588017], [77.05229, 28.585072], [77.05232, 28.585036], [77.052336, 28.584994], [77.052326, 28.584906], [77.052265, 28.584832], [77.052198, 28.584801], [77.052116, 28.58476], [77.052065, 28.58474], [77.052037, 28.584724], [77.05202, 28.584696], [77.052003, 28.584657], [77.051997, 28.584608], [77.051985, 28.584562], [77.051972, 28.584469], [77.051938, 28.584422], [77.051895, 28.584385], [77.051825, 28.584362], [77.051747, 28.584364], [77.05064, 28.583081], [77.050503, 28.582923], [77.050285, 28.58267], [77.050035, 28.582318], [77.049983, 28.582239], [77.049843, 28.582334], [77.049902, 28.582411], [77.049985, 28.582503]]}'), 4326), 1336, 94, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-40' AND t.camera_code='CAM-41' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-28' AND t.camera_code='CAM-31' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.057784, 28.591491], [77.057768, 28.591471], [77.058239, 28.591167], [77.058813, 28.590783], [77.058885, 28.590734], [77.060143, 28.589886], [77.061526, 28.588955], [77.061634, 28.588882], [77.063463, 28.587687], [77.064863, 28.586767], [77.065457, 28.586374], [77.065566, 28.586306], [77.065482, 28.586211], [77.065378, 28.586285], [77.065424, 28.586337]]}'), 4326), 990, 77, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-40' AND t.camera_code='CAM-37' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-30' AND t.camera_code='CAM-27' AND r.road_code='DWK-NET-1';
+INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
+SELECT f.camera_id, t.camera_id, r.road_id, 'through',
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.057784, 28.591491], [77.058123, 28.591906], [77.05836, 28.592169], [77.058479, 28.592107], [77.058578, 28.592044], [77.05848, 28.591914], [77.058459, 28.591879], [77.058438, 28.591835], [77.058431, 28.591789], [77.058434, 28.5917], [77.058441, 28.591592], [77.058444, 28.591469], [77.058466, 28.591356], [77.058486, 28.591315], [77.058533, 28.591262], [77.058608, 28.591209], [77.058653, 28.591178], [77.058806, 28.591076], [77.058875, 28.591025], [77.059049, 28.590911], [77.058984, 28.590847], [77.058885, 28.590734], [77.058813, 28.590783], [77.058239, 28.591167], [77.057768, 28.591471], [77.057667, 28.591538], [77.057439, 28.591693], [77.05507, 28.593295], [77.05499, 28.593347], [77.054534, 28.593642], [77.054201, 28.593857], [77.0536, 28.594244], [77.053227, 28.594491], [77.050991, 28.595988], [77.050333, 28.596448], [77.050053, 28.596644], [77.049963, 28.596703], [77.049931, 28.59667]]}'), 4326), 1401, 130, 50
+FROM cameras f, cameras t, roads r
+WHERE f.camera_code='CAM-30' AND t.camera_code='CAM-24' AND r.road_code='DWK-NET-1';
+INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
+SELECT f.camera_id, t.camera_id, r.road_id, 'through',
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.057784, 28.591491], [77.057768, 28.591471], [77.057692, 28.591381], [77.057319, 28.59096], [77.056762, 28.590298], [77.055806, 28.589165], [77.054893, 28.588086], [77.054838, 28.588017], [77.05229, 28.585072], [77.05232, 28.585036], [77.052336, 28.584994], [77.052326, 28.584906], [77.052265, 28.584832], [77.052198, 28.584801], [77.052116, 28.58476], [77.052065, 28.58474], [77.052037, 28.584724], [77.05202, 28.584696], [77.052003, 28.584657], [77.051997, 28.584608], [77.051985, 28.584562], [77.051972, 28.584469], [77.051938, 28.584422], [77.051895, 28.584385], [77.051825, 28.584362], [77.051747, 28.584364], [77.05064, 28.583081], [77.050503, 28.582923], [77.050285, 28.58267], [77.050035, 28.582318], [77.049983, 28.582239], [77.049843, 28.582334], [77.049902, 28.582411], [77.049985, 28.582503]]}'), 4326), 1336, 94, 50
+FROM cameras f, cameras t, roads r
+WHERE f.camera_code='CAM-30' AND t.camera_code='CAM-31' AND r.road_code='DWK-NET-1';
+INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
+SELECT f.camera_id, t.camera_id, r.road_id, 'through',
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.057784, 28.591491], [77.057768, 28.591471], [77.058239, 28.591167], [77.058813, 28.590783], [77.058885, 28.590734], [77.060143, 28.589886], [77.061526, 28.588955], [77.061634, 28.588882], [77.063463, 28.587687], [77.064863, 28.586767], [77.065457, 28.586374], [77.065566, 28.586306], [77.065482, 28.586211], [77.065378, 28.586285], [77.065424, 28.586337]]}'), 4326), 990, 77, 50
+FROM cameras f, cameras t, roads r
+WHERE f.camera_code='CAM-23' AND t.camera_code='CAM-27' AND r.road_code='DWK-NET-1';
+INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
+SELECT f.camera_id, t.camera_id, r.road_id, 'through',
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.057784, 28.591491], [77.057768, 28.591471], [77.057692, 28.591381], [77.057595, 28.591454], [77.057667, 28.591538], [77.057843, 28.591737], [77.058129, 28.592071], [77.059597, 28.593781], [77.060518, 28.594854], [77.060589, 28.594945], [77.060693, 28.595067], [77.061726, 28.596286], [77.062706, 28.597441], [77.063164, 28.597982], [77.063483, 28.598335], [77.063551, 28.598426], [77.063927, 28.598857], [77.064713, 28.599757], [77.064801, 28.599857], [77.06484, 28.599902], [77.065005, 28.600091], [77.065168, 28.599964], [77.064909, 28.599817], [77.06399, 28.598756], [77.063704, 28.598427]]}'), 4326), 1474, 109, 50
+FROM cameras f, cameras t, roads r
+WHERE f.camera_code='CAM-23' AND t.camera_code='CAM-29' AND r.road_code='DWK-NET-1';
+INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
+SELECT f.camera_id, t.camera_id, r.road_id, 'through',
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.057784, 28.591491], [77.057768, 28.591471], [77.057692, 28.591381], [77.057319, 28.59096], [77.056762, 28.590298], [77.055806, 28.589165], [77.054893, 28.588086], [77.054838, 28.588017], [77.05229, 28.585072], [77.05232, 28.585036], [77.052336, 28.584994], [77.052326, 28.584906], [77.052265, 28.584832], [77.052198, 28.584801], [77.052116, 28.58476], [77.052065, 28.58474], [77.052037, 28.584724], [77.05202, 28.584696], [77.052003, 28.584657], [77.051997, 28.584608], [77.051985, 28.584562], [77.051972, 28.584469], [77.051938, 28.584422], [77.051895, 28.584385], [77.051825, 28.584362], [77.051747, 28.584364], [77.05064, 28.583081], [77.050503, 28.582923], [77.050285, 28.58267], [77.050035, 28.582318], [77.049983, 28.582239], [77.049843, 28.582334], [77.049902, 28.582411], [77.049985, 28.582503]]}'), 4326), 1336, 94, 50
+FROM cameras f, cameras t, roads r
+WHERE f.camera_code='CAM-23' AND t.camera_code='CAM-31' AND r.road_code='DWK-NET-1';
+INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
+SELECT f.camera_id, t.camera_id, r.road_id, 'through',
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.057784, 28.591491], [77.057768, 28.591471], [77.058239, 28.591167], [77.058813, 28.590783], [77.058885, 28.590734], [77.060143, 28.589886], [77.061526, 28.588955], [77.061634, 28.588882], [77.063463, 28.587687], [77.064863, 28.586767], [77.065457, 28.586374], [77.065566, 28.586306], [77.065482, 28.586211], [77.065378, 28.586285], [77.065424, 28.586337]]}'), 4326), 990, 77, 50
+FROM cameras f, cameras t, roads r
+WHERE f.camera_code='CAM-32' AND t.camera_code='CAM-27' AND r.road_code='DWK-NET-1';
+INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
+SELECT f.camera_id, t.camera_id, r.road_id, 'through',
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.057784, 28.591491], [77.057768, 28.591471], [77.057692, 28.591381], [77.057595, 28.591454], [77.057667, 28.591538], [77.057843, 28.591737], [77.058129, 28.592071], [77.059597, 28.593781], [77.060518, 28.594854], [77.060589, 28.594945], [77.060693, 28.595067], [77.061726, 28.596286], [77.062706, 28.597441], [77.063164, 28.597982], [77.063483, 28.598335], [77.063551, 28.598426], [77.063927, 28.598857], [77.064713, 28.599757], [77.064801, 28.599857], [77.06484, 28.599902], [77.065005, 28.600091], [77.065168, 28.599964], [77.064909, 28.599817], [77.06399, 28.598756], [77.063704, 28.598427]]}'), 4326), 1474, 109, 50
+FROM cameras f, cameras t, roads r
+WHERE f.camera_code='CAM-32' AND t.camera_code='CAM-29' AND r.road_code='DWK-NET-1';
+INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
+SELECT f.camera_id, t.camera_id, r.road_id, 'through',
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.057784, 28.591491], [77.058123, 28.591906], [77.05836, 28.592169], [77.058479, 28.592107], [77.058578, 28.592044], [77.05848, 28.591914], [77.058459, 28.591879], [77.058438, 28.591835], [77.058431, 28.591789], [77.058434, 28.5917], [77.058441, 28.591592], [77.058444, 28.591469], [77.058466, 28.591356], [77.058486, 28.591315], [77.058533, 28.591262], [77.058608, 28.591209], [77.058653, 28.591178], [77.058806, 28.591076], [77.058875, 28.591025], [77.059049, 28.590911], [77.058984, 28.590847], [77.058885, 28.590734], [77.058813, 28.590783], [77.058239, 28.591167], [77.057768, 28.591471], [77.057667, 28.591538], [77.057439, 28.591693], [77.05507, 28.593295], [77.05499, 28.593347], [77.054534, 28.593642], [77.054201, 28.593857], [77.0536, 28.594244], [77.053227, 28.594491], [77.050991, 28.595988], [77.050333, 28.596448], [77.050053, 28.596644], [77.049963, 28.596703], [77.049931, 28.59667]]}'), 4326), 1401, 130, 50
+FROM cameras f, cameras t, roads r
+WHERE f.camera_code='CAM-32' AND t.camera_code='CAM-24' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.065424, 28.586337], [77.065378, 28.586285], [77.065482, 28.586211], [77.065566, 28.586306], [77.065457, 28.586374], [77.064863, 28.586767], [77.063463, 28.587687], [77.061634, 28.588882], [77.061526, 28.588955], [77.060143, 28.589886], [77.058885, 28.590734], [77.058813, 28.590783], [77.058239, 28.591167], [77.057768, 28.591471], [77.057784, 28.591491]]}'), 4326), 990, 77, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-44' AND t.camera_code='CAM-38' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-34' AND t.camera_code='CAM-28' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.065424, 28.586337], [77.065378, 28.586285], [77.065482, 28.586211], [77.065566, 28.586306], [77.065457, 28.586374], [77.064863, 28.586767], [77.063463, 28.587687], [77.061634, 28.588882], [77.061526, 28.588955], [77.060143, 28.589886], [77.058885, 28.590734], [77.058813, 28.590783], [77.058239, 28.591167], [77.057768, 28.591471], [77.057784, 28.591491]]}'), 4326), 990, 77, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-46' AND t.camera_code='CAM-38' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-36' AND t.camera_code='CAM-28' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.071697, 28.594659], [77.071697, 28.594659], [77.071697, 28.59466], [77.071726, 28.594813], [77.071499, 28.594907], [77.071285, 28.594994], [77.069373, 28.595675], [77.069302, 28.595701], [77.069272, 28.595711], [77.067984, 28.59617], [77.067438, 28.596376], [77.067399, 28.596391], [77.067354, 28.596408], [77.067285, 28.596431], [77.065545, 28.597026], [77.065228, 28.597159], [77.065004, 28.597289], [77.064393, 28.597698], [77.06415, 28.597881], [77.063567, 28.598267], [77.063483, 28.598335], [77.063551, 28.598426], [77.063927, 28.598857], [77.064713, 28.599757], [77.064801, 28.599857], [77.06484, 28.599902], [77.065005, 28.600091], [77.065168, 28.599964], [77.064909, 28.599817], [77.06399, 28.598756], [77.063704, 28.598427]]}'), 4326), 1410, 109, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-47' AND t.camera_code='CAM-49' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.063704, 28.598427], [77.06399, 28.598756], [77.064909, 28.599817], [77.065168, 28.599964], [77.065005, 28.600091], [77.06484, 28.599902], [77.064801, 28.599857], [77.064713, 28.599757], [77.063927, 28.598857], [77.063551, 28.598426], [77.063483, 28.598335], [77.063164, 28.597982], [77.062706, 28.597441], [77.061726, 28.596286], [77.060693, 28.595067], [77.060589, 28.594945], [77.060518, 28.594854], [77.059597, 28.593781], [77.058129, 28.592071], [77.057843, 28.591737], [77.057667, 28.591538], [77.057595, 28.591454], [77.057692, 28.591381], [77.057768, 28.591471], [77.057784, 28.591491]]}'), 4326), 1474, 109, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-35' AND t.camera_code='CAM-40' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-37' AND t.camera_code='CAM-39' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.063704, 28.598427], [77.06399, 28.598756], [77.064909, 28.599817], [77.065168, 28.599964], [77.065005, 28.600091], [77.06484, 28.599902], [77.064801, 28.599857], [77.064713, 28.599757], [77.063927, 28.598857], [77.063551, 28.598426], [77.063483, 28.598335], [77.063567, 28.598267], [77.06415, 28.597881], [77.064393, 28.597698], [77.065004, 28.597289], [77.065228, 28.597159], [77.065545, 28.597026], [77.067285, 28.596431], [77.067354, 28.596408], [77.067399, 28.596391], [77.067438, 28.596376], [77.067984, 28.59617], [77.069272, 28.595711], [77.069302, 28.595701], [77.069373, 28.595675], [77.071285, 28.594994], [77.071499, 28.594907], [77.071726, 28.594813], [77.071697, 28.59466], [77.071697, 28.594659], [77.071697, 28.594659]]}'), 4326), 1410, 109, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-35' AND t.camera_code='CAM-50' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-29' AND t.camera_code='CAM-40' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.063704, 28.598427], [77.06399, 28.598756], [77.064909, 28.599817], [77.065168, 28.599964], [77.065005, 28.600091], [77.06484, 28.599902], [77.064801, 28.599857], [77.064713, 28.599757], [77.063927, 28.598857], [77.063551, 28.598426], [77.063241, 28.598638], [77.062977, 28.598814], [77.062327, 28.599245], [77.062079, 28.599392], [77.061996, 28.599441], [77.061882, 28.599526], [77.061695, 28.599643], [77.06111, 28.600008], [77.061085, 28.600024], [77.061059, 28.600041], [77.060172, 28.600615], [77.059763, 28.600899], [77.058366, 28.601846], [77.058287, 28.601899], [77.05656, 28.603074], [77.056458, 28.603144], [77.055928, 28.603469], [77.055887, 28.603495], [77.055837, 28.603528], [77.055721, 28.603458]]}'), 4326), 1435, 108, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-39' AND t.camera_code='CAM-36' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.063704, 28.598427], [77.06399, 28.598756], [77.064909, 28.599817], [77.065168, 28.599964], [77.065005, 28.600091], [77.06484, 28.599902], [77.064801, 28.599857], [77.064713, 28.599757], [77.063927, 28.598857], [77.063551, 28.598426], [77.063483, 28.598335], [77.063567, 28.598267], [77.06415, 28.597881], [77.064393, 28.597698], [77.065004, 28.597289], [77.065228, 28.597159], [77.065545, 28.597026], [77.067285, 28.596431], [77.067354, 28.596408], [77.067399, 28.596391], [77.067438, 28.596376], [77.067984, 28.59617], [77.069272, 28.595711], [77.069302, 28.595701], [77.069373, 28.595675], [77.071285, 28.594994], [77.071499, 28.594907], [77.071726, 28.594813], [77.071697, 28.59466], [77.071697, 28.594659], [77.071697, 28.594659]]}'), 4326), 1410, 109, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-39' AND t.camera_code='CAM-50' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.063704, 28.598427], [77.06399, 28.598756], [77.064909, 28.599817], [77.065168, 28.599964], [77.065005, 28.600091], [77.06484, 28.599902], [77.064801, 28.599857], [77.064713, 28.599757], [77.063927, 28.598857], [77.063551, 28.598426], [77.063241, 28.598638], [77.062977, 28.598814], [77.062327, 28.599245], [77.062079, 28.599392], [77.061996, 28.599441], [77.061882, 28.599526], [77.061695, 28.599643], [77.06111, 28.600008], [77.061085, 28.600024], [77.061059, 28.600041], [77.060172, 28.600615], [77.059763, 28.600899], [77.058366, 28.601846], [77.058287, 28.601899], [77.05656, 28.603074], [77.056458, 28.603144], [77.055928, 28.603469], [77.055887, 28.603495], [77.055837, 28.603528], [77.055721, 28.603458]]}'), 4326), 1435, 108, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-49' AND t.camera_code='CAM-36' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-29' AND t.camera_code='CAM-26' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.063704, 28.598427], [77.06399, 28.598756], [77.064909, 28.599817], [77.065168, 28.599964], [77.065005, 28.600091], [77.06484, 28.599902], [77.064801, 28.599857], [77.064713, 28.599757], [77.063927, 28.598857], [77.063551, 28.598426], [77.063483, 28.598335], [77.063164, 28.597982], [77.062706, 28.597441], [77.061726, 28.596286], [77.060693, 28.595067], [77.060589, 28.594945], [77.060518, 28.594854], [77.059597, 28.593781], [77.058129, 28.592071], [77.057843, 28.591737], [77.057667, 28.591538], [77.057595, 28.591454], [77.057692, 28.591381], [77.057768, 28.591471], [77.057784, 28.591491]]}'), 4326), 1474, 109, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-49' AND t.camera_code='CAM-40' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-39' AND t.camera_code='CAM-30' AND r.road_code='DWK-NET-1';
+INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
+SELECT f.camera_id, t.camera_id, r.road_id, 'through',
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.063704, 28.598427], [77.06399, 28.598756], [77.064909, 28.599817], [77.065168, 28.599964], [77.065005, 28.600091], [77.06484, 28.599902], [77.064801, 28.599857], [77.064713, 28.599757], [77.063927, 28.598857], [77.063551, 28.598426], [77.063241, 28.598638], [77.062977, 28.598814], [77.062327, 28.599245], [77.062079, 28.599392], [77.061996, 28.599441], [77.061882, 28.599526], [77.061695, 28.599643], [77.06111, 28.600008], [77.061085, 28.600024], [77.061059, 28.600041], [77.060172, 28.600615], [77.059763, 28.600899], [77.058366, 28.601846], [77.058287, 28.601899], [77.05656, 28.603074], [77.056458, 28.603144], [77.055928, 28.603469], [77.055887, 28.603495], [77.055837, 28.603528], [77.055721, 28.603458]]}'), 4326), 1435, 108, 50
+FROM cameras f, cameras t, roads r
+WHERE f.camera_code='CAM-39' AND t.camera_code='CAM-26' AND r.road_code='DWK-NET-1';
+INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
+SELECT f.camera_id, t.camera_id, r.road_id, 'through',
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.063704, 28.598427], [77.06399, 28.598756], [77.064909, 28.599817], [77.065168, 28.599964], [77.065005, 28.600091], [77.06484, 28.599902], [77.064801, 28.599857], [77.064713, 28.599757], [77.063927, 28.598857], [77.063551, 28.598426], [77.063483, 28.598335], [77.063164, 28.597982], [77.062706, 28.597441], [77.061726, 28.596286], [77.060693, 28.595067], [77.060589, 28.594945], [77.060518, 28.594854], [77.059597, 28.593781], [77.058129, 28.592071], [77.057843, 28.591737], [77.057667, 28.591538], [77.057595, 28.591454], [77.057692, 28.591381], [77.057768, 28.591471], [77.057784, 28.591491]]}'), 4326), 1474, 109, 50
+FROM cameras f, cameras t, roads r
+WHERE f.camera_code='CAM-25' AND t.camera_code='CAM-30' AND r.road_code='DWK-NET-1';
+INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
+SELECT f.camera_id, t.camera_id, r.road_id, 'through',
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.063704, 28.598427], [77.06399, 28.598756], [77.064909, 28.599817], [77.065168, 28.599964], [77.065005, 28.600091], [77.06484, 28.599902], [77.064801, 28.599857], [77.064713, 28.599757], [77.063927, 28.598857], [77.063551, 28.598426], [77.063483, 28.598335], [77.063567, 28.598267], [77.06415, 28.597881], [77.064393, 28.597698], [77.065004, 28.597289], [77.065228, 28.597159], [77.065545, 28.597026], [77.067285, 28.596431], [77.067354, 28.596408], [77.067399, 28.596391], [77.067438, 28.596376], [77.067984, 28.59617], [77.069272, 28.595711], [77.069302, 28.595701], [77.069373, 28.595675], [77.071285, 28.594994], [77.071499, 28.594907], [77.071726, 28.594813], [77.071697, 28.59466], [77.071697, 28.594659], [77.071697, 28.594659]]}'), 4326), 1410, 109, 50
+FROM cameras f, cameras t, roads r
+WHERE f.camera_code='CAM-25' AND t.camera_code='CAM-40' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.057743, 28.577125], [77.057702, 28.577077], [77.057593, 28.577156], [77.057034, 28.577538], [77.055622, 28.578486], [77.055041, 28.578876], [77.054945, 28.578949], [77.052588, 28.580509], [77.052483, 28.580579], [77.051816, 28.581021], [77.049983, 28.582239], [77.049843, 28.582334], [77.049902, 28.582411], [77.049985, 28.582503]]}'), 4326), 995, 69, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-51' AND t.camera_code='CAM-53' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.049985, 28.582503], [77.049902, 28.582411], [77.049843, 28.582334], [77.049983, 28.582239], [77.050035, 28.582318], [77.050285, 28.58267], [77.050503, 28.582923], [77.05064, 28.583081], [77.051747, 28.584364], [77.051825, 28.584362], [77.051895, 28.584385], [77.051938, 28.584422], [77.051972, 28.584469], [77.051985, 28.584562], [77.051997, 28.584608], [77.052003, 28.584657], [77.05202, 28.584696], [77.052037, 28.584724], [77.052065, 28.58474], [77.052116, 28.58476], [77.052198, 28.584801], [77.052265, 28.584832], [77.052326, 28.584906], [77.052336, 28.584994], [77.05232, 28.585036], [77.05229, 28.585072], [77.054838, 28.588017], [77.054893, 28.588086], [77.055806, 28.589165], [77.056762, 28.590298], [77.057319, 28.59096], [77.057692, 28.591381], [77.057768, 28.591471], [77.057784, 28.591491]]}'), 4326), 1336, 94, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-53' AND t.camera_code='CAM-42' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-41' AND t.camera_code='CAM-43' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.049985, 28.582503], [77.049902, 28.582411], [77.049569, 28.582639], [77.048015, 28.583702], [77.04626, 28.584866], [77.04617, 28.584926], [77.04455, 28.58599], [77.043052, 28.587011], [77.042847, 28.587149], [77.042663, 28.587341], [77.042482, 28.587511], [77.042362, 28.587619], [77.042271, 28.587695], [77.042189, 28.587603], [77.04228, 28.58753], [77.042327, 28.587581]]}'), 4326), 995, 78, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-53' AND t.camera_code='CAM-30' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-31' AND t.camera_code='CAM-20' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.049985, 28.582503], [77.049902, 28.582411], [77.049843, 28.582334], [77.049983, 28.582239], [77.051816, 28.581021], [77.052483, 28.580579], [77.052588, 28.580509], [77.054945, 28.578949], [77.055041, 28.578876], [77.055622, 28.578486], [77.057034, 28.577538], [77.057593, 28.577156], [77.057702, 28.577077], [77.057743, 28.577125]]}'), 4326), 995, 69, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-41' AND t.camera_code='CAM-54' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.049985, 28.582503], [77.049902, 28.582411], [77.049569, 28.582639], [77.048015, 28.583702], [77.04626, 28.584866], [77.04617, 28.584926], [77.04455, 28.58599], [77.043052, 28.587011], [77.042847, 28.587149], [77.042663, 28.587341], [77.042482, 28.587511], [77.042362, 28.587619], [77.042271, 28.587695], [77.042189, 28.587603], [77.04228, 28.58753], [77.042327, 28.587581]]}'), 4326), 995, 78, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-41' AND t.camera_code='CAM-30' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.049985, 28.582503], [77.049902, 28.582411], [77.049843, 28.582334], [77.049983, 28.582239], [77.051816, 28.581021], [77.052483, 28.580579], [77.052588, 28.580509], [77.054945, 28.578949], [77.055041, 28.578876], [77.055622, 28.578486], [77.057034, 28.577538], [77.057593, 28.577156], [77.057702, 28.577077], [77.057743, 28.577125]]}'), 4326), 995, 69, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-29' AND t.camera_code='CAM-54' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-31' AND t.camera_code='CAM-44' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.049985, 28.582503], [77.049902, 28.582411], [77.049843, 28.582334], [77.049983, 28.582239], [77.050035, 28.582318], [77.050285, 28.58267], [77.050503, 28.582923], [77.05064, 28.583081], [77.051747, 28.584364], [77.051825, 28.584362], [77.051895, 28.584385], [77.051938, 28.584422], [77.051972, 28.584469], [77.051985, 28.584562], [77.051997, 28.584608], [77.052003, 28.584657], [77.05202, 28.584696], [77.052037, 28.584724], [77.052065, 28.58474], [77.052116, 28.58476], [77.052198, 28.584801], [77.052265, 28.584832], [77.052326, 28.584906], [77.052336, 28.584994], [77.05232, 28.585036], [77.05229, 28.585072], [77.054838, 28.588017], [77.054893, 28.588086], [77.055806, 28.589165], [77.056762, 28.590298], [77.057319, 28.59096], [77.057692, 28.591381], [77.057768, 28.591471], [77.057784, 28.591491]]}'), 4326), 1336, 94, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-29' AND t.camera_code='CAM-42' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-19' AND t.camera_code='CAM-32' AND r.road_code='DWK-NET-1';
+INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
+SELECT f.camera_id, t.camera_id, r.road_id, 'through',
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.049985, 28.582503], [77.049902, 28.582411], [77.049843, 28.582334], [77.049983, 28.582239], [77.051816, 28.581021], [77.052483, 28.580579], [77.052588, 28.580509], [77.054945, 28.578949], [77.055041, 28.578876], [77.055622, 28.578486], [77.057034, 28.577538], [77.057593, 28.577156], [77.057702, 28.577077], [77.057743, 28.577125]]}'), 4326), 995, 69, 50
+FROM cameras f, cameras t, roads r
+WHERE f.camera_code='CAM-19' AND t.camera_code='CAM-44' AND r.road_code='DWK-NET-1';
+INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
+SELECT f.camera_id, t.camera_id, r.road_id, 'through',
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.049985, 28.582503], [77.049902, 28.582411], [77.049843, 28.582334], [77.049983, 28.582239], [77.050035, 28.582318], [77.050285, 28.58267], [77.050503, 28.582923], [77.05064, 28.583081], [77.051747, 28.584364], [77.051825, 28.584362], [77.051895, 28.584385], [77.051938, 28.584422], [77.051972, 28.584469], [77.051985, 28.584562], [77.051997, 28.584608], [77.052003, 28.584657], [77.05202, 28.584696], [77.052037, 28.584724], [77.052065, 28.58474], [77.052116, 28.58476], [77.052198, 28.584801], [77.052265, 28.584832], [77.052326, 28.584906], [77.052336, 28.584994], [77.05232, 28.585036], [77.05229, 28.585072], [77.054838, 28.588017], [77.054893, 28.588086], [77.055806, 28.589165], [77.056762, 28.590298], [77.057319, 28.59096], [77.057692, 28.591381], [77.057768, 28.591471], [77.057784, 28.591491]]}'), 4326), 1336, 94, 50
+FROM cameras f, cameras t, roads r
+WHERE f.camera_code='CAM-43' AND t.camera_code='CAM-32' AND r.road_code='DWK-NET-1';
+INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
+SELECT f.camera_id, t.camera_id, r.road_id, 'through',
+       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.049985, 28.582503], [77.049902, 28.582411], [77.049569, 28.582639], [77.048015, 28.583702], [77.04626, 28.584866], [77.04617, 28.584926], [77.04455, 28.58599], [77.043052, 28.587011], [77.042847, 28.587149], [77.042663, 28.587341], [77.042482, 28.587511], [77.042362, 28.587619], [77.042271, 28.587695], [77.042189, 28.587603], [77.04228, 28.58753], [77.042327, 28.587581]]}'), 4326), 995, 78, 50
+FROM cameras f, cameras t, roads r
+WHERE f.camera_code='CAM-43' AND t.camera_code='CAM-20' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.027806, 28.597154], [77.027724, 28.597209], [77.027661, 28.597136], [77.027827, 28.59703], [77.027982, 28.596928], [77.027997, 28.596918], [77.028095, 28.596854], [77.028821, 28.596368], [77.028871, 28.596335], [77.029846, 28.595695], [77.030537, 28.595231], [77.031213, 28.594776], [77.031299, 28.594719], [77.033031, 28.593561], [77.033847, 28.593016], [77.034376, 28.592662], [77.034469, 28.592604], [77.034527, 28.59267], [77.034431, 28.59273], [77.034389, 28.592758]]}'), 4326), 880, 66, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-07' AND t.camera_code='CAM-22' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-05' AND t.camera_code='CAM-14' AND r.road_code='DWK-NET-1';
 INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
 SELECT f.camera_id, t.camera_id, r.road_id, 'through',
        ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.027806, 28.597154], [77.027724, 28.597209], [77.027661, 28.597136], [77.027827, 28.59703], [77.027898, 28.597093], [77.028173, 28.597473], [77.02867, 28.598068], [77.028778, 28.598199], [77.028897, 28.598335], [77.029634, 28.599205], [77.029784, 28.599231], [77.029917, 28.599252], [77.030039, 28.599323], [77.030118, 28.599428], [77.030143, 28.599545], [77.030114, 28.599667], [77.030193, 28.599907], [77.031159, 28.601057], [77.031788, 28.601791], [77.033458, 28.603748], [77.033532, 28.603831], [77.034457, 28.6049], [77.035265, 28.605842], [77.035426, 28.606029], [77.035438, 28.606043], [77.035443, 28.606049], [77.035553, 28.606176], [77.035627, 28.606203]]}'), 4326), 1329, 125, 50
 FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-21' AND t.camera_code='CAM-08' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.027806, 28.597154], [77.027724, 28.597209], [77.027661, 28.597136], [77.027827, 28.59703], [77.027898, 28.597093], [77.028173, 28.597473], [77.02867, 28.598068], [77.028778, 28.598199], [77.028897, 28.598335], [77.029634, 28.599205], [77.029784, 28.599231], [77.029917, 28.599252], [77.030039, 28.599323], [77.030118, 28.599428], [77.030143, 28.599545], [77.030114, 28.599667], [77.030193, 28.599907], [77.031159, 28.601057], [77.031788, 28.601791], [77.033458, 28.603748], [77.033532, 28.603831], [77.034457, 28.6049], [77.035265, 28.605842], [77.035426, 28.606029], [77.035438, 28.606043], [77.035443, 28.606049], [77.035553, 28.606176], [77.035627, 28.606203]]}'), 4326), 1329, 125, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-23' AND t.camera_code='CAM-08' AND r.road_code='DWK-NET-1';
-INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, path, distance_meters, free_flow_time_seconds, speed_limit_kph)
-SELECT f.camera_id, t.camera_id, r.road_id, 'through',
-       ST_SetSRID(ST_GeomFromGeoJSON('{"type": "LineString", "coordinates": [[77.027806, 28.597154], [77.027724, 28.597209], [77.027661, 28.597136], [77.027827, 28.59703], [77.027982, 28.596928], [77.027997, 28.596918], [77.028095, 28.596854], [77.028821, 28.596368], [77.028871, 28.596335], [77.029846, 28.595695], [77.030537, 28.595231], [77.031213, 28.594776], [77.031299, 28.594719], [77.033031, 28.593561], [77.033847, 28.593016], [77.034376, 28.592662], [77.034469, 28.592604], [77.034527, 28.59267], [77.034431, 28.59273], [77.034389, 28.592758]]}'), 4326), 880, 66, 50
-FROM cameras f, cameras t, roads r
-WHERE f.camera_code='CAM-23' AND t.camera_code='CAM-22' AND r.road_code='DWK-NET-1';
+WHERE f.camera_code='CAM-13' AND t.camera_code='CAM-06' AND r.road_code='DWK-NET-1';
 
 INSERT INTO plates (normalized_plate) VALUES ('DL3CAB1234'), ('DL8CAF5678');
 
@@ -412,15 +357,15 @@ INSERT INTO sightings (source_event_id, camera_id, plate_id, raw_plate_text, nor
 VALUES
   ('seed-DL3CAB1234-CAM-01', (SELECT camera_id FROM cameras WHERE camera_code='CAM-01'), (SELECT plate_id FROM plates WHERE normalized_plate='DL3CAB1234'), 'DL3CAB1234', 'DL3CAB1234', 0.96, 0.93, '[]'::jsonb, 'accepted', now() - make_interval(secs => 549), 164, 'car', 'white', 2, 'anpr-v1'),
   ('seed-DL3CAB1234-CAM-03', (SELECT camera_id FROM cameras WHERE camera_code='CAM-03'), (SELECT plate_id FROM plates WHERE normalized_plate='DL3CAB1234'), 'DL3CAB1234', 'DL3CAB1234', 0.96, 0.93, '[]'::jsonb, 'accepted', now() - make_interval(secs => 463), 127, 'car', 'white', 2, 'anpr-v1'),
-  ('seed-DL3CAB1234-CAM-11', (SELECT camera_id FROM cameras WHERE camera_code='CAM-11'), (SELECT plate_id FROM plates WHERE normalized_plate='DL3CAB1234'), 'DL3CAB1234', 'DL3CAB1234', 0.96, 0.93, '[]'::jsonb, 'accepted', now() - make_interval(secs => 337), 125, 'car', 'white', 2, 'anpr-v1'),
-  ('seed-DL3CAB1234-CAM-32', (SELECT camera_id FROM cameras WHERE camera_code='CAM-32'), (SELECT plate_id FROM plates WHERE normalized_plate='DL3CAB1234'), 'DL3CAB1234', 'DL3CAB1234', 0.96, 0.93, '[]'::jsonb, 'accepted', now() - make_interval(secs => 239), 220, 'car', 'white', 2, 'anpr-v1'),
-  ('seed-DL3CAB1234-CAM-33', (SELECT camera_id FROM cameras WHERE camera_code='CAM-33'), (SELECT plate_id FROM plates WHERE normalized_plate='DL3CAB1234'), 'DL3CAB1234', 'DL3CAB1234', 0.96, 0.93, '[]'::jsonb, 'accepted', now() - make_interval(secs => 89), 216, 'car', 'white', 2, 'anpr-v1'),
-  ('seed-DL3CAB1234-CAM-37', (SELECT camera_id FROM cameras WHERE camera_code='CAM-37'), (SELECT plate_id FROM plates WHERE normalized_plate='DL3CAB1234'), 'DL3CAB1234', 'DL3CAB1234', 0.96, 0.93, '[]'::jsonb, 'accepted', now() - make_interval(secs => 0), 127, 'car', 'white', 2, 'anpr-v1');
+  ('seed-DL3CAB1234-CAM-09', (SELECT camera_id FROM cameras WHERE camera_code='CAM-09'), (SELECT plate_id FROM plates WHERE normalized_plate='DL3CAB1234'), 'DL3CAB1234', 'DL3CAB1234', 0.96, 0.93, '[]'::jsonb, 'accepted', now() - make_interval(secs => 337), 125, 'car', 'white', 2, 'anpr-v1'),
+  ('seed-DL3CAB1234-CAM-22', (SELECT camera_id FROM cameras WHERE camera_code='CAM-22'), (SELECT plate_id FROM plates WHERE normalized_plate='DL3CAB1234'), 'DL3CAB1234', 'DL3CAB1234', 0.96, 0.93, '[]'::jsonb, 'accepted', now() - make_interval(secs => 239), 220, 'car', 'white', 2, 'anpr-v1'),
+  ('seed-DL3CAB1234-CAM-23', (SELECT camera_id FROM cameras WHERE camera_code='CAM-23'), (SELECT plate_id FROM plates WHERE normalized_plate='DL3CAB1234'), 'DL3CAB1234', 'DL3CAB1234', 0.96, 0.93, '[]'::jsonb, 'accepted', now() - make_interval(secs => 89), 216, 'car', 'white', 2, 'anpr-v1'),
+  ('seed-DL3CAB1234-CAM-27', (SELECT camera_id FROM cameras WHERE camera_code='CAM-27'), (SELECT plate_id FROM plates WHERE normalized_plate='DL3CAB1234'), 'DL3CAB1234', 'DL3CAB1234', 0.96, 0.93, '[]'::jsonb, 'accepted', now() - make_interval(secs => 0), 127, 'car', 'white', 2, 'anpr-v1');
 
 INSERT INTO sightings (source_event_id, camera_id, plate_id, raw_plate_text, normalized_plate_candidate, detection_confidence, ocr_confidence, ocr_candidates, validation_status, spotted_at, direction_degrees, vehicle_type, vehicle_color, lane_number, model_version)
 VALUES
   ('seed-DL8CAF5678-CAM-01', (SELECT camera_id FROM cameras WHERE camera_code='CAM-01'), (SELECT plate_id FROM plates WHERE normalized_plate='DL8CAF5678'), 'DL8CAF5678', 'DL8CAF5678', 0.93, 0.88, '[]'::jsonb, 'accepted', now() - make_interval(secs => 600), 164, 'car', 'black', 3, 'anpr-v1'),
-  ('seed-DL8CAF5678-CAM-51', (SELECT camera_id FROM cameras WHERE camera_code='CAM-51'), (SELECT plate_id FROM plates WHERE normalized_plate='DL8CAF5678'), 'DL8CAF5678', 'DL8CAF5678', 0.93, 0.88, '[]'::jsonb, 'accepted', now() - make_interval(secs => 595), 217, 'car', 'black', 3, 'anpr-v1');
+  ('seed-DL8CAF5678-CAM-41', (SELECT camera_id FROM cameras WHERE camera_code='CAM-41'), (SELECT plate_id FROM plates WHERE normalized_plate='DL8CAF5678'), 'DL8CAF5678', 'DL8CAF5678', 0.93, 0.88, '[]'::jsonb, 'accepted', now() - make_interval(secs => 595), 217, 'car', 'black', 3, 'anpr-v1');
 
 INSERT INTO blacklist_entries (plate_id, reason, severity, status, added_by, case_reference)
 SELECT plate_id, 'Reported stolen (demo)', 'high', 'active', 'seed', 'DWK-CASE-001' FROM plates WHERE normalized_plate='DL8CAF5678';
@@ -434,6 +379,6 @@ WHERE s.source_event_id='seed-DL8CAF5678-CAM-01';
 INSERT INTO alerts (dedup_key, alert_type, sighting_id, previous_sighting_id, anomaly_reason, status, match_confidence, details)
 SELECT 'seed-anom-DL8CAF5678', 'route_anomaly', cur.sighting_id, prev.sighting_id, 'impossible_travel_time', 'new', 0.98, jsonb_build_object('observed_seconds',5)
 FROM sightings cur JOIN sightings prev ON prev.source_event_id='seed-DL8CAF5678-CAM-01'
-WHERE cur.source_event_id='seed-DL8CAF5678-CAM-51';
+WHERE cur.source_event_id='seed-DL8CAF5678-CAM-41';
 
 COMMIT;
