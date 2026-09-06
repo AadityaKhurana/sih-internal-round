@@ -108,19 +108,23 @@ def sql_str(s):
 
 def approach(coords, end_is_last):
     """Camera on the INCOMING (left) carriageway, OFFSET_M before the junction end
-    of `coords`. Returns (lon, lat, travel_dir) where travel_dir is the incoming
-    vehicles' heading toward the junction. Camera facing = travel_dir + 180 (it
-    looks upstream at oncoming traffic). Left-hand driving -> shift left of travel."""
+    of `coords`. Uses the LOCAL road tangent (the polyline segment the camera sits
+    on) — not the straight chord to the junction — so on curved approaches the
+    camera lands on the correct (left) side. Returns (lon, lat, travel_dir) with
+    travel_dir = incoming vehicles' heading toward the junction."""
     pts = coords if end_is_last else coords[::-1]   # pts[-1] = junction approached
-    end = pts[-1]; acc = 0.0; prev = end; pos = pts[0]
-    for q in reversed(pts[:-1]):
-        d = haversine((prev[1], prev[0]), (q[1], q[0]))
+    near, far = pts[-1], (pts[-2] if len(pts) >= 2 else pts[-1])
+    acc = 0.0; pos = near
+    for k in range(len(pts) - 1, 0, -1):
+        near_k, far_k = pts[k], pts[k - 1]
+        d = haversine((near_k[1], near_k[0]), (far_k[1], far_k[0]))
         if d > 0 and acc + d >= OFFSET_M:
             t = (OFFSET_M - acc) / d
-            pos = (prev[0] + (q[0] - prev[0]) * t, prev[1] + (q[1] - prev[1]) * t)
+            pos = (near_k[0] + (far_k[0] - near_k[0]) * t, near_k[1] + (far_k[1] - near_k[1]) * t)
+            near, far = near_k, far_k
             break
-        acc += d; prev = q; pos = q
-    td = bearing((pos[1], pos[0]), (end[1], end[0]))       # incoming travel direction
+        acc += d; pos = far_k; near, far = near_k, far_k
+    td = bearing((far[1], far[0]), (near[1], near[0]))     # local travel dir toward junction
     la, lo = move(pos[1], pos[0], (td - 90) % 360, LAT_M)  # onto the left carriageway
     return round(lo, 6), round(la, 6), td
 
