@@ -21,8 +21,8 @@ import time
 from pathlib import Path
 
 OSRM = "https://router.project-osrm.org"
-KNN = 2                 # each junction links to its N nearest neighbours (then bridged)
-OFFSET_M = 25.0         # camera offset back from the junction along its approach
+OFFSET_M = 18.0         # camera set-back from the junction along its approach (a few m)
+LAT_M = 5.0             # lateral offset onto the incoming (left) carriageway
 
 PLATES_TRIP = "DL3CAB1234"
 PLATE_BLACK = "DL8CAF5678"
@@ -75,6 +75,16 @@ def bearing(a, b):  # (lat, lon) -> compass degrees for direction a->b
     return round((math.degrees(math.atan2(x, y)) + 360) % 360)
 
 
+def move(lat, lon, brng, d):  # move point d metres along compass bearing -> (lat, lon)
+    R = 6371000.0
+    br = math.radians(brng); dr = d / R
+    la = math.radians(lat); lo = math.radians(lon)
+    la2 = math.asin(math.sin(la) * math.cos(dr) + math.cos(la) * math.sin(dr) * math.cos(br))
+    lo2 = lo + math.atan2(math.sin(br) * math.sin(dr) * math.cos(la),
+                          math.cos(dr) - math.sin(la) * math.sin(la2))
+    return math.degrees(la2), math.degrees(lo2)
+
+
 def snap(lat, lon):
     """OSRM nearest -> on-road (lon, lat) + street name."""
     try:
@@ -97,8 +107,10 @@ def sql_str(s):
 
 
 def approach(coords, end_is_last):
-    """Point OFFSET_M back from the junction end of `coords`, heading = travel
-    bearing toward that junction (incoming flow)."""
+    """Camera on the INCOMING (left) carriageway, OFFSET_M before the junction end
+    of `coords`. Returns (lon, lat, travel_dir) where travel_dir is the incoming
+    vehicles' heading toward the junction. Camera facing = travel_dir + 180 (it
+    looks upstream at oncoming traffic). Left-hand driving -> shift left of travel."""
     pts = coords if end_is_last else coords[::-1]   # pts[-1] = junction approached
     end = pts[-1]; acc = 0.0; prev = end; pos = pts[0]
     for q in reversed(pts[:-1]):
@@ -108,8 +120,9 @@ def approach(coords, end_is_last):
             pos = (prev[0] + (q[0] - prev[0]) * t, prev[1] + (q[1] - prev[1]) * t)
             break
         acc += d; prev = q; pos = q
-    hd = bearing((pos[1], pos[0]), (end[1], end[0]))
-    return round(pos[0], 6), round(pos[1], 6), hd
+    td = bearing((pos[1], pos[0]), (end[1], end[0]))       # incoming travel direction
+    la, lo = move(pos[1], pos[0], (td - 90) % 360, LAT_M)  # onto the left carriageway
+    return round(lo, 6), round(la, 6), td
 
 
 def main():
@@ -125,12 +138,28 @@ def main():
     def jpt(i):
         return (JUNC[i][2], JUNC[i][1])  # (lat, lon)
 
-    # ---- Junction adjacency: KNN mesh, then bridge into one component ----
-    pairs = set()
+    # ---- Road-based adjacency (NOT aerial): A-B is a DIRECT link iff the OSRM
+    # road route A->B passes close to NO other junction; otherwise the road really
+    # runs A-...-C-...-B and those sub-segments are the real links. Aerial distance
+    # is used ONLY as a coarse prune to skip far pairs, never to decide adjacency. ----
+    PASS_M = 45.0            # a junction this close to a route lies ON it
+    PRUNE_M = 2600.0         # skip obviously-far pairs (performance only)
+    seg = {}
     for i in range(n):
-        order = sorted(range(n), key=lambda j: haversine(jpt(i), jpt(j)) if j != i else 9e9)
-        for j in order[:KNN]:
-            pairs.add((min(i, j), max(i, j)))
+        for j in range(i + 1, n):
+            if haversine(jpt(i), jpt(j)) > PRUNE_M:
+                continue
+            coords, dist, ff = route(("", JUNC[i][1], JUNC[i][2]), ("", JUNC[j][1], JUNC[j][2]))
+            time.sleep(0.2)
+            through = any(
+                k not in (i, j) and
+                min(haversine(jpt(k), (c[1], c[0])) for c in coords) < PASS_M
+                for k in range(n))
+            if not through:
+                seg[(i, j)] = (coords, dist, ff)
+    pairs = set(seg.keys())
+
+    # Ensure one connected component; bridge by shortest ROAD route between components.
     parent = list(range(n))
     def find(x):
         while parent[x] != x:
@@ -141,35 +170,29 @@ def main():
     for (i, j) in pairs:
         union(i, j)
     while len({find(i) for i in range(n)}) > 1:
+        cross = sorted(((i, j) for i in range(n) for j in range(i + 1, n) if find(i) != find(j)),
+                       key=lambda p: haversine(jpt(p[0]), jpt(p[1])))
         best = None
-        for i in range(n):
-            for j in range(i + 1, n):
-                if find(i) != find(j):
-                    d = haversine(jpt(i), jpt(j))
-                    if best is None or d < best[0]:
-                        best = (d, i, j)
-        _, i, j = best
-        pairs.add((min(i, j), max(i, j))); union(i, j)
-
-    # ---- Route each junction edge once (coords a->b, a=min index) ----
-    seg = {}
-    for (i, j) in sorted(pairs):
-        coords, dist, ff = route(("", JUNC[i][1], JUNC[i][2]), ("", JUNC[j][1], JUNC[j][2]))
-        time.sleep(0.25)
-        seg[(i, j)] = (coords, dist, ff)
+        for (i, j) in cross[:8]:
+            coords, dist, ff = route(("", JUNC[i][1], JUNC[i][2]), ("", JUNC[j][1], JUNC[j][2]))
+            time.sleep(0.2)
+            if best is None or dist < best[1]:
+                best = ((i, j), dist, (coords, dist, ff))
+        (i, j), _, data = best
+        seg[(i, j)] = data; pairs.add((i, j)); union(i, j)
 
     # ---- Per-approach cameras: one arrival camera at each end of each edge ----
     cam_of = {}   # (junction j, from-neighbour i) -> camera index
-    CAM = []      # (code, name, lon, lat, heading)
+    CAM = []      # (code, name, lon, lat, facing, travel_dir)
     for (i, j) in sorted(pairs):
         coords, dist, ff = seg[(i, j)]
-        lon, lat, hd = approach(coords, True)    # arrival at j, from i (i->j flow)
+        lon, lat, td = approach(coords, True)    # arrival at j, from i (i->j flow)
         cam_of[(j, i)] = len(CAM)
-        CAM.append((None, f"{JUNC[j][0]} <- {JUNC[i][0]}"[:60], lon, lat, hd))
-        lon, lat, hd = approach(coords, False)   # arrival at i, from j (j->i flow)
+        CAM.append((None, f"{JUNC[j][0]} <- {JUNC[i][0]}"[:60], lon, lat, (td + 180) % 360, td))
+        lon, lat, td = approach(coords, False)   # arrival at i, from j (j->i flow)
         cam_of[(i, j)] = len(CAM)
-        CAM.append((None, f"{JUNC[i][0]} <- {JUNC[j][0]}"[:60], lon, lat, hd))
-    CAM = [(f"CAM-{k + 1:02d}", nm, lon, lat, hd) for k, (_, nm, lon, lat, hd) in enumerate(CAM)]
+        CAM.append((None, f"{JUNC[i][0]} <- {JUNC[j][0]}"[:60], lon, lat, (td + 180) % 360, td))
+    CAM = [(f"CAM-{k + 1:02d}", nm, lon, lat, fac, td) for k, (_, nm, lon, lat, fac, td) in enumerate(CAM)]
     code_at = {jk: CAM[idx][0] for jk, idx in cam_of.items()}
 
     # ---- Through-links: arrival at j from i -> arrival at k from j (segment j->k) ----
@@ -222,8 +245,8 @@ def main():
     w("INSERT INTO roads (road_code, name) VALUES ('DWK-NET-1', 'Dwarka Sector Network');")
     w("")
     w("INSERT INTO cameras (camera_code, display_name, location, heading_degrees, status) VALUES")
-    w(",\n".join(f"  ({sql_str(c)}, {sql_str(nm)}, ST_SetSRID(ST_MakePoint({lon}, {lat}), 4326), {hd}, 'active')"
-                 for c, nm, lon, lat, hd in CAM) + ";")
+    w(",\n".join(f"  ({sql_str(c)}, {sql_str(nm)}, ST_SetSRID(ST_MakePoint({lon}, {lat}), 4326), {fac}, 'active')"
+                 for c, nm, lon, lat, fac, td in CAM) + ";")
     w("")
     for fc, tc, g, dist, ff in links:
         geo = json.dumps(g).replace("'", "''")
@@ -241,15 +264,15 @@ def main():
       "validation_status, spotted_at, direction_degrees, vehicle_type, vehicle_color, lane_number, model_version)")
     tr = []
     for k, idx in enumerate(trip):
-        code, hd = CAM[idx][0], CAM[idx][4]
+        code, td = CAM[idx][0], CAM[idx][5]
         tr.append(f"  ({sql_str('seed-'+PLATES_TRIP+'-'+code)}, (SELECT camera_id FROM cameras WHERE camera_code={sql_str(code)}), "
                   f"(SELECT plate_id FROM plates WHERE normalized_plate={sql_str(PLATES_TRIP)}), "
                   f"{sql_str(PLATES_TRIP)}, {sql_str(PLATES_TRIP)}, 0.96, 0.93, '[]'::jsonb, 'accepted', "
-                  f"now() - make_interval(secs => {total - offs[k]}), {hd}, 'car', 'white', 2, 'anpr-v1')")
+                  f"now() - make_interval(secs => {total - offs[k]}), {td}, 'car', 'white', 2, 'anpr-v1')")
     w("VALUES\n" + ",\n".join(tr) + ";")
     w("")
-    c1, h1 = CAM[b1][0], CAM[b1][4]
-    c2, h2 = CAM[b2][0], CAM[b2][4]
+    c1, h1 = CAM[b1][0], CAM[b1][5]
+    c2, h2 = CAM[b2][0], CAM[b2][5]
     w("INSERT INTO sightings (source_event_id, camera_id, plate_id, raw_plate_text, "
       "normalized_plate_candidate, detection_confidence, ocr_confidence, ocr_candidates, "
       "validation_status, spotted_at, direction_degrees, vehicle_type, vehicle_color, lane_number, model_version)")
