@@ -108,41 +108,33 @@ def sql_str(s):
     return "'" + s.replace("'", "''") + "'"
 
 
-def approach(coords, end_is_last):
-    """Camera on the INCOMING (left) carriageway, a few metres before the junction
-    end of `coords`, ON the road. Normally the point at arc OFFSET_M; if that is
-    still too close to the junction (roundabout/curve) walk outward to the first
-    vertex clear of it, capped at MAX_ARC so it never overshoots to the far junction.
-    Uses the local road tangent for heading + left-side offset.
-    Returns (lon, lat, travel_dir) = incoming heading toward the junction."""
-    pts = coords if end_is_last else coords[::-1]   # pts[-1] = junction approached
-    jx = pts[-1]
-    # interpolated point at arc = OFFSET_M
-    acc = 0.0; off = None; off_nf = (pts[min(1, len(pts) - 1)], pts[0])
+def point_at_arc(pts, s):
+    """Point at arc-length s from the junction end (pts[-1]) walking outward, plus
+    the (near, far) segment vertices it lies on (near = toward junction)."""
+    acc = 0.0
     for k in range(len(pts) - 1, 0, -1):
         near_k, far_k = pts[k], pts[k - 1]
         d = haversine((near_k[1], near_k[0]), (far_k[1], far_k[0]))
-        if d <= 0:
-            continue
-        if acc + d >= OFFSET_M:
-            t = min(1.0, (OFFSET_M - acc) / d)
-            off = (near_k[0] + (far_k[0] - near_k[0]) * t, near_k[1] + (far_k[1] - near_k[1]) * t)
-            off_nf = (near_k, far_k)
-            break
+        if acc + d >= s:
+            t = (s - acc) / d if d > 0 else 0.0
+            return (near_k[0] + (far_k[0] - near_k[0]) * t, near_k[1] + (far_k[1] - near_k[1]) * t), (near_k, far_k)
         acc += d
-    if off is None:
-        off = pts[0]
-    if haversine((off[1], off[0]), (jx[1], jx[0])) >= MIN_CLEAR:
-        pos, (near, far) = off, off_nf
-    else:
-        pos, near, far = off, off_nf[0], off_nf[1]
-        acc = 0.0
-        for k in range(len(pts) - 1, 0, -1):
-            near_k, far_k = pts[k], pts[k - 1]
-            acc += haversine((near_k[1], near_k[0]), (far_k[1], far_k[0]))
-            if haversine((far_k[1], far_k[0]), (jx[1], jx[0])) >= MIN_CLEAR or acc >= MAX_ARC:
-                pos, near, far = far_k, near_k, far_k
-                break
+    return pts[0], (pts[min(1, len(pts) - 1)], pts[0])
+
+
+def approach(coords, end_is_last):
+    """Camera on the INCOMING (left) carriageway, a few metres before the junction
+    end of `coords`, ON the road. Start at arc OFFSET_M; if still too close to the
+    junction (roundabout/curve) step outward until clear, capped at MAX_ARC so it
+    never overshoots. Local road tangent for heading + left-side lateral offset.
+    Returns (lon, lat, travel_dir) = incoming heading toward the junction."""
+    pts = coords if end_is_last else coords[::-1]   # pts[-1] = junction approached
+    jx = pts[-1]
+    s = OFFSET_M
+    pos, (near, far) = point_at_arc(pts, s)
+    while haversine((pos[1], pos[0]), (jx[1], jx[0])) < MIN_CLEAR and s < MAX_ARC:
+        s += 4.0
+        pos, (near, far) = point_at_arc(pts, s)
     td = bearing((far[1], far[0]), (near[1], near[0]))     # local travel dir toward junction
     la, lo = move(pos[1], pos[0], (td - 90) % 360, LAT_M)  # onto the left carriageway
     return round(lo, 6), round(la, 6), td
