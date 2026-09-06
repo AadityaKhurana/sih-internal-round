@@ -1,40 +1,93 @@
 #!/usr/bin/env python3
 """Generate db/seed_dwarka.sql — GENUINE demo network for Dwarka, New Delhi.
 
-Cameras are placed at real Dwarka locations; camera_links are routed along the
-actual road network via OSRM (road-following LineString geometry + real
-distance/free-flow time). Run: python3 db/gen_dwarka_seed.py  (needs network).
-The generated SQL bakes the geometry in, so applying it needs no network.
+Cameras are placed at REAL traffic-signal junctions pulled from OpenStreetMap
+(Overpass) — ANPR cameras are mounted at signalized intersections, and
+traffic_signals nodes sit on the road centerline, so none land in buildings/parks.
+Clustered signal nodes are deduped into distinct junctions, ordered into a
+corridor, and 8 are picked. Links between consecutive cameras are routed along
+the actual road network via OSRM (road-following geometry + real distance/time).
+
+Run: python3 db/gen_dwarka_seed.py   (needs network). The generated SQL bakes
+geometry in, so applying it needs no network. NOTE: applying it TRUNCATEs the
+network tables — stop the pipeline workers first (they hold locks).
 """
 import json
+import math
 import subprocess
 import time
 from pathlib import Path
 
-OSRM = "https://router.project-osrm.org/route/v1/driving"
+OVERPASS = "https://overpass-api.de/api/interpreter"
+OSRM = "https://router.project-osrm.org"
+BBOX = "28.545,77.015,28.625,77.085"   # Dwarka, New Delhi
+N_CAMERAS = 8
+MIN_SEP_M = 350                         # merge signal nodes closer than this into one junction
 
-# code, display_name, lng, lat  (real Dwarka locations, N->S along the corridor)
-CAMERAS = [
-    ("CAM-01", "Dwarka Mor Metro",        77.0331, 28.6192),
-    ("CAM-02", "Nawada / Sector 14",      77.0410, 28.6100),
-    ("CAM-03", "Dwarka Sector 13",        77.0455, 28.6010),
-    ("CAM-04", "Dwarka Sector 12 Metro",  77.0430, 28.5921),
-    ("CAM-05", "Dwarka Sector 11 Metro",  77.0505, 28.5880),
-    ("CAM-06", "Dwarka Sector 10 Metro",  77.0560, 28.5825),
-    ("CAM-07", "Dwarka Sector 9 Metro",   77.0640, 28.5745),
-    ("CAM-08", "Dwarka Sector 21 Metro",  77.0580, 28.5522),
-]
-
-PLATES_TRIP = "DL3CAB1234"     # normal S-bound trip across the corridor
-PLATE_SHORT = "DL1CAA0007"     # short hop
-PLATE_BLACK = "DL8CAF5678"     # blacklisted + impossible-travel
+PLATES_TRIP = "DL3CAB1234"
+PLATE_SHORT = "DL1CAA0007"
+PLATE_BLACK = "DL8CAF5678"
 
 
-def route(a, b):
-    url = f"{OSRM}/{a[2]},{a[3]};{b[2]},{b[3]}?overview=full&geometries=geojson"
-    out = subprocess.run(["curl", "-s", "--max-time", "25", url],
-                         capture_output=True, text=True).stdout
-    d = json.loads(out)
+def curl(url, data=None):
+    cmd = ["curl", "-s", "--max-time", "60", url]
+    if data:
+        cmd += ["--data-urlencode", data]
+    return subprocess.run(cmd, capture_output=True, text=True).stdout
+
+
+def haversine(a, b):  # a,b = (lat, lon)
+    R = 6371000.0
+    p1, p2 = math.radians(a[0]), math.radians(b[0])
+    dphi = math.radians(b[0] - a[0])
+    dl = math.radians(b[1] - a[1])
+    h = math.sin(dphi / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dl / 2) ** 2
+    return 2 * R * math.asin(math.sqrt(h))
+
+
+def fetch_signals():
+    q = f'[out:json][timeout:50];node["highway"="traffic_signals"]({BBOX});out body;'
+    d = json.loads(curl(OVERPASS, f"data={q}"))
+    return [(e["lat"], e["lon"]) for e in d.get("elements", [])]
+
+
+def dedup(points, min_sep):
+    kept = []
+    for p in points:
+        if all(haversine(p, k) >= min_sep for k in kept):
+            kept.append(p)
+    return kept
+
+
+def order_chain(points):
+    pts = points[:]
+    start = max(range(len(pts)), key=lambda i: pts[i][0])  # northernmost
+    order = [pts.pop(start)]
+    while pts:
+        last = order[-1]
+        j = min(range(len(pts)), key=lambda i: haversine(last, pts[i]))
+        order.append(pts.pop(j))
+    return order
+
+
+def subsample(chain, n):
+    if len(chain) <= n:
+        return chain
+    idx = sorted({round(i * (len(chain) - 1) / (n - 1)) for i in range(n)})
+    return [chain[i] for i in idx]
+
+
+def road_name(lat, lon):
+    try:
+        d = json.loads(curl(f"{OSRM}/nearest/v1/driving/{lon},{lat}"))
+        return (d["waypoints"][0].get("name") or "").strip()
+    except Exception:
+        return ""
+
+
+def route(a, b):  # a,b = camera tuples (code,name,lon,lat)
+    d = json.loads(curl(f"{OSRM}/route/v1/driving/{a[2]},{a[3]};{b[2]},{b[3]}"
+                        f"?overview=full&geometries=geojson"))
     rt = d["routes"][0]
     return rt["geometry"], round(rt["distance"]), max(1, round(rt["duration"]))
 
@@ -44,127 +97,113 @@ def sql_str(s):
 
 
 def main():
-    links = []  # (from_code, to_code, dir_label, geojson, dist, ff)
+    signals = fetch_signals()
+    print(f"fetched {len(signals)} traffic signals")
+    junctions = order_chain(dedup(signals, MIN_SEP_M))
+    print(f"{len(junctions)} distinct junctions after dedup")
+    chosen = subsample(junctions, N_CAMERAS)
+
+    CAMERAS = []
+    for i, (lat, lon) in enumerate(chosen):
+        nm = road_name(lat, lon)
+        time.sleep(0.3)
+        label = f"{nm} signal" if nm else f"Dwarka Junction {i + 1}"
+        CAMERAS.append((f"CAM-{i + 1:02d}", label[:60], round(lon, 6), round(lat, 6)))
+        print(f"  {CAMERAS[-1][0]} {CAMERAS[-1][1]} @ {lat:.5f},{lon:.5f}")
+
+    links = []
     for i in range(len(CAMERAS) - 1):
         a, b = CAMERAS[i], CAMERAS[i + 1]
-        g, dist, ff = route(a, b)
-        links.append((a[0], b[0], "SB", g, dist, ff))
-        time.sleep(0.4)
-        g2, dist2, ff2 = route(b, a)
-        links.append((b[0], a[0], "NB", g2, dist2, ff2))
-        time.sleep(0.4)
+        g, dist, ff = route(a, b); time.sleep(0.3)
+        links.append((a[0], b[0], "FWD", g, dist, ff))
+        g2, dist2, ff2 = route(b, a); time.sleep(0.3)
+        links.append((b[0], a[0], "REV", g2, dist2, ff2))
         print(f"routed {a[0]}<->{b[0]}: {dist}m / {ff}s")
 
-    # feasible S-bound trip timestamps: cumulative free-flow * 1.15 (mild congestion)
-    fwd = {(l[0], l[1]): l for l in links if l[2] == "SB"}
+    fwd = {(l[0], l[1]): l for l in links if l[2] == "FWD"}
     offsets = [0]
     for i in range(len(CAMERAS) - 1):
-        ff = fwd[(CAMERAS[i][0], CAMERAS[i + 1][0])][5]
-        offsets.append(offsets[-1] + round(ff * 1.15))
+        offsets.append(offsets[-1] + round(fwd[(CAMERAS[i][0], CAMERAS[i + 1][0])][5] * 1.15))
     total = offsets[-1]
-    # spotted_at = now() - (total - offset) so the last sighting is ~now
     trip_ago = [total - o for o in offsets]
 
     out = []
     w = out.append
     w("-- ============================================================================")
     w("-- DEV/DEMO SEED — Dwarka, New Delhi. GENERATED by db/gen_dwarka_seed.py.")
-    w("-- Cameras at real Dwarka locations; links routed along real roads (OSRM).")
-    w("-- Re-runnable: truncates the network + observations and rebuilds fresh.")
+    w("-- Cameras at REAL OpenStreetMap traffic-signal junctions; links OSRM-routed.")
+    w("-- Re-runnable; TRUNCATEs the network — STOP the pipeline workers first.")
     w("-- ============================================================================")
     w("BEGIN;")
     w("TRUNCATE cameras, roads, plates, camera_links, sightings, blacklist_entries,")
     w("         alerts, camera_metrics_5m, traffic_metrics_5m RESTART IDENTITY CASCADE;")
     w("")
-    w("INSERT INTO roads (road_code, name) VALUES ('DWK-CORR-1', 'Dwarka Corridor (Mor -> Sector 21)');")
+    w("INSERT INTO roads (road_code, name) VALUES ('DWK-CORR-1', 'Dwarka Signal Corridor');")
     w("")
-    w("-- Cameras")
     w("INSERT INTO cameras (camera_code, display_name, location, heading_degrees, status) VALUES")
-    rows = []
-    for code, name, lng, lat in CAMERAS:
-        rows.append(f"  ({sql_str(code)}, {sql_str(name)}, "
-                    f"ST_SetSRID(ST_MakePoint({lng}, {lat}), 4326), 180, 'active')")
+    rows = [f"  ({sql_str(c)}, {sql_str(n)}, ST_SetSRID(ST_MakePoint({lng}, {lat}), 4326), 180, 'active')"
+            for c, n, lng, lat in CAMERAS]
     w(",\n".join(rows) + ";")
     w("")
-    w("-- Camera links (routed geometry + real distance/free-flow)")
     for fc, tc, dl, g, dist, ff in links:
         geo = json.dumps(g).replace("'", "''")
         w("INSERT INTO camera_links (from_camera_id, to_camera_id, road_id, direction_label, "
           "path, distance_meters, free_flow_time_seconds, speed_limit_kph)")
         w(f"SELECT f.camera_id, t.camera_id, r.road_id, {sql_str(dl)},")
         w(f"       ST_SetSRID(ST_GeomFromGeoJSON('{geo}'), 4326), {dist}, {ff}, 50")
-        w(f"FROM cameras f, cameras t, roads r")
+        w("FROM cameras f, cameras t, roads r")
         w(f"WHERE f.camera_code={sql_str(fc)} AND t.camera_code={sql_str(tc)} "
           f"AND r.road_code='DWK-CORR-1';")
     w("")
-    w("-- Plates")
     w(f"INSERT INTO plates (normalized_plate) VALUES ({sql_str(PLATES_TRIP)}), "
       f"({sql_str(PLATE_SHORT)}), ({sql_str(PLATE_BLACK)});")
     w("")
-    w("-- Sightings: full S-bound trip for the normal plate (accepted, feasible)")
     w("INSERT INTO sightings (source_event_id, camera_id, plate_id, raw_plate_text, "
       "normalized_plate_candidate, detection_confidence, ocr_confidence, ocr_candidates, "
       "validation_status, spotted_at, direction_degrees, vehicle_type, vehicle_color, "
       "lane_number, model_version)")
-    trip_vals = []
-    for i, (code, name, lng, lat) in enumerate(CAMERAS):
-        eid = f"seed-{PLATES_TRIP}-{code}"
-        trip_vals.append(
-            f"  ({sql_str(eid)}, (SELECT camera_id FROM cameras WHERE camera_code={sql_str(code)}), "
+    trip = [f"  ({sql_str('seed-'+PLATES_TRIP+'-'+c)}, (SELECT camera_id FROM cameras WHERE camera_code={sql_str(c)}), "
             f"(SELECT plate_id FROM plates WHERE normalized_plate={sql_str(PLATES_TRIP)}), "
             f"{sql_str(PLATES_TRIP)}, {sql_str(PLATES_TRIP)}, 0.96, 0.93, '[]'::jsonb, 'accepted', "
-            f"now() - make_interval(secs => {trip_ago[i]}), 180, 'car', 'white', 2, 'anpr-v1')")
-    w("VALUES\n" + ",\n".join(trip_vals) + ";")
+            f"now() - make_interval(secs => {trip_ago[i]}), 180, 'car', 'white', 2, 'anpr-v1')"
+            for i, (c, n, lng, lat) in enumerate(CAMERAS)]
+    w("VALUES\n" + ",\n".join(trip) + ";")
     w("")
-    w("-- Short trip")
+    c1, c2 = CAMERAS[0][0], CAMERAS[-1][0]
     w("INSERT INTO sightings (source_event_id, camera_id, plate_id, raw_plate_text, "
       "normalized_plate_candidate, detection_confidence, ocr_confidence, ocr_candidates, "
       "validation_status, spotted_at, direction_degrees, vehicle_type, vehicle_color, lane_number, model_version)")
-    st = []
-    for code, ago in (("CAM-03", 900), ("CAM-04", 900 - round(fwd[("CAM-03","CAM-04")][5]*1.2))):
-        eid = f"seed-{PLATE_SHORT}-{code}"
-        st.append(f"  ({sql_str(eid)}, (SELECT camera_id FROM cameras WHERE camera_code={sql_str(code)}), "
-                  f"(SELECT plate_id FROM plates WHERE normalized_plate={sql_str(PLATE_SHORT)}), "
-                  f"{sql_str(PLATE_SHORT)}, {sql_str(PLATE_SHORT)}, 0.95, 0.9, '[]'::jsonb, 'accepted', "
-                  f"now() - make_interval(secs => {ago}), 180, 'truck', 'blue', 1, 'anpr-v1')")
-    w("VALUES\n" + ",\n".join(st) + ";")
-    w("")
-    w("-- Blacklisted plate: impossible travel CAM-01 -> CAM-08 (5s apart)")
-    w("INSERT INTO sightings (source_event_id, camera_id, plate_id, raw_plate_text, "
-      "normalized_plate_candidate, detection_confidence, ocr_confidence, ocr_candidates, "
-      "validation_status, spotted_at, direction_degrees, vehicle_type, vehicle_color, lane_number, model_version)")
-    bl = []
-    for code, ago in (("CAM-01", 600), ("CAM-08", 595)):
-        eid = f"seed-{PLATE_BLACK}-{code}"
-        bl.append(f"  ({sql_str(eid)}, (SELECT camera_id FROM cameras WHERE camera_code={sql_str(code)}), "
-                  f"(SELECT plate_id FROM plates WHERE normalized_plate={sql_str(PLATE_BLACK)}), "
-                  f"{sql_str(PLATE_BLACK)}, {sql_str(PLATE_BLACK)}, 0.93, 0.88, '[]'::jsonb, 'accepted', "
-                  f"now() - make_interval(secs => {ago}), 180, 'car', 'black', 3, 'anpr-v1')")
+    bl = [f"  ({sql_str('seed-'+PLATE_BLACK+'-'+c1)}, (SELECT camera_id FROM cameras WHERE camera_code={sql_str(c1)}), "
+          f"(SELECT plate_id FROM plates WHERE normalized_plate={sql_str(PLATE_BLACK)}), "
+          f"{sql_str(PLATE_BLACK)}, {sql_str(PLATE_BLACK)}, 0.93, 0.88, '[]'::jsonb, 'accepted', "
+          f"now() - make_interval(secs => 600), 180, 'car', 'black', 3, 'anpr-v1')",
+          f"  ({sql_str('seed-'+PLATE_BLACK+'-'+c2)}, (SELECT camera_id FROM cameras WHERE camera_code={sql_str(c2)}), "
+          f"(SELECT plate_id FROM plates WHERE normalized_plate={sql_str(PLATE_BLACK)}), "
+          f"{sql_str(PLATE_BLACK)}, {sql_str(PLATE_BLACK)}, 0.93, 0.88, '[]'::jsonb, 'accepted', "
+          f"now() - make_interval(secs => 595), 180, 'car', 'black', 3, 'anpr-v1')"]
     w("VALUES\n" + ",\n".join(bl) + ";")
     w("")
-    w("-- Blacklist entry")
     w("INSERT INTO blacklist_entries (plate_id, reason, severity, status, added_by, case_reference)")
     w(f"SELECT plate_id, 'Reported stolen (demo)', 'high', 'active', 'seed', 'DWK-CASE-001' "
       f"FROM plates WHERE normalized_plate={sql_str(PLATE_BLACK)};")
     w("")
-    w("-- Demo alerts")
     w("INSERT INTO alerts (dedup_key, alert_type, sighting_id, blacklist_entry_id, status, match_confidence, details)")
-    w(f"SELECT 'seed-bl-{PLATE_BLACK}-CAM01', 'blacklist', s.sighting_id, b.blacklist_entry_id, 'new', 1.0,")
-    w("       jsonb_build_object('note','blacklisted vehicle seen','camera','CAM-01')")
+    w(f"SELECT 'seed-bl-{PLATE_BLACK}', 'blacklist', s.sighting_id, b.blacklist_entry_id, 'new', 1.0,")
+    w(f"       jsonb_build_object('note','blacklisted vehicle seen','camera',{sql_str(c1)})")
     w(f"FROM sightings s JOIN plates p ON p.plate_id=s.plate_id AND p.normalized_plate={sql_str(PLATE_BLACK)}")
     w("JOIN blacklist_entries b ON b.plate_id=p.plate_id")
-    w(f"WHERE s.source_event_id='seed-{PLATE_BLACK}-CAM-01';")
+    w(f"WHERE s.source_event_id={sql_str('seed-'+PLATE_BLACK+'-'+c1)};")
     w("")
     w("INSERT INTO alerts (dedup_key, alert_type, sighting_id, previous_sighting_id, anomaly_reason, status, match_confidence, details)")
     w(f"SELECT 'seed-anom-{PLATE_BLACK}', 'route_anomaly', cur.sighting_id, prev.sighting_id, "
-      "'impossible_travel_time', 'new', 0.98, jsonb_build_object('observed_seconds',5,'note','CAM-01 to CAM-08 in 5s')")
-    w(f"FROM sightings cur JOIN sightings prev ON prev.source_event_id='seed-{PLATE_BLACK}-CAM-01'")
-    w(f"WHERE cur.source_event_id='seed-{PLATE_BLACK}-CAM-08';")
+      "'impossible_travel_time', 'new', 0.98, jsonb_build_object('observed_seconds',5)")
+    w(f"FROM sightings cur JOIN sightings prev ON prev.source_event_id={sql_str('seed-'+PLATE_BLACK+'-'+c1)}")
+    w(f"WHERE cur.source_event_id={sql_str('seed-'+PLATE_BLACK+'-'+c2)};")
     w("")
     w("COMMIT;")
 
     Path("db/seed_dwarka.sql").write_text("\n".join(out) + "\n")
-    print(f"wrote db/seed_dwarka.sql ({len(out)} lines, {len(links)} links)")
+    print(f"wrote db/seed_dwarka.sql ({len(CAMERAS)} cameras, {len(links)} links)")
 
 
 if __name__ == "__main__":
