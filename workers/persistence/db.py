@@ -10,18 +10,34 @@ def resolve_camera_id(
     camera_code: str,
 ):
     """
-    Convert the camera's human-readable camera_code
-    into the database camera_id UUID.
+    Resolve the incoming camera_code to the DB camera_id (UUID).
+
+    Data comes in AS CAMERAS (per-approach camera codes). Post-processing here
+    aggregates a camera up to its JUNCTION: if the code is a per-approach camera
+    in `approach_cameras`, we map it to its `junction_code` and store the sighting
+    against that junction node. If the code is already a junction/camera node, it
+    is used directly (backward compatible with non-junction seeds).
     """
 
     with conn.cursor() as cur:
+        target = camera_code
+        cur.execute("SELECT to_regclass('approach_cameras')")
+        if cur.fetchone()[0] is not None:
+            cur.execute(
+                "SELECT junction_code FROM approach_cameras WHERE camera_code = %s",
+                (camera_code,),
+            )
+            row = cur.fetchone()
+            if row is not None:
+                target = row[0]  # aggregate camera -> junction
+
         cur.execute(
             """
             SELECT camera_id
             FROM cameras
             WHERE camera_code = %s
             """,
-            (camera_code,),
+            (target,),
         )
 
         row = cur.fetchone()
