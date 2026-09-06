@@ -22,6 +22,7 @@ BBOX = "28.545,77.015,28.625,77.085"
 ADD_MORE = 8            # extra real OSM signal junctions to append
 NEAR_M = 300            # dedup / "already covered" radius
 KNN = 2                 # each camera links to its N nearest neighbours
+DROP_CODES = {"CAM-17", "CAM-18"}   # camera codes to omit from the generated network
 
 PLATES_TRIP = "DL3CAB1234"
 PLATE_BLACK = "DL8CAF5678"
@@ -126,6 +127,7 @@ def main():
 
     ordered = nn_order(nodes)
     CAMERAS = [(f"CAM-{i + 1:02d}", n[0][:60], n[1], n[2]) for i, n in enumerate(ordered)]
+    CAMERAS = [c for c in CAMERAS if c[0] not in DROP_CODES]  # omit dropped codes; others keep theirs
 
     # Camera facing = bearing toward its nearest neighbour (the road it watches).
     heading = {}
