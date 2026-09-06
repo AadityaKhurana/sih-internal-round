@@ -38,6 +38,9 @@ DROP_ARM = {
     "Rd 224 (mid) <- Rd 224 (north)",
     "Sector 17 <- Rd 224 (south)",
     "Sector 17 <- Road 224 junction",
+    "Sector 14 / Vegas Mall <- Sector 13 (north)",
+    "Sector 13 (north) <- Sector 14 / Vegas Mall",
+    "Sector 14 / Vegas Mall <- Road 205 junction",
 }
 
 PLATES_TRIP = "DL3CAB1234"
