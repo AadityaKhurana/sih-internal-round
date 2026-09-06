@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
-"""Generate db/seed_dwarka.sql — GENUINE demo network for Dwarka, New Delhi.
+"""Generate db/seed_dwarka.sql — GENUINE Dwarka, New Delhi network.
 
-Cameras are placed at REAL traffic-signal junctions pulled from OpenStreetMap
-(Overpass) — ANPR cameras are mounted at signalized intersections, and
-traffic_signals nodes sit on the road centerline, so none land in buildings/parks.
-Clustered signal nodes are deduped into distinct junctions, ordered into a
-corridor, and 8 are picked. Links between consecutive cameras are routed along
-the actual road network via OSRM (road-following geometry + real distance/time).
+Cameras = the user's chosen sector-outline junctions (snapped to the nearest real
+road via OSRM, since the given lat/lngs are approximate) PLUS extra real
+traffic-signal junctions from OpenStreetMap (Overpass) to extend the outline.
+Links form a MESH: each camera connects to its nearest neighbours (the sectors
+are outlined, not a single corridor), routed along real roads via OSRM.
 
-Run: python3 db/gen_dwarka_seed.py   (needs network). The generated SQL bakes
-geometry in, so applying it needs no network. NOTE: applying it TRUNCATEs the
-network tables — stop the pipeline workers first (they hold locks).
+Run: python3 db/gen_dwarka_seed.py   (needs network). Applying the output
+TRUNCATEs the network tables — STOP the pipeline workers first.
 """
 import json
 import math
@@ -20,13 +18,27 @@ from pathlib import Path
 
 OVERPASS = "https://overpass-api.de/api/interpreter"
 OSRM = "https://router.project-osrm.org"
-BBOX = "28.545,77.015,28.625,77.085"   # Dwarka, New Delhi
-N_CAMERAS = 8
-MIN_SEP_M = 350                         # merge signal nodes closer than this into one junction
+BBOX = "28.545,77.015,28.625,77.085"
+ADD_MORE = 8            # extra real OSM signal junctions to append
+NEAR_M = 300            # dedup / "already covered" radius
+KNN = 2                 # each camera links to its N nearest neighbours
 
 PLATES_TRIP = "DL3CAB1234"
-PLATE_SHORT = "DL1CAA0007"
 PLATE_BLACK = "DL8CAF5678"
+
+# The user's approximate sector-outline junctions (label, lat, lon).
+USER_POINTS = [
+    ("Dwarka Mor",                 28.619026, 77.031560),
+    ("Azad Hind Fauj Marg (north)",28.606246, 77.035607),
+    ("Sector 14 / Vegas Mall",     28.599558, 77.029760),
+    ("Azad Hind Fauj Marg (south)",28.601850, 77.042206),
+    ("Sector 13 (north)",          28.595180, 77.036513),
+    ("Sector 13/14 corner",        28.596662, 77.049942),
+    ("KM Chowk",                   28.592138, 77.046139),
+    ("Sector 13 (south)",          28.592746, 77.034379),
+    ("Sector 11",                  28.587577, 77.042332),
+    ("Sector 10",                  28.591494, 77.057780),
+]
 
 
 def curl(url, data=None):
@@ -36,13 +48,31 @@ def curl(url, data=None):
     return subprocess.run(cmd, capture_output=True, text=True).stdout
 
 
-def haversine(a, b):  # a,b = (lat, lon)
+def haversine(a, b):  # (lat, lon)
     R = 6371000.0
     p1, p2 = math.radians(a[0]), math.radians(b[0])
-    dphi = math.radians(b[0] - a[0])
-    dl = math.radians(b[1] - a[1])
+    dphi = math.radians(b[0] - a[0]); dl = math.radians(b[1] - a[1])
     h = math.sin(dphi / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dl / 2) ** 2
     return 2 * R * math.asin(math.sqrt(h))
+
+
+def bearing(a, b):  # (lat, lon) -> compass degrees for direction a->b
+    p1, p2 = math.radians(a[0]), math.radians(b[0])
+    dl = math.radians(b[1] - a[1])
+    x = math.sin(dl) * math.cos(p2)
+    y = math.cos(p1) * math.sin(p2) - math.sin(p1) * math.cos(p2) * math.cos(dl)
+    return round((math.degrees(math.atan2(x, y)) + 360) % 360)
+
+
+def snap(lat, lon):
+    """OSRM nearest -> on-road (lon, lat) + street name."""
+    try:
+        d = json.loads(curl(f"{OSRM}/nearest/v1/driving/{lon},{lat}"))
+        wp = d["waypoints"][0]
+        loc = wp["location"]  # [lon, lat]
+        return round(loc[0], 6), round(loc[1], 6), (wp.get("name") or "").strip()
+    except Exception:
+        return round(lon, 6), round(lat, 6), ""
 
 
 def fetch_signals():
@@ -51,41 +81,7 @@ def fetch_signals():
     return [(e["lat"], e["lon"]) for e in d.get("elements", [])]
 
 
-def dedup(points, min_sep):
-    kept = []
-    for p in points:
-        if all(haversine(p, k) >= min_sep for k in kept):
-            kept.append(p)
-    return kept
-
-
-def order_chain(points):
-    pts = points[:]
-    start = max(range(len(pts)), key=lambda i: pts[i][0])  # northernmost
-    order = [pts.pop(start)]
-    while pts:
-        last = order[-1]
-        j = min(range(len(pts)), key=lambda i: haversine(last, pts[i]))
-        order.append(pts.pop(j))
-    return order
-
-
-def subsample(chain, n):
-    if len(chain) <= n:
-        return chain
-    idx = sorted({round(i * (len(chain) - 1) / (n - 1)) for i in range(n)})
-    return [chain[i] for i in idx]
-
-
-def road_name(lat, lon):
-    try:
-        d = json.loads(curl(f"{OSRM}/nearest/v1/driving/{lon},{lat}"))
-        return (d["waypoints"][0].get("name") or "").strip()
-    except Exception:
-        return ""
-
-
-def route(a, b):  # a,b = camera tuples (code,name,lon,lat)
+def route(a, b):  # a,b = (code,name,lon,lat)
     d = json.loads(curl(f"{OSRM}/route/v1/driving/{a[2]},{a[3]};{b[2]},{b[3]}"
                         f"?overview=full&geometries=geojson"))
     rt = d["routes"][0]
@@ -96,54 +92,98 @@ def sql_str(s):
     return "'" + s.replace("'", "''") + "'"
 
 
+def nn_order(nodes):  # nodes = [(name,lon,lat)], nearest-neighbour tour from northernmost
+    pts = nodes[:]
+    start = max(range(len(pts)), key=lambda i: pts[i][2])
+    order = [pts.pop(start)]
+    while pts:
+        last = order[-1]
+        j = min(range(len(pts)), key=lambda i: haversine((last[2], last[1]), (pts[i][2], pts[i][1])))
+        order.append(pts.pop(j))
+    return order
+
+
 def main():
-    signals = fetch_signals()
-    print(f"fetched {len(signals)} traffic signals")
-    junctions = order_chain(dedup(signals, MIN_SEP_M))
-    print(f"{len(junctions)} distinct junctions after dedup")
-    chosen = subsample(junctions, N_CAMERAS)
+    nodes = []  # (name, lon, lat)
+    for label, lat, lon in USER_POINTS:
+        slon, slat, rd = snap(lat, lon); time.sleep(0.3)
+        nodes.append((label, slon, slat))
+        print(f"snapped {label} -> {slat:.5f},{slon:.5f} ({rd or 'road'})")
 
-    CAMERAS = []
-    for i, (lat, lon) in enumerate(chosen):
-        nm = road_name(lat, lon)
-        time.sleep(0.3)
-        label = f"{nm} signal" if nm else f"Dwarka Junction {i + 1}"
-        CAMERAS.append((f"CAM-{i + 1:02d}", label[:60], round(lon, 6), round(lat, 6)))
-        print(f"  {CAMERAS[-1][0]} {CAMERAS[-1][1]} @ {lat:.5f},{lon:.5f}")
+    # Extra real signal junctions not already covered by a user point.
+    sigs = fetch_signals()
+    uniq = []
+    for lat, lon in sigs:
+        if all(haversine((lat, lon), (n[2], n[1])) >= NEAR_M for n in nodes) and \
+           all(haversine((lat, lon), (u[2], u[1])) >= NEAR_M for u in uniq):
+            uniq.append(("", lon, lat))
+    # spread the extras out
+    extras = uniq[:: max(1, len(uniq) // ADD_MORE)][:ADD_MORE] if uniq else []
+    for _, lon, lat in extras:
+        rd = snap(lat, lon)[2]; time.sleep(0.3)
+        nodes.append((f"{rd} signal" if rd else "Dwarka signal", round(lon, 6), round(lat, 6)))
+    print(f"{len(USER_POINTS)} user junctions + {len(extras)} OSM extras = {len(nodes)} cameras")
 
-    links = []
-    for i in range(len(CAMERAS) - 1):
-        a, b = CAMERAS[i], CAMERAS[i + 1]
-        g, dist, ff = route(a, b); time.sleep(0.3)
-        links.append((a[0], b[0], "FWD", g, dist, ff))
-        g2, dist2, ff2 = route(b, a); time.sleep(0.3)
-        links.append((b[0], a[0], "REV", g2, dist2, ff2))
-        print(f"routed {a[0]}<->{b[0]}: {dist}m / {ff}s")
+    ordered = nn_order(nodes)
+    CAMERAS = [(f"CAM-{i + 1:02d}", n[0][:60], n[1], n[2]) for i, n in enumerate(ordered)]
 
-    fwd = {(l[0], l[1]): l for l in links if l[2] == "FWD"}
+    # Camera facing = bearing toward its nearest neighbour (the road it watches).
+    heading = {}
+    for i, ci in enumerate(CAMERAS):
+        j = min((k for k in range(len(CAMERAS)) if k != i),
+                key=lambda k: haversine((ci[3], ci[2]), (CAMERAS[k][3], CAMERAS[k][2])))
+        heading[ci[0]] = bearing((ci[3], ci[2]), (CAMERAS[j][3], CAMERAS[j][2]))
+
+    # KNN mesh: each camera -> KNN nearest neighbours (unordered pairs).
+    pairs = set()
+    for i, ci in enumerate(CAMERAS):
+        dists = sorted(range(len(CAMERAS)), key=lambda j: haversine((ci[3], ci[2]), (CAMERAS[j][3], CAMERAS[j][2])) if j != i else 9e9)
+        for j in dists[:KNN]:
+            pairs.add((min(i, j), max(i, j)))
+
+    edge = {}   # (i,j) -> (geometry, dist, ff)
+    links = []  # (from_code, to_code, dir, geometry, dist, ff)
+    for (i, j) in sorted(pairs):
+        g, dist, ff = route(CAMERAS[i], CAMERAS[j]); time.sleep(0.3)
+        edge[(i, j)] = (g, dist, ff)
+        links.append((CAMERAS[i][0], CAMERAS[j][0], "FWD", g, dist, ff))
+        g_rev = {"type": "LineString", "coordinates": g["coordinates"][::-1]}
+        links.append((CAMERAS[j][0], CAMERAS[i][0], "REV", g_rev, dist, ff))
+    print(f"{len(pairs)} unique edges, {len(links)} directed links")
+
+    # Trajectory: greedy walk over the mesh from CAM-01 (each hop is a real link).
+    adj = {}
+    for (i, j) in pairs:
+        adj.setdefault(i, []).append(j); adj.setdefault(j, []).append(i)
+    trip, ffs, cur, seen = [0], [], 0, {0}
+    while len(trip) < min(8, len(CAMERAS)):
+        nbrs = [n for n in adj.get(cur, []) if n not in seen]
+        if not nbrs:
+            break
+        nxt = min(nbrs, key=lambda n: haversine((CAMERAS[cur][3], CAMERAS[cur][2]), (CAMERAS[n][3], CAMERAS[n][2])))
+        ffs.append(edge[(min(cur, nxt), max(cur, nxt))][2])
+        trip.append(nxt); seen.add(nxt); cur = nxt
     offsets = [0]
-    for i in range(len(CAMERAS) - 1):
-        offsets.append(offsets[-1] + round(fwd[(CAMERAS[i][0], CAMERAS[i + 1][0])][5] * 1.15))
+    for ff in ffs:
+        offsets.append(offsets[-1] + round(ff * 1.15))
     total = offsets[-1]
-    trip_ago = [total - o for o in offsets]
 
-    out = []
-    w = out.append
+    out = []; w = out.append
     w("-- ============================================================================")
     w("-- DEV/DEMO SEED — Dwarka, New Delhi. GENERATED by db/gen_dwarka_seed.py.")
-    w("-- Cameras at REAL OpenStreetMap traffic-signal junctions; links OSRM-routed.")
-    w("-- Re-runnable; TRUNCATEs the network — STOP the pipeline workers first.")
+    w("-- Cameras: user-chosen sector-outline junctions (OSRM-snapped to real roads)")
+    w("-- + extra real OSM traffic-signal junctions. Links: nearest-neighbour MESH,")
+    w("-- OSRM-routed. Re-runnable; TRUNCATEs the network — STOP the workers first.")
     w("-- ============================================================================")
     w("BEGIN;")
     w("TRUNCATE cameras, roads, plates, camera_links, sightings, blacklist_entries,")
     w("         alerts, camera_metrics_5m, traffic_metrics_5m RESTART IDENTITY CASCADE;")
     w("")
-    w("INSERT INTO roads (road_code, name) VALUES ('DWK-CORR-1', 'Dwarka Signal Corridor');")
+    w("INSERT INTO roads (road_code, name) VALUES ('DWK-NET-1', 'Dwarka Sector Network');")
     w("")
     w("INSERT INTO cameras (camera_code, display_name, location, heading_degrees, status) VALUES")
-    rows = [f"  ({sql_str(c)}, {sql_str(n)}, ST_SetSRID(ST_MakePoint({lng}, {lat}), 4326), 180, 'active')"
-            for c, n, lng, lat in CAMERAS]
-    w(",\n".join(rows) + ";")
+    w(",\n".join(f"  ({sql_str(c)}, {sql_str(n)}, ST_SetSRID(ST_MakePoint({lng}, {lat}), 4326), {heading[c]}, 'active')"
+                 for c, n, lng, lat in CAMERAS) + ";")
     w("")
     for fc, tc, dl, g, dist, ff in links:
         geo = json.dumps(g).replace("'", "''")
@@ -152,22 +192,22 @@ def main():
         w(f"SELECT f.camera_id, t.camera_id, r.road_id, {sql_str(dl)},")
         w(f"       ST_SetSRID(ST_GeomFromGeoJSON('{geo}'), 4326), {dist}, {ff}, 50")
         w("FROM cameras f, cameras t, roads r")
-        w(f"WHERE f.camera_code={sql_str(fc)} AND t.camera_code={sql_str(tc)} "
-          f"AND r.road_code='DWK-CORR-1';")
+        w(f"WHERE f.camera_code={sql_str(fc)} AND t.camera_code={sql_str(tc)} AND r.road_code='DWK-NET-1';")
     w("")
-    w(f"INSERT INTO plates (normalized_plate) VALUES ({sql_str(PLATES_TRIP)}), "
-      f"({sql_str(PLATE_SHORT)}), ({sql_str(PLATE_BLACK)});")
+    w(f"INSERT INTO plates (normalized_plate) VALUES ({sql_str(PLATES_TRIP)}), ({sql_str(PLATE_BLACK)});")
     w("")
     w("INSERT INTO sightings (source_event_id, camera_id, plate_id, raw_plate_text, "
       "normalized_plate_candidate, detection_confidence, ocr_confidence, ocr_candidates, "
-      "validation_status, spotted_at, direction_degrees, vehicle_type, vehicle_color, "
-      "lane_number, model_version)")
-    trip = [f"  ({sql_str('seed-'+PLATES_TRIP+'-'+c)}, (SELECT camera_id FROM cameras WHERE camera_code={sql_str(c)}), "
+      "validation_status, spotted_at, direction_degrees, vehicle_type, vehicle_color, lane_number, model_version)")
+    trip_rows = []
+    for k, idx in enumerate(trip):
+        code = CAMERAS[idx][0]
+        trip_rows.append(
+            f"  ({sql_str('seed-'+PLATES_TRIP+'-'+code)}, (SELECT camera_id FROM cameras WHERE camera_code={sql_str(code)}), "
             f"(SELECT plate_id FROM plates WHERE normalized_plate={sql_str(PLATES_TRIP)}), "
             f"{sql_str(PLATES_TRIP)}, {sql_str(PLATES_TRIP)}, 0.96, 0.93, '[]'::jsonb, 'accepted', "
-            f"now() - make_interval(secs => {trip_ago[i]}), 180, 'car', 'white', 2, 'anpr-v1')"
-            for i, (c, n, lng, lat) in enumerate(CAMERAS)]
-    w("VALUES\n" + ",\n".join(trip) + ";")
+            f"now() - make_interval(secs => {total - offsets[k]}), {heading[code]}, 'car', 'white', 2, 'anpr-v1')")
+    w("VALUES\n" + ",\n".join(trip_rows) + ";")
     w("")
     c1, c2 = CAMERAS[0][0], CAMERAS[-1][0]
     w("INSERT INTO sightings (source_event_id, camera_id, plate_id, raw_plate_text, "
@@ -176,11 +216,11 @@ def main():
     bl = [f"  ({sql_str('seed-'+PLATE_BLACK+'-'+c1)}, (SELECT camera_id FROM cameras WHERE camera_code={sql_str(c1)}), "
           f"(SELECT plate_id FROM plates WHERE normalized_plate={sql_str(PLATE_BLACK)}), "
           f"{sql_str(PLATE_BLACK)}, {sql_str(PLATE_BLACK)}, 0.93, 0.88, '[]'::jsonb, 'accepted', "
-          f"now() - make_interval(secs => 600), 180, 'car', 'black', 3, 'anpr-v1')",
+          f"now() - make_interval(secs => 600), {heading[c1]}, 'car', 'black', 3, 'anpr-v1')",
           f"  ({sql_str('seed-'+PLATE_BLACK+'-'+c2)}, (SELECT camera_id FROM cameras WHERE camera_code={sql_str(c2)}), "
           f"(SELECT plate_id FROM plates WHERE normalized_plate={sql_str(PLATE_BLACK)}), "
           f"{sql_str(PLATE_BLACK)}, {sql_str(PLATE_BLACK)}, 0.93, 0.88, '[]'::jsonb, 'accepted', "
-          f"now() - make_interval(secs => 595), 180, 'car', 'black', 3, 'anpr-v1')"]
+          f"now() - make_interval(secs => 595), {heading[c2]}, 'car', 'black', 3, 'anpr-v1')"]
     w("VALUES\n" + ",\n".join(bl) + ";")
     w("")
     w("INSERT INTO blacklist_entries (plate_id, reason, severity, status, added_by, case_reference)")
@@ -188,8 +228,8 @@ def main():
       f"FROM plates WHERE normalized_plate={sql_str(PLATE_BLACK)};")
     w("")
     w("INSERT INTO alerts (dedup_key, alert_type, sighting_id, blacklist_entry_id, status, match_confidence, details)")
-    w(f"SELECT 'seed-bl-{PLATE_BLACK}', 'blacklist', s.sighting_id, b.blacklist_entry_id, 'new', 1.0,")
-    w(f"       jsonb_build_object('note','blacklisted vehicle seen','camera',{sql_str(c1)})")
+    w(f"SELECT 'seed-bl-{PLATE_BLACK}', 'blacklist', s.sighting_id, b.blacklist_entry_id, 'new', 1.0, "
+      f"jsonb_build_object('camera',{sql_str(c1)})")
     w(f"FROM sightings s JOIN plates p ON p.plate_id=s.plate_id AND p.normalized_plate={sql_str(PLATE_BLACK)}")
     w("JOIN blacklist_entries b ON b.plate_id=p.plate_id")
     w(f"WHERE s.source_event_id={sql_str('seed-'+PLATE_BLACK+'-'+c1)};")
@@ -203,7 +243,7 @@ def main():
     w("COMMIT;")
 
     Path("db/seed_dwarka.sql").write_text("\n".join(out) + "\n")
-    print(f"wrote db/seed_dwarka.sql ({len(CAMERAS)} cameras, {len(links)} links)")
+    print(f"wrote db/seed_dwarka.sql ({len(CAMERAS)} cameras, {len(links)} links, trip {len(trip)} cams)")
 
 
 if __name__ == "__main__":
