@@ -19,26 +19,36 @@ from pathlib import Path
 OVERPASS = "https://overpass-api.de/api/interpreter"
 OSRM = "https://router.project-osrm.org"
 BBOX = "28.545,77.015,28.625,77.085"
-ADD_MORE = 8            # extra real OSM signal junctions to append
+ADD_MORE = 0            # 0 = no auto-added OSM extras (junction set is explicit below)
 NEAR_M = 300            # dedup / "already covered" radius
 KNN = 2                 # each camera links to its N nearest neighbours
-DROP_CODES = {"CAM-17", "CAM-18"}   # camera codes to omit from the generated network
+DROP_CODES = set()      # camera codes to omit (curate via the explicit list instead)
 
 PLATES_TRIP = "DL3CAB1234"
 PLATE_BLACK = "DL8CAF5678"
 
-# The user's approximate sector-outline junctions (label, lat, lon).
+# Explicit curated junction set (label, lat, lon). Empty label -> named from the
+# snapped road. Coords are approximate; each is snapped to the nearest real road.
 USER_POINTS = [
-    ("Dwarka Mor",                 28.619026, 77.031560),
-    ("Azad Hind Fauj Marg (north)",28.606246, 77.035607),
-    ("Sector 14 / Vegas Mall",     28.599558, 77.029760),
-    ("Azad Hind Fauj Marg (south)",28.601850, 77.042206),
-    ("Sector 13 (north)",          28.595180, 77.036513),
-    ("Sector 13/14 corner",        28.596662, 77.049942),
-    ("KM Chowk",                   28.592138, 77.046139),
-    ("Sector 13 (south)",          28.592746, 77.034379),
-    ("Sector 11",                  28.587577, 77.042332),
-    ("Sector 10",                  28.591494, 77.057780),
+    ("Dwarka Mor",                 28.619035, 77.031604),
+    ("Azad Hind Fauj Marg (north)",28.606204, 77.035627),
+    ("Azad Hind Fauj Marg (south)",28.601849, 77.042208),
+    ("Sector 13 (north)",          28.595355, 77.036515),
+    ("Sector 13 (south)",          28.592758, 77.034389),
+    ("Sector 14 / Vegas Mall",     28.599697, 77.029488),
+    ("KM Chowk",                   28.592108, 77.046116),
+    ("Sector 11",                  28.587581, 77.042327),
+    ("Sector 13/14 corner",        28.596670, 77.049931),
+    ("Palam Najafgarh Road signal",28.603458, 77.055721),
+    ("Sector 10",                  28.591491, 77.057784),
+    ("Rd. No. 224 signal",         28.586308, 77.065467),
+    ("Rd. No. 224 signal",         28.590778, 77.069232),
+    ("Rd. No. 224 signal",         28.594659, 77.071697),
+    ("Dwarka signal",              28.581808, 77.061651),
+    # newly added junctions (approx coords; snapped + labelled from road)
+    ("",                           28.598420, 77.063715),
+    ("",                           28.577145, 77.057713),
+    ("",                           28.582473, 77.050029),
 ]
 
 
@@ -108,22 +118,24 @@ def main():
     nodes = []  # (name, lon, lat)
     for label, lat, lon in USER_POINTS:
         slon, slat, rd = snap(lat, lon); time.sleep(0.3)
-        nodes.append((label, slon, slat))
-        print(f"snapped {label} -> {slat:.5f},{slon:.5f} ({rd or 'road'})")
+        nm = label or (f"{rd} junction" if rd else "Dwarka junction")
+        nodes.append((nm[:60], slon, slat))
+        print(f"snapped {nm} -> {slat:.5f},{slon:.5f} ({rd or 'road'})")
 
     # Extra real signal junctions not already covered by a user point.
-    sigs = fetch_signals()
-    uniq = []
-    for lat, lon in sigs:
-        if all(haversine((lat, lon), (n[2], n[1])) >= NEAR_M for n in nodes) and \
-           all(haversine((lat, lon), (u[2], u[1])) >= NEAR_M for u in uniq):
-            uniq.append(("", lon, lat))
-    # spread the extras out
-    extras = uniq[:: max(1, len(uniq) // ADD_MORE)][:ADD_MORE] if uniq else []
-    for _, lon, lat in extras:
-        rd = snap(lat, lon)[2]; time.sleep(0.3)
-        nodes.append((f"{rd} signal" if rd else "Dwarka signal", round(lon, 6), round(lat, 6)))
-    print(f"{len(USER_POINTS)} user junctions + {len(extras)} OSM extras = {len(nodes)} cameras")
+    extras = []
+    if ADD_MORE > 0:
+        sigs = fetch_signals()
+        uniq = []
+        for lat, lon in sigs:
+            if all(haversine((lat, lon), (n[2], n[1])) >= NEAR_M for n in nodes) and \
+               all(haversine((lat, lon), (u[2], u[1])) >= NEAR_M for u in uniq):
+                uniq.append(("", lon, lat))
+        extras = uniq[:: max(1, len(uniq) // ADD_MORE)][:ADD_MORE] if uniq else []
+        for _, lon, lat in extras:
+            rd = snap(lat, lon)[2]; time.sleep(0.3)
+            nodes.append((f"{rd} signal" if rd else "Dwarka signal", round(lon, 6), round(lat, 6)))
+    print(f"{len(USER_POINTS)} junctions + {len(extras)} OSM extras = {len(nodes)} cameras")
 
     ordered = nn_order(nodes)
     CAMERAS = [(f"CAM-{i + 1:02d}", n[0][:60], n[1], n[2]) for i, n in enumerate(ordered)]
