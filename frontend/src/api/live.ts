@@ -95,8 +95,23 @@ function createWebSocketConnection(topics: LiveTopic[]): LiveConnection {
     close: () => {
       closedByCaller = true;
       if (reconnectTimer) clearTimeout(reconnectTimer);
-      socket?.close();
+      const closing = socket;
       socket = null;
+      if (closing) {
+        if (closing.readyState === WebSocket.CONNECTING) {
+          // Closing a still-CONNECTING socket makes the browser log
+          // "WebSocket is closed before the connection is established"
+          // (common under React StrictMode's double-mount in dev). Defer the
+          // close until the handshake completes, and detach handlers so it
+          // neither delivers frames nor schedules a reconnect.
+          closing.onmessage = null;
+          closing.onerror = null;
+          closing.onclose = null;
+          closing.onopen = () => closing.close();
+        } else {
+          closing.close();
+        }
+      }
       messageListeners.clear();
       stateListeners.clear();
       state = 'closed';
