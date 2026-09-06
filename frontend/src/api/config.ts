@@ -51,7 +51,7 @@ export const MAP_DEFAULTS = {
  * in the map's attribution control — do not remove it.
  */
 export const BASEMAP = {
-  url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+  url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
   attribution:
     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
   subdomains: ['a', 'b', 'c'],

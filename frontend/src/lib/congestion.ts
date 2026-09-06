@@ -51,12 +51,12 @@ const CONGESTION_VARS: Record<CongestionLevel, string> = {
  * the DOM uses the `var()` forms. Both are kept in step with tokens.css.
  */
 const CONGESTION_HEX: Record<CongestionLevel, string> = {
-  free: '#22c55e',
-  light: '#a3e635',
-  moderate: '#facc15',
-  heavy: '#fb923c',
-  severe: '#ef4444',
-  unknown: '#64748b',
+  free: '#16a34a',
+  light: '#65a30d',
+  moderate: '#ca8a04',
+  heavy: '#ea580c',
+  severe: '#dc2626',
+  unknown: '#94a3b8',
 };
 
 export function congestionColorVar(level: CongestionLevel): string {
@@ -114,10 +114,10 @@ export const CAMERA_STATUS_TONE: Record<CameraStatus, BadgeTone> = {
 };
 
 export const CAMERA_STATUS_HEX: Record<CameraStatus, string> = {
-  active: '#34d399',
-  inactive: '#64748b',
-  maintenance: '#fbbf24',
-  fault: '#f87171',
+  active: '#16a34a',
+  inactive: '#94a3b8',
+  maintenance: '#d97706',
+  fault: '#dc2626',
 };
 
 export const VALIDATION_TONE: Record<ValidationStatus, BadgeTone> = {
@@ -142,10 +142,10 @@ export const SEVERITY_TONE: Record<Severity, BadgeTone> = {
 };
 
 export const SEVERITY_HEX: Record<Severity, string> = {
-  low: '#60a5fa',
-  medium: '#fbbf24',
-  high: '#f87171',
-  critical: '#fb7185',
+  low: '#2563eb',
+  medium: '#d97706',
+  high: '#dc2626',
+  critical: '#be123c',
 };
 
 /** Severity ordering for "worst first" sorts. */
@@ -173,10 +173,10 @@ export const HOP_STATUS_TONE: Record<HopStatus, BadgeTone> = {
 };
 
 export const HOP_STATUS_HEX: Record<HopStatus, string> = {
-  valid: '#f0abfc',
+  valid: '#9333ea',
   no_link: '#94a3b8',
-  impossible_travel_time: '#ef4444',
-  wrong_direction: '#fbbf24',
+  impossible_travel_time: '#dc2626',
+  wrong_direction: '#d97706',
 };
 
 /* ------------------------------------------------------------ misc format -- */

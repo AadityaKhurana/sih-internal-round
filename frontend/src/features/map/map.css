@@ -59,14 +59,17 @@
   bottom: var(--sp-6);
   right: var(--sp-3);
   max-width: min(320px, calc(100% - 96px));
+  max-height: calc(50vh - var(--sp-6));
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .map-panel {
-  background: rgb(13 18 25 / 92%);
-  border: 1px solid var(--c-border-strong);
+  background: rgb(255 255 255 / 94%);
+  border: 1px solid var(--c-border);
   border-radius: var(--r-md);
   box-shadow: var(--shadow-md);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(8px);
   overflow: hidden;
 }
 
