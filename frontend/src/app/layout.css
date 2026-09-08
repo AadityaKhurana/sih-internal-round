@@ -50,6 +50,13 @@
   letter-spacing: -0.02em;
 }
 
+.brand__logo {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  color: var(--c-accent);
+}
+
 .brand__text {
   min-width: 0;
 }
@@ -124,6 +131,7 @@
   flex: 0 0 auto;
   display: grid;
   place-items: center;
+  position: relative;
 }
 
 .nav__label {
@@ -139,6 +147,24 @@
   background: var(--c-danger);
   color: var(--c-text-inverse);
   font-weight: var(--fw-bold);
+}
+
+.nav__alert-dot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c-danger);
+  border: 2px solid var(--c-surface);
+  box-sizing: border-box;
+}
+
+.nav__separator {
+  height: 1px;
+  background: var(--c-border);
+  margin: var(--sp-4) var(--sp-3);
 }
 
 .sidebar__foot {

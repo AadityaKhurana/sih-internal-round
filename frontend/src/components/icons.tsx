@@ -201,3 +201,12 @@ export const InfoIcon = (props: IconProps) => (
     <path d="M12 11v5.5M12 7.8h.01" />
   </Icon>
 );
+
+export const LogoIcon = (props: IconProps) => (
+  <Icon {...props} strokeWidth={1.5}>
+    <rect x="3" y="3" width="18" height="18" rx="4" />
+    <path d="M8 9l4-4 4 4" />
+    <path d="M16 19l-4-4-4 4" />
+    <circle cx="12" cy="12" r="2" fill="currentColor" />
+  </Icon>
+);

@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { USE_MOCK } from '@/api/config';
 import { useAlertCounts } from '@/api/hooks';
 import { Badge } from '@/components/ui';
+import { LogoIcon } from '@/components/icons';
 import { NAV_SECTIONS, ROUTES } from './routes';
 
 export function Sidebar() {
@@ -14,9 +15,9 @@ export function Sidebar() {
   return (
     <aside className="shell__sidebar">
       <div className="brand">
-        <span className="brand__mark" aria-hidden="true">
-          ANPR
-        </span>
+        <div className="brand__logo">
+          <LogoIcon size={32} />
+        </div>
         <span className="brand__text">
           <span className="brand__name u-truncate">ANPR Control</span>
           <span className="brand__sub u-truncate">City-wide platform</span>
@@ -27,8 +28,14 @@ export function Sidebar() {
         {NAV_SECTIONS.map((section) => {
           const items = ROUTES.filter((route) => route.section === section);
           if (items.length === 0) return null;
+          
+          // Add separator after Operations section (first 3 items) and before Manage section (last item)
+          const isOperations = section === 'Operations';
+          const isManage = section === 'Manage';
+          
           return (
             <div className="nav__section" key={section}>
+              {isManage && <div className="nav__separator" />}
               <h2 className="nav__heading">{section}</h2>
               <ul>
                 {items.map((route) => {
@@ -44,21 +51,20 @@ export function Sidebar() {
                       >
                         <span className="nav__icon">
                           <Icon size={17} />
+                          {route.showAlertCount && openAlerts > 0 ? (
+                            <span
+                              className="nav__alert-dot"
+                              aria-label={`${openAlerts} unacknowledged alerts`}
+                            />
+                          ) : null}
                         </span>
                         <span className="nav__label u-truncate">{route.label}</span>
-                        {route.showAlertCount && openAlerts > 0 ? (
-                          <span
-                            className="nav__count"
-                            aria-label={`${openAlerts} unacknowledged alerts`}
-                          >
-                            {openAlerts > 99 ? '99+' : openAlerts}
-                          </span>
-                        ) : null}
                       </NavLink>
                     </li>
                   );
                 })}
               </ul>
+              {isOperations && <div className="nav__separator" />}
             </div>
           );
         })}
