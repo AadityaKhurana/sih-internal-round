@@ -20,7 +20,7 @@ export function Sidebar() {
         </div>
         <span className="brand__text">
           <span className="brand__name u-truncate">MARG</span>
-          <span className="brand__sub u-truncate">Multi-camera ANPR &amp; Route Graph</span>
+          <span className="brand__sub u-truncate">City-wide ANPR platform</span>
         </span>
       </div>
 
