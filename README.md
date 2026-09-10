@@ -1,91 +1,165 @@
-# City-Wide ANPR Platform (SIH prototype)
+# City-Wide ANPR Platform — SIH 2026
 
-Centralized platform over a city-wide ANPR camera network: plate OCR,
-single-plate trajectory reconstruction on a GIS map, live blacklist / route-anomaly
-alerts, and macro traffic-flow analytics.
+Centralized AI platform that turns a city's existing CCTV/ANPR camera network into
+one system for **plate recognition, single-vehicle trajectory tracking on a GIS
+map, macro traffic analytics, and real-time alerts**.
 
-> **The demo network is simulated but geographically genuine.** Real junctions on
-> real **Dwarka, New Delhi** roads. The map shows one circle per **junction**; the
-> per-approach **cameras** that actually source the data live behind the scenes and
-> are aggregated up to junctions. A synthetic producer stands in for the OCR lane,
-> emitting the real `PlateSighting` contract as a fleet of plates drive realistic
-> corridor trips. Real OCR (YOLO + PaddleOCR) needs GPU / weights / video and drops
-> in at the same event boundary with no downstream changes.
+> The demo camera network is **simulated but geographically genuine** — real
+> junctions on real **Dwarka, New Delhi** roads. Every screen labels it as
+> simulated.
 
-## Repo layout
+## 1. Project Information
 
+- **Project Title:** City-Wide ANPR Platform — multi-camera plate recognition, trajectory tracking & traffic analytics
+- **PS ID:** `<fill in your SIH problem-statement ID>`
+- **PS Title:** Centralized AI platform for a city-wide ANPR network — high-accuracy OCR, single-plate trajectory tracking on a GIS map, and macro traffic-flow analytics
+- **Category:** Software
+- **Theme:** Smart Cities / Transportation, Surveillance & Security
+
+## 2. Problem Statement
+
+Modern cities run vast CCTV + ANPR networks, but most systems process each feed in
+an **isolated silo** — basic plate detection with no linking across space and time.
+Authorities therefore cannot automatically **track a high-interest vehicle across
+sectors**, and cannot extract **macro-level movement trends** from the footage the
+city already collects.
+
+## 3. Proposed Solution
+
+A centralized platform on top of the existing camera network with four components:
+
+1. **High-accuracy ANPR/OCR engine** — YOLO (vehicle + plate detection) + PaddleOCR
+   with multi-frame voting, targeting **>90%** recognition across poor lighting,
+   weather, angle, motion blur and damaged plates.
+2. **Trajectory reconstruction** — query any plate and get its complete route across
+   the city plotted chronologically on a GIS map, with timestamps, direction and
+   camera/junction locations.
+3. **Macro traffic analytics** — density heatmaps, congestion bottlenecks,
+   origin-destination patterns and flow trends across all nodes.
+4. **Real-time alert system** — flags **blacklisted vehicles** and **route anomalies**
+   (impossible travel time / wrong direction) as they happen.
+
+## 4. Key Features
+
+- Per-approach ANPR cameras aggregated to junctions on a live Leaflet GIS map
+- Plate search → full chronological trajectory with timestamps, direction and hops
+- Live WebSocket feed of sightings + alerts
+- Blacklist and route-anomaly detection (travel-time feasibility)
+- Analytics: node heatmap, link congestion, origin-destination, flow trends, weekly report
+- Road-accurate network (OSM junctions, OSRM-routed links)
+
+## 5. Technology Stack
+
+- **Frontend:** React, TypeScript, Leaflet, Vite
+- **Backend:** Python, FastAPI (REST + WebSocket)
+- **Workers:** Python — OCR (YOLO + PaddleOCR), persistence, alerts, analytics
+- **Data & streaming:** PostgreSQL + PostGIS, Redis (streams + pub/sub), MinIO / S3
+- **Geospatial:** OpenStreetMap / Overpass, OSRM routing
+- **Infra:** Docker Compose (URL-driven config; swappable to managed cloud services)
+
+## 6. Architecture
+
+Full diagram: **[docs/architecture.md](docs/architecture.md)** (Mermaid) and
+**[docs/architecture.drawio](docs/architecture.drawio)** (editable). Everything
+integrates at one `PlateSighting` event boundary — the OCR engine and the demo
+producer are interchangeable there.
+
+```text
+Cameras ─PlateSighting─▶ Redis stream ─▶ persistence ─▶ PostgreSQL + PostGIS
+                                          ├─▶ alerts    ─(alerts:new)─┐
+                                          └─▶ analytics ─▶ metrics    │
+                                                                       ▼
+                          FastAPI (REST /api + WS /ws/live) ◀──────────┘
+                                          │
+                                          ▼
+                          React + Leaflet operations dashboard
 ```
-backend/    FastAPI API service (REST under /api + WebSocket /ws/live)
-workers/    persistence, alerts, analytics + a synthetic producer; ocr/ is Lane A
-common/     shared package `anpr_common` — PlateSighting contract + DB layer
-frontend/   React + TypeScript + Leaflet operations dashboard
-db/         schema.sql, seed_dwarka.sql (generated) + gen_dwarka_seed.py, seed_metrics.sql
-docs/       contracts & design docs (e.g. plate_sighting_event.md)
-data/       local sample clips / media (git-ignored blobs)
-docker-compose.yml   full stack: Postgres+PostGIS, Redis, MinIO, API, workers, producer, frontend
+
+## 7. Repository Structure
+
+Source lives in the normal project folders (per the SIH guide, `src/` is optional):
+
+```text
+sih-internal-round/
+├── README.md
+├── SUBMISSION_GUIDE.md
+├── submission/            # PRESENTATION.md, DEMO.md
+├── docs/                  # architecture.md/.drawio, demo-script.md, contracts
+├── assets/screenshots/    # submission screenshots
+├── backend/               # FastAPI API service (REST + WebSocket)
+├── workers/               # ocr, persistence, alerts, analytics, producer
+├── common/anpr_common/    # shared PlateSighting contract + DB layer
+├── frontend/              # React + TypeScript + Leaflet dashboard
+├── db/                    # schema.sql, seed_dwarka.sql (+ generator), seed_metrics.sql
+├── docker-compose.yml
+├── requirements.txt
+├── .gitignore
+└── LICENSE
 ```
 
-## Architecture
+## 8. Final Presentation
 
-```
-cameras (one per approach) ─ PlateSighting ─▶ Redis Stream (plate_sightings)
-                                              ├─ persistence → aggregate camera→junction,
-                                              │                upsert Postgres+PostGIS, publish sightings:new
-                                              ├─ alerts      → blacklist / route-anomaly → alerts:new
-                                              ├─ analytics   → 5-min metrics (camera + link)
-                                              └─ live publisher (inside API) → WebSocket /ws/live
-                          FastAPI ⇄ React + Leaflet dashboard
-Media (plate crops, clips) → MinIO/S3 (object keys stored on sightings)
-```
+See **[submission/PRESENTATION.md](submission/PRESENTATION.md)**.
 
-Everything integrates at the **`PlateSighting`** event boundary: in the demo the
-synthetic producer emits it; real OCR replaces the producer with no other change.
+## 9. Demo Video
 
-## Quickstart
+See **[submission/DEMO.md](submission/DEMO.md)** (a 5-minute run-of-show script is in
+**[docs/demo-script.md](docs/demo-script.md)**).
+
+## 10. Screenshots / Prototype Photos
+
+Add key screens to **`assets/screenshots/`** — see
+[assets/screenshots/README.md](assets/screenshots/README.md) for the recommended set
+and naming.
+
+## 11. Installation
 
 ```bash
+git clone <YOUR_REPOSITORY_URL>
+cd sih-internal-round
 cp .env.example .env
-docker compose up -d --build          # full stack — API :8000, dashboard :5173
-curl localhost:8000/health            # {"status":"ok", ...}
+# Python API deps (optional — the full stack runs via Docker below):
+pip install -r requirements.txt
+```
 
-# Load the genuine Dwarka demo network. The seed TRUNCATEs the network tables,
-# which needs an exclusive lock, so stop the workers holding those tables first:
+## 12. Run
+
+The whole stack runs on Docker Compose (Postgres+PostGIS, Redis, MinIO, API, the
+workers, the producer, and the frontend):
+
+```bash
+docker compose up -d --build          # API :8000, dashboard :5173
+
+# Load the genuine Dwarka demo network (the seed TRUNCATEs, so stop workers first):
 docker compose stop producer persistence alerts analytics
 docker compose exec -T postgres psql -U anpr -d anpr < db/seed_dwarka.sql
 docker compose exec -T postgres psql -U anpr -d anpr < db/seed_metrics.sql
 docker compose start producer persistence alerts analytics
 ```
 
-Open the dashboard at http://localhost:5173. The schema in `db/schema.sql`
-auto-applies to the local Postgres on first boot.
+Open the dashboard at **http://localhost:5173** and the API health at
+**http://localhost:8000/health**.
 
-## The demo network
+> Real OCR (YOLO + PaddleOCR) needs a GPU, model weights and video, so the live
+> demo drives the pipeline with a synthetic producer emitting the identical
+> `PlateSighting` contract; the real OCR worker drops into the same boundary for a
+> field deployment.
 
-- **Junctions** are curated on real Dwarka roads and are the map's display nodes
-  (one plain circle each). Add/remove them by coordinate or name in
-  `db/gen_dwarka_seed.py`.
-- **Junction-to-junction links** connect every direct (1-edge) road neighbour:
-  a link exists only if the OSRM driving route passes no other junction and is
-  reasonably direct (detour ≤ 1.9×), and routing is bearing-hinted so links follow
-  the correct carriageway with no wrong-way U-turns.
-- **Per-approach cameras** (one per real arm, on the incoming left carriageway a
-  few metres before the junction, facing upstream — left-hand driving) persist in
-  the `approach_cameras` table and are the real sighting sources; the backend
-  aggregates their data up to junctions.
-- **Regenerate** after editing junctions: `python3 db/gen_dwarka_seed.py` (needs
-  network — it snaps and routes via OSRM), then re-apply the seed as above.
+## 13. Future Scope
 
-## Configuration
+- Run the real OCR engine on live RTSP/video at the edge and benchmark >90% on
+  Indian plates.
+- Wire MinIO/S3 media end-to-end (store + serve plate crops as evidence).
+- Multi-city scale-out on managed Postgres/Redis/S3; horizontal worker scaling.
+- Predictive congestion and ANPR-based incident detection.
 
-Everything is URL-driven via `.env` (copy from `.env.example`). Swap to managed
-services (Supabase / Upstash / any S3) by changing `DATABASE_URL`, `REDIS_URL`,
-`S3_*` — no code or compose changes. Auth is header-based
-(`X-Operator-Subject`); `API_AUTH_TOKEN` is empty by default.
+## Team
 
-## Status
+| Name | Role |
+|---|---|
+| `<member 1>` | `<role>` |
+| `<member 2>` | `<role>` |
 
-Schema, `PlateSighting` contract, Docker Compose infra, the persistence / alerts /
-analytics workers, the synthetic corridor-trip producer, the FastAPI backend (full
-frontend-contract parity), and the React + Leaflet dashboard are all in place and
-run end-to-end. The real OCR worker (`workers/ocr/`, Lane A) is integrated at the
-event boundary but is stubbed by the synthetic producer in this environment.
+## License
+
+MIT — see [LICENSE](LICENSE).
