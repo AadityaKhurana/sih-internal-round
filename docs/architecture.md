@@ -1,8 +1,8 @@
-# System Architecture — City-Wide ANPR Platform
+# System Architecture — MARG (Multi-camera ANPR & Route Graph)
 
 
 Everything integrates at the **`PlateSighting`** event boundary: the real OCR
-worker (Lane A) and the demo producer are interchangeable there. Persistence
+worker and the demo producer are interchangeable there. Persistence
 **aggregates per-approach cameras up to junction nodes**; the live path is Redis
 pub/sub → the API's in-process WebSocket publisher → the dashboard.
 

@@ -1,25 +1,21 @@
-# City-Wide ANPR Platform — SIH 2026
+# MARG - Multi-camera ANPR & Route Graph - SIH 2026
 
 Centralized AI platform that turns a city's existing CCTV/ANPR camera network into
-one system for **plate recognition, single-vehicle trajectory tracking on a GIS
+one system for **plate recognition, vehicle trajectory tracking on a GIS
 map, macro traffic analytics, and real-time alerts**.
-
-> The demo camera network is **simulated but geographically genuine** — real
-> junctions on real **Dwarka, New Delhi** roads. Every screen labels it as
-> simulated.
 
 ## 1. Project Information
 
-- **Project Title:** City-Wide ANPR Platform — multi-camera plate recognition, trajectory tracking & traffic analytics
-- **PS ID:** `<fill in your SIH problem-statement ID>`
-- **PS Title:** Centralized AI platform for a city-wide ANPR network — high-accuracy OCR, single-plate trajectory tracking on a GIS map, and macro traffic-flow analytics
+- **Project Title:** MARG - Multi-camera ANPR & Route Graph
+- **PS ID:** SIH26127
+- **PS Title:** City-Wide AI Engine for Multi-Camera ANPR Trajectory Tracking and Urban Traffic Analytics
 - **Category:** Software
-- **Theme:** Smart Cities / Transportation, Surveillance & Security
+- **Theme:** Smart Automation
 
 ## 2. Problem Statement
 
 Modern cities run vast CCTV + ANPR networks, but most systems process each feed in
-an **isolated silo** — basic plate detection with no linking across space and time.
+an **isolated silo** - basic plate detection with no linking across space and time.
 Authorities therefore cannot automatically **track a high-interest vehicle across
 sectors**, and cannot extract **macro-level movement trends** from the footage the
 city already collects.
@@ -28,15 +24,15 @@ city already collects.
 
 A centralized platform on top of the existing camera network with four components:
 
-1. **High-accuracy ANPR/OCR engine** — YOLO (vehicle + plate detection) + PaddleOCR
+1. **High-accuracy ANPR/OCR engine:** YOLO (vehicle + plate detection) + PaddleOCR
    with multi-frame voting, targeting **>90%** recognition across poor lighting,
    weather, angle, motion blur and damaged plates.
-2. **Trajectory reconstruction** — query any plate and get its complete route across
+2. **Trajectory reconstruction:** query any plate and get its complete route across
    the city plotted chronologically on a GIS map, with timestamps, direction and
    camera/junction locations.
-3. **Macro traffic analytics** — density heatmaps, congestion bottlenecks,
+3. **Macro traffic analytics:** density heatmaps, congestion bottlenecks,
    origin-destination patterns and flow trends across all nodes.
-4. **Real-time alert system** — flags **blacklisted vehicles** and **route anomalies**
+4. **Real-time alert system:** flags **blacklisted vehicles** and **route anomalies**
    (impossible travel time / wrong direction) as they happen.
 
 ## 4. Key Features
@@ -52,34 +48,16 @@ A centralized platform on top of the existing camera network with four component
 
 - **Frontend:** React, TypeScript, Leaflet, Vite
 - **Backend:** Python, FastAPI (REST + WebSocket)
-- **Workers:** Python — OCR (YOLO + PaddleOCR), persistence, alerts, analytics
+- **Workers:** Python: OCR (YOLO + PaddleOCR), persistence, alerts, analytics
 - **Data & streaming:** PostgreSQL + PostGIS, Redis (streams + pub/sub), MinIO / S3
-- **Geospatial:** OpenStreetMap / Overpass, OSRM routing
-- **Infra:** Docker Compose (URL-driven config; swappable to managed cloud services)
+- **Geospatial:** OpenStreetMap, OSRM routing
+- **Infra:** Docker Compose (uses URL-driven config, therefore swappable to managed cloud services)
 
 ## 6. Architecture
 
-![City-Wide ANPR Platform — system architecture](assets/architecture.png)
-
-Editable source: **[docs/architecture.drawio](docs/architecture.drawio)** (draw.io) and
-**[docs/architecture.md](docs/architecture.md)** (Mermaid). Everything integrates at one
-`PlateSighting` event boundary — the OCR engine and the demo producer are
-interchangeable there.
-
-```text
-Cameras ─PlateSighting─▶ Redis stream ─▶ persistence ─▶ PostgreSQL + PostGIS
-                                          ├─▶ alerts    ─(alerts:new)─┐
-                                          └─▶ analytics ─▶ metrics    │
-                                                                       ▼
-                          FastAPI (REST /api + WS /ws/live) ◀──────────┘
-                                          │
-                                          ▼
-                          React + Leaflet operations dashboard
-```
+![MARG — system architecture](assets/architecture.png)
 
 ## 7. Repository Structure
-
-Source lives in the normal project folders (per the SIH guide, `src/` is optional):
 
 ```text
 sih-internal-round/
@@ -101,12 +79,11 @@ sih-internal-round/
 
 ## 8. Final Presentation
 
-See **[submission/PRESENTATION.md](submission/PRESENTATION.md)**.
+LINK
 
 ## 9. Demo Video
 
-See **[submission/DEMO.md](submission/DEMO.md)** (a 5-minute run-of-show script is in
-**[docs/demo-script.md](docs/demo-script.md)**).
+LINK
 
 ## 10. Screenshots / Prototype Photos
 
@@ -117,7 +94,7 @@ and naming.
 ## 11. Installation
 
 ```bash
-git clone <YOUR_REPOSITORY_URL>
+git clone https://github.com/AadityaKhurana/sih-internal-round.git
 cd sih-internal-round
 cp .env.example .env
 # Python API deps (optional — the full stack runs via Docker below):
@@ -144,24 +121,18 @@ Open the dashboard at **http://localhost:5173** and the API health at
 
 > Real OCR (YOLO + PaddleOCR) needs a GPU, model weights and video, so the live
 > demo drives the pipeline with a synthetic producer emitting the identical
-> `PlateSighting` contract; the real OCR worker drops into the same boundary for a
-> field deployment.
+> `PlateSighting` contract
 
 ## 13. Future Scope
 
 - Run the real OCR engine on live RTSP/video at the edge and benchmark >90% on
   Indian plates.
-- Wire MinIO/S3 media end-to-end (store + serve plate crops as evidence).
 - Multi-city scale-out on managed Postgres/Redis/S3; horizontal worker scaling.
 - Predictive congestion and ANPR-based incident detection.
 
-## Team
+## 14. Team:
 
-| Name | Role |
-|---|---|
-| `<member 1>` | `<role>` |
-| `<member 2>` | `<role>` |
+Team name: Coding_Uncles
 
-## License
-
-MIT — see [LICENSE](LICENSE).
+Team Members:
+- Aaditya Khurana: 2024UCS1568
