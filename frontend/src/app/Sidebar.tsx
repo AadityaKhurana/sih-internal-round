@@ -19,8 +19,8 @@ export function Sidebar() {
           <LogoIcon size={32} />
         </div>
         <span className="brand__text">
-          <span className="brand__name u-truncate">ANPR Control</span>
-          <span className="brand__sub u-truncate">City-wide platform</span>
+          <span className="brand__name u-truncate">MARG</span>
+          <span className="brand__sub u-truncate">Multi-camera ANPR &amp; Route Graph</span>
         </span>
       </div>
 
@@ -78,7 +78,7 @@ export function Sidebar() {
         <span className="u-dim" style={{ fontSize: 'var(--fs-2xs)' }}>
           {USE_MOCK
             ? 'In-browser fixtures. No backend attached.'
-            : 'Connected to the ANPR API service.'}
+            : 'Connected to the MARG API service.'}
         </span>
       </div>
     </aside>

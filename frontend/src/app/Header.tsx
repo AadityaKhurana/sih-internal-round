@@ -94,7 +94,7 @@ export function Header({ dockOpen, onToggleDock }: HeaderProps) {
   return (
     <header className="shell__header">
       <div className="header__title">
-        <h1 className="header__page">{meta?.label ?? 'ANPR Control'}</h1>
+        <h1 className="header__page">{meta?.label ?? 'MARG'}</h1>
         <p className="header__desc u-truncate">{meta?.description ?? ''}</p>
       </div>
 
