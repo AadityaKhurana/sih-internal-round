@@ -77,11 +77,14 @@ export function CameraLayer({
         const share =
           maxVehicleCount > 0 && metric ? metric.vehicle_count / maxVehicleCount : 0;
 
-        // In load mode a node with no data must not read as "quiet" — it keeps
-        // the status colour so a dead camera is visibly dead, not empty.
+        // In load mode a node with no data must not read as "quiet" — a camera
+        // that is down or has no reading shows grey, so the ramp's red always
+        // means peak volume and never collides with a fault.
         const color =
-          colorMode === 'load' && metric && !offline
-            ? loadColor(share)
+          colorMode === 'load'
+            ? offline || !metric
+              ? CAMERA_STATUS_HEX.inactive
+              : loadColor(share)
             : CAMERA_STATUS_HEX[props.status];
 
         const baseRadius = colorMode === 'load' ? 6 + share * 12 : 7;

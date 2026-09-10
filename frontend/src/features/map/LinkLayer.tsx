@@ -191,7 +191,7 @@ function LinkPolyline({
           onSelectLink ? { click: () => onSelectLink(entry.link) } : undefined
         }
       >
-        <Tooltip sticky>
+        <Tooltip sticky pane="tooltipPane">
           <strong className="u-num">
             {props.from_camera_code} → {props.to_camera_code}
           </strong>

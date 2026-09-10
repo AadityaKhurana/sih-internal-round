@@ -42,6 +42,19 @@ const CAMERA_STATUS_LEGEND = [
   { color: CAMERA_STATUS_HEX.inactive, label: 'Inactive' },
 ];
 
+// Node-load view: markers are coloured (and sized) by share of the peak
+// per-junction volume in the window, on the same ramp as loadColor() in
+// CameraLayer. A camera that is down or has no reading shows grey, so the ramp
+// red reads only as "peak", never as a fault.
+const NODE_LOAD_LEGEND = [
+  { color: congestionColorHex('free'), label: 'Quiet — under 22% of peak' },
+  { color: congestionColorHex('light'), label: 'Light — 22–45%' },
+  { color: congestionColorHex('moderate'), label: 'Moderate — 45–65%' },
+  { color: congestionColorHex('heavy'), label: 'Busy — 65–85%' },
+  { color: congestionColorHex('severe'), label: 'Peak — 85%+ of peak volume' },
+  { color: CAMERA_STATUS_HEX.inactive, label: 'Down / no data' },
+];
+
 /**
  * The live operations map.
  *
@@ -231,10 +244,22 @@ export function MapPage() {
         }
         overlayBottomLeft={
           <MapPanel
-            title={view === 'congestion' ? 'Travel time vs free flow' : 'Camera status'}
+            title={
+              view === 'congestion'
+                ? 'Travel time vs free flow'
+                : view === 'load'
+                  ? 'Node load'
+                  : 'Camera status'
+            }
           >
             <Legend
-              items={view === 'congestion' ? CONGESTION_LEGEND : CAMERA_STATUS_LEGEND}
+              items={
+                view === 'network'
+                  ? CAMERA_STATUS_LEGEND
+                  : view === 'load'
+                    ? NODE_LOAD_LEGEND
+                    : CONGESTION_LEGEND
+              }
             />
             {view === 'congestion' ? (
               <p
@@ -251,7 +276,7 @@ export function MapPage() {
                 style={{ marginTop: 'var(--sp-2)', maxWidth: '30ch' }}
               >
                 Marker size and colour scale with vehicles counted in the last{' '}
-                {WINDOW_MINUTES} min. Faulty cameras keep their status colour.
+                {WINDOW_MINUTES} min; a camera that is down or has no reading shows grey.
               </p>
             ) : null}
           </MapPanel>
