@@ -27,3 +27,6 @@ workers/ocr/*.log
 workers/ocr/events.jsonl
 workers/ocr/bench_results.json
 workers/ocr/audit*.html
+
+# Awiros OCR weights
+models/model.safetensors

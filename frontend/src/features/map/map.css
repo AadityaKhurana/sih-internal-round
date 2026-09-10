@@ -1,0 +1,219 @@
+/* =============================================================================
+   Map shell + overlay chrome. Leaflet's own chrome lives in styles/map.css;
+   this file styles the panels the dashboard floats on top of the map.
+   ============================================================================= */
+
+.map-shell {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  background: var(--c-bg-inset);
+}
+
+.map-shell__canvas {
+  position: absolute;
+  inset: 0;
+}
+
+/* --- Floating overlay panels ---------------------------------------------- */
+
+.map-overlay {
+  position: absolute;
+  z-index: var(--z-map-overlay);
+  pointer-events: none;
+}
+
+.map-overlay > * {
+  pointer-events: auto;
+}
+
+.map-overlay--top-left {
+  top: var(--sp-3);
+  left: var(--sp-3);
+  max-width: min(360px, calc(100% - 96px));
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.map-overlay--top-right {
+  top: var(--sp-3);
+  right: var(--sp-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  align-items: flex-end;
+  max-width: min(300px, calc(100% - 96px));
+}
+
+.map-overlay--bottom-left {
+  bottom: var(--sp-6);
+  left: var(--sp-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.map-overlay--bottom-right {
+  bottom: var(--sp-6);
+  right: var(--sp-3);
+  max-width: min(320px, calc(100% - 96px));
+  max-height: calc(50vh - var(--sp-6));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.map-panel {
+  background: rgb(255 255 255 / 94%);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+
+.map-panel__head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.map-panel__title {
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--c-text-dim);
+  flex: 1 1 auto;
+}
+
+.map-panel__body {
+  padding: var(--sp-3);
+}
+
+.map-panel__body--tight {
+  padding: var(--sp-2);
+}
+
+/* --- Layer switch --------------------------------------------------------- */
+
+.layer-switch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+/* --- Camera popup --------------------------------------------------------- */
+
+.cam-popup__head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-1);
+}
+
+.cam-popup__code {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-wide);
+}
+
+.cam-popup__name {
+  font-size: var(--fs-xs);
+  color: var(--c-text-muted);
+  margin-bottom: var(--sp-2);
+}
+
+.cam-popup__kv {
+  margin-bottom: var(--sp-2);
+}
+
+.cam-popup__actions {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--c-border);
+}
+
+/* --- Live pulse ----------------------------------------------------------- */
+
+/* Applied to a CircleMarker's SVG path when a live sighting lands there. */
+.cam-pulse {
+  animation: cam-pulse 1500ms var(--ease) forwards;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes cam-pulse {
+  0% {
+    stroke-width: 2;
+    stroke-opacity: 0.95;
+    transform: scale(1);
+  }
+  100% {
+    stroke-width: 14;
+    stroke-opacity: 0;
+    transform: scale(2.4);
+  }
+}
+
+/* --- Route line styling --------------------------------------------------- */
+
+.route-line {
+  filter: drop-shadow(0 0 5px var(--c-map-route-glow));
+}
+
+.route-line--unmonitored {
+  opacity: 0.85;
+}
+
+/* --- Status strip --------------------------------------------------------- */
+
+.map-status {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--fs-2xs);
+  color: var(--c-text-muted);
+}
+
+.map-status__item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  white-space: nowrap;
+}
+
+.map-status__value {
+  font-family: var(--font-mono);
+  color: var(--c-text);
+}
+
+/* --- Incident callout ----------------------------------------------------- */
+
+.incident {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: flex-start;
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--fs-2xs);
+  border-left: 3px solid var(--c-congestion-severe);
+  color: var(--c-text-muted);
+  line-height: 1.4;
+}
+
+.incident + .incident {
+  border-top: 1px solid var(--c-border);
+}
+
+.incident__icon {
+  color: var(--c-congestion-severe);
+  flex: 0 0 auto;
+  margin-top: 1px;
+}

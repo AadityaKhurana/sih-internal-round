@@ -1,0 +1,144 @@
+ /* =============================================================================
+   Leaflet theming — light edition.
+   Only Leaflet's own classes belong here.
+   ============================================================================= */
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  background: var(--c-bg-inset);
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  outline: none;
+  isolation: isolate;
+  z-index: var(--z-map);
+}
+
+/* --- Zoom + attribution controls ------------------------------------------ */
+
+.leaflet-top.leaflet-left {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.leaflet-bar {
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--r-sm);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.leaflet-bar a,
+.leaflet-bar a:hover {
+  background: var(--c-surface);
+  color: var(--c-text);
+  border-bottom-color: var(--c-border);
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+}
+
+.leaflet-bar a:hover {
+  background: var(--c-surface-hover);
+}
+
+.leaflet-bar a.leaflet-disabled {
+  background: var(--c-surface-2);
+  color: var(--c-text-dim);
+}
+
+.leaflet-control-attribution {
+  background: rgb(255 255 255 / 88%) !important;
+  color: var(--c-text-muted);
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: var(--r-xs) 0 0 0;
+}
+
+.leaflet-control-attribution a {
+  color: var(--c-accent-strong);
+}
+
+.leaflet-control-scale-line {
+  background: rgb(255 255 255 / 88%);
+  border-color: var(--c-border-strong);
+  color: var(--c-text-muted);
+  font-size: 10px;
+}
+
+/* --- Popups + tooltips ---------------------------------------------------- */
+
+.leaflet-popup-content-wrapper {
+  background: var(--c-surface);
+  color: var(--c-text);
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-lg);
+  padding: 0;
+}
+
+.leaflet-popup-content {
+  margin: 0;
+  padding: var(--sp-3);
+  min-width: 220px;
+  line-height: var(--lh-normal);
+}
+
+.leaflet-popup-tip {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-strong);
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  color: var(--c-text-dim);
+  padding: 6px 6px 0 0;
+}
+
+.leaflet-container a.leaflet-popup-close-button:hover {
+  color: var(--c-text);
+  background: transparent;
+}
+
+.leaflet-tooltip {
+  background: rgb(255 255 255 / 96%);
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--r-sm);
+  color: var(--c-text);
+  box-shadow: var(--shadow-md);
+  font-size: var(--fs-2xs);
+  padding: 3px var(--sp-2);
+}
+
+.leaflet-tooltip-left::before {
+  border-left-color: var(--c-border-strong);
+}
+.leaflet-tooltip-right::before {
+  border-right-color: var(--c-border-strong);
+}
+.leaflet-tooltip-top::before {
+  border-top-color: var(--c-border-strong);
+}
+.leaflet-tooltip-bottom::before {
+  border-bottom-color: var(--c-border-strong);
+}
+
+/* Camera-code labels placed directly on the map. */
+.leaflet-tooltip.map-label {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: var(--c-text-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 0;
+  /* Light halo so labels stay readable over light tiles. */
+  text-shadow:
+    0 0 3px #fff,
+    0 0 3px #fff,
+    0 0 4px #fff;
+}
+
+.leaflet-tooltip.map-label::before {
+  display: none;
+}
+

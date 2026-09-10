@@ -81,6 +81,11 @@ services:
   api:
     build: ./backend
     env_file: .env
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    volumes:
+      # Hot-reload during dev: edits to backend/app/ take effect without a rebuild.
+      # (A dependency change in requirements.txt still needs --build.)
+      - ./backend/app:/app/app
     ports:
       - "${API_PORT:-8000}:8000"
     depends_on:
@@ -90,6 +95,76 @@ services:
       redis:
         condition: service_healthy
         required: false
+    restart: unless-stopped
+
+  # ---- Lane C pipeline workers (share one image built from workers/Dockerfile) ----
+  persistence:
+    image: sih-anpr-worker
+    build: { context: ., dockerfile: workers/Dockerfile }
+    env_file: .env
+    working_dir: /app/workers/persistence
+    command: ["python", "worker.py"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    restart: unless-stopped
+
+  alerts:
+    image: sih-anpr-worker
+    build: { context: ., dockerfile: workers/Dockerfile }
+    env_file: .env
+    working_dir: /app
+    command: ["python", "-m", "workers.alerts.worker"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    restart: unless-stopped
+
+  analytics:
+    image: sih-anpr-worker
+    build: { context: ., dockerfile: workers/Dockerfile }
+    env_file: .env
+    working_dir: /app
+    command: ["python", "-m", "workers.analytics.worker"]
+    depends_on:
+      postgres: { condition: service_healthy }
+    restart: unless-stopped
+
+  # Synthetic OCR stand-in — drives the pipeline for the demo.
+  producer:
+    image: sih-anpr-worker
+    build: { context: ., dockerfile: workers/Dockerfile }
+    env_file: .env
+    working_dir: /app/workers/producer
+    command: ["python", "feed.py"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    restart: unless-stopped
+
+  # Frontend in LIVE mode (VITE_USE_MOCK=false). Vite dev proxies /api and /ws
+  # to the api container, so the dashboard talks to the real backend.
+  # Anonymous node_modules volume avoids the host (macOS) install shadowing the
+  # container (linux) install of native deps like esbuild.
+  frontend:
+    image: node:20-slim
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      VITE_USE_MOCK: "false"
+      VITE_API_BASE_URL: /api
+      VITE_WS_URL: /ws/live
+      VITE_PROXY_TARGET: http://api:8000
+      VITE_MAP_CENTER_LAT: "28.5900"
+      VITE_MAP_CENTER_LNG: "77.0470"
+      VITE_MAP_ZOOM: "13"
+    command: sh -c "npm ci && npm run dev -- --host 0.0.0.0 --port 5173"
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
     restart: unless-stopped
 
 volumes:

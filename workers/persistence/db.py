@@ -1,0 +1,191 @@
+import json
+
+import psycopg
+
+from anpr_common import PlateSighting
+
+
+def resolve_camera_id(
+    conn: psycopg.Connection,
+    camera_code: str,
+):
+    """
+    Resolve the incoming camera_code to the DB camera_id (UUID).
+
+    Data comes in AS CAMERAS (per-approach camera codes). Post-processing here
+    aggregates a camera up to its JUNCTION: if the code is a per-approach camera
+    in `approach_cameras`, we map it to its `junction_code` and store the sighting
+    against that junction node. If the code is already a junction/camera node, it
+    is used directly (backward compatible with non-junction seeds).
+    """
+
+    with conn.cursor() as cur:
+        target = camera_code
+        cur.execute("SELECT to_regclass('approach_cameras')")
+        if cur.fetchone()[0] is not None:
+            cur.execute(
+                "SELECT junction_code FROM approach_cameras WHERE camera_code = %s",
+                (camera_code,),
+            )
+            row = cur.fetchone()
+            if row is not None:
+                target = row[0]  # aggregate camera -> junction
+
+        cur.execute(
+            """
+            SELECT camera_id
+            FROM cameras
+            WHERE camera_code = %s
+            """,
+            (target,),
+        )
+
+        row = cur.fetchone()
+
+        if row is None:
+            raise ValueError(
+                f"Unknown camera_code: {camera_code}"
+            )
+
+        return row[0]
+
+
+def resolve_or_create_plate(
+    conn: psycopg.Connection,
+    normalized_plate: str | None,
+):
+    """
+    Find an existing plate or create it.
+
+    Returns None when OCR did not produce a normalized plate.
+    """
+
+    if not normalized_plate:
+        return None
+
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            INSERT INTO plates (normalized_plate)
+            VALUES (%s)
+            ON CONFLICT (normalized_plate)
+            DO UPDATE SET normalized_plate = EXCLUDED.normalized_plate
+            RETURNING plate_id
+            """,
+            (normalized_plate,),
+        )
+
+        row = cur.fetchone()
+
+        if row is None:
+            raise RuntimeError(
+                f"Could not resolve plate: {normalized_plate}"
+            )
+
+        return row[0]
+
+
+def insert_sighting(
+    conn: psycopg.Connection,
+    event: PlateSighting,
+    camera_id,
+    plate_id,
+) -> None:
+    """
+    Persist one PlateSighting.
+
+    source_event_id is the idempotency key.
+    """
+
+    media = event.media
+
+    plate_crop_key = None
+    vehicle_image_key = None
+    context_clip_key = None
+
+    if media is not None:
+        plate_crop_key = media.plate_crop_object_key
+        vehicle_image_key = media.vehicle_image_object_key
+        context_clip_key = media.context_clip_object_key
+
+    ocr_candidates = [
+        candidate.model_dump()
+        for candidate in event.ocr_candidates
+    ]
+
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            INSERT INTO sightings (
+                source_event_id,
+                camera_id,
+                plate_id,
+                raw_plate_text,
+                normalized_plate_candidate,
+                camera_track_id,
+                detection_confidence,
+                ocr_confidence,
+                ocr_candidates,
+                spotted_at,
+                direction_degrees,
+                vehicle_type,
+                vehicle_color,
+                lane_number,
+                quality_flags,
+                model_version,
+                plate_crop_object_key,
+                vehicle_image_object_key,
+                context_clip_object_key
+            )
+            VALUES (
+                %s, %s, %s, %s, %s, %s, %s, %s,
+                %s::jsonb, %s, %s, %s, %s, %s, %s, %s,
+                %s::jsonb, %s, %s
+            )
+            ON CONFLICT (source_event_id)
+            DO NOTHING
+            """,
+            (
+                event.event_id,
+                camera_id,
+                plate_id,
+                event.raw_plate_text,
+                event.normalized_plate,
+                event.camera_track_id,
+                event.detection_confidence,
+                event.ocr_confidence,
+                json.dumps(ocr_candidates),
+                event.captured_at,
+                event.direction_degrees,
+                event.vehicle_type,
+                event.vehicle_color,
+                event.lane_number,
+                json.dumps(event.quality_flags),
+                event.model_version,
+                plate_crop_key,
+                vehicle_image_key,
+                context_clip_key,
+            ),
+        )
+
+
+def validate_sighting(
+    event: PlateSighting,
+) -> tuple[str, str | None]:
+    """
+    Determine the initial validation state:
+        pending / accepted / uncertain / conflict
+
+    A confident read with a normalized plate is accepted (it becomes part of the
+    route and is eligible for alerts). A missing plate or a low-confidence read is
+    held as `uncertain` so the trajectory endpoint can surface it as excluded
+    rather than trusting it. Cross-sighting conflict detection (a plate seen in two
+    places at once) is the alerts worker's job, not this per-event gate.
+    """
+    ACCEPT_MIN_OCR_CONFIDENCE = 0.80
+
+    if not event.normalized_plate:
+        return "uncertain", "no_normalized_plate"
+    if event.ocr_confidence is None or event.ocr_confidence < ACCEPT_MIN_OCR_CONFIDENCE:
+        return "uncertain", "low_ocr_confidence"
+    return "accepted", None

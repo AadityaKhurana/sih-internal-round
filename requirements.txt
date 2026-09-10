@@ -1,0 +1,12 @@
+# Python dependencies for the ANPR platform.
+#
+# The full stack (API + workers + Postgres/Redis/MinIO + frontend) runs via
+# Docker Compose — see README sections 11–12. This file lets a reviewer pip-install
+# the FastAPI backend directly if they want to run it outside Docker.
+#
+# Worker dependencies (persistence / alerts / analytics / producer, incl. the
+# shared anpr_common package and DB/Redis drivers) are installed inside
+# workers/Dockerfile. Real OCR (YOLO + PaddleOCR) has its own heavy, GPU-oriented
+# requirements and is not installed here.
+
+-r backend/requirements.txt

@@ -1,0 +1,409 @@
+/* =============================================================================
+   Plate search, playback controls and the trajectory timeline.
+   ============================================================================= */
+
+/* --- Search combobox ------------------------------------------------------ */
+
+.plate-search {
+  position: relative;
+  min-width: 260px;
+  flex: 0 1 320px;
+}
+
+.plate-search__input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.plate-search__icon {
+  position: absolute;
+  left: var(--sp-3);
+  color: var(--c-text-dim);
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+}
+
+.plate-search__input {
+  padding-left: calc(var(--sp-3) * 2 + 14px);
+}
+
+.plate-search__spinner {
+  position: absolute;
+  right: var(--sp-3);
+}
+
+.plate-search__list {
+  position: absolute;
+  z-index: var(--z-sticky);
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 320px;
+  overflow-y: auto;
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-lg);
+  padding: var(--sp-1);
+}
+
+.plate-search__option {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  width: 100%;
+  padding: var(--sp-2);
+  border: none;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--c-text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.plate-search__option:hover,
+.plate-search__option.is-active {
+  background: var(--c-surface-hover);
+}
+
+.plate-search__plate {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  letter-spacing: var(--tracking-wide);
+  flex: 1 1 auto;
+}
+
+.plate-search__meta {
+  font-size: var(--fs-2xs);
+  color: var(--c-text-dim);
+  white-space: nowrap;
+}
+
+.plate-search__empty {
+  padding: var(--sp-3);
+  font-size: var(--fs-xs);
+  color: var(--c-text-dim);
+  text-align: center;
+}
+
+/* --- Search bar row ------------------------------------------------------- */
+
+.traj-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 1px solid var(--c-border);
+  background: var(--c-surface);
+  flex: 0 0 auto;
+}
+
+.traj-bar__hint {
+  font-size: var(--fs-2xs);
+  color: var(--c-text-dim);
+  max-width: 42ch;
+  line-height: 1.4;
+}
+
+/* --- Page layout ---------------------------------------------------------- */
+
+.traj-layout {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 400px;
+}
+
+.traj-layout__map {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.traj-layout__side {
+  min-width: 0;
+  min-height: 0;
+  border-left: 1px solid var(--c-border);
+  background: var(--c-surface);
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 1500px) {
+  .traj-layout {
+    grid-template-columns: minmax(0, 1fr) 340px;
+  }
+}
+
+/* --- Playback controls ---------------------------------------------------- */
+
+.playback {
+  flex: 0 0 auto;
+  padding: var(--sp-2) var(--sp-3);
+  border-top: 1px solid var(--c-border);
+  background: var(--c-surface);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.playback__row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.playback__clock {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  min-width: 9ch;
+}
+
+.playback__scrub-wrap {
+  position: relative;
+  flex: 1 1 200px;
+  min-width: 160px;
+}
+
+/* Stop ticks under the scrubber mark where each camera pass falls in time. */
+.playback__ticks {
+  position: absolute;
+  inset: 6px 0 auto;
+  height: 6px;
+  pointer-events: none;
+}
+
+.playback__tick {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 6px;
+  border-radius: 1px;
+  background: var(--c-text-dim);
+  transform: translateX(-1px);
+}
+
+.playback__tick--anomaly {
+  background: var(--c-danger);
+  height: 9px;
+}
+
+/* --- Timeline ------------------------------------------------------------- */
+
+.timeline {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--sp-3);
+}
+
+.timeline__stop {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: var(--sp-2);
+  width: 100%;
+  padding: var(--sp-2);
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+}
+
+.timeline__stop:hover {
+  background: var(--c-surface-2);
+}
+
+.timeline__stop.is-selected {
+  border-color: var(--c-accent-strong);
+  background: var(--c-accent-dim);
+}
+
+.timeline__stop.is-reached .timeline__index {
+  background: var(--c-accent-strong);
+  color: var(--c-text-inverse);
+  border-color: var(--c-accent-strong);
+}
+
+.timeline__index {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--c-border-strong);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  color: var(--c-text-muted);
+  flex: 0 0 auto;
+}
+
+.timeline__stop-main {
+  min-width: 0;
+}
+
+.timeline__stop-top {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+}
+
+.timeline__time {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+}
+
+.timeline__camera {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--c-accent);
+}
+
+.timeline__place {
+  font-size: var(--fs-2xs);
+  color: var(--c-text-dim);
+}
+
+.timeline__stop-meta {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  margin-top: 2px;
+  font-size: var(--fs-2xs);
+  color: var(--c-text-dim);
+}
+
+/* The connector between two stops carries the hop's facts. */
+.timeline__hop {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-2);
+}
+
+.timeline__hop-rail {
+  display: flex;
+  justify-content: center;
+}
+
+.timeline__hop-line {
+  width: 2px;
+  min-height: 26px;
+  background: var(--c-border-strong);
+  border-radius: 1px;
+}
+
+.timeline__hop-line--dashed {
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--c-text-dim) 0 4px,
+    transparent 4px 8px
+  );
+}
+
+.timeline__hop-body {
+  padding: var(--sp-1) 0 var(--sp-2);
+  font-size: var(--fs-2xs);
+  color: var(--c-text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.timeline__hop-facts {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.timeline__hop-warning {
+  color: var(--c-danger);
+}
+
+/* --- Segment picker ------------------------------------------------------- */
+
+.segments {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  max-height: 168px;
+  overflow-y: auto;
+}
+
+.segment-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--sp-2);
+  align-items: center;
+  width: 100%;
+  padding: var(--sp-2);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-sm);
+  background: var(--c-surface-2);
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  font-size: var(--fs-xs);
+}
+
+.segment-row:hover {
+  border-color: var(--c-border-strong);
+}
+
+.segment-row.is-active {
+  border-color: var(--c-accent-strong);
+  background: var(--c-accent-dim);
+}
+
+.segment-row__when {
+  font-family: var(--font-mono);
+}
+
+.segment-row__route {
+  font-family: var(--font-mono);
+  color: var(--c-text-dim);
+  font-size: var(--fs-2xs);
+  min-width: 0;
+}
+
+/* --- Evidence panel ------------------------------------------------------- */
+
+.evidence {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.candidate {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--sp-1) var(--sp-2);
+  align-items: center;
+  font-size: var(--fs-xs);
+}
+
+.candidate__plate {
+  font-family: var(--font-mono);
+  letter-spacing: var(--tracking-wide);
+}
+
+.candidate__plate--top {
+  color: var(--c-accent);
+  font-weight: var(--fw-semibold);
+}
+
+.candidate__bar {
+  grid-column: 1 / -1;
+}
+
+.flags {
+  display: flex;
+  gap: var(--sp-1);
+  flex-wrap: wrap;
+}
