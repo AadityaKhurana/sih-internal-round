@@ -1,5 +1,5 @@
 # SIH 2026 — 5-Minute Demo Script
-## City-Wide ANPR Platform (Dwarka, New Delhi prototype)
+## MARG — Multi-camera ANPR & Route Graph (Dwarka, New Delhi prototype)
 
 Target: ~5:00 spoken at ~150 wpm (~750 words). Time markers are cues, not hard cuts.
 Each block has **[SAY]** (narration) and **[SHOW]** (on-screen action).

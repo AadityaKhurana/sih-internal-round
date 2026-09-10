@@ -56,7 +56,6 @@ export function MapPage() {
 
   const [view, setView] = useState<MapView>('network');
   const [showArrows, setShowArrows] = useState(true);
-  const [showHeadings, setShowHeadings] = useState(true);
   const [showLabels, setShowLabels] = useState(true);
 
   const cameras = useCameras();
@@ -163,7 +162,6 @@ export function MapPage() {
         nodeMetricsById={nodeMetricsById}
         maxVehicleCount={nodeMetrics.data?.max_vehicle_count ?? 0}
         showDirectionArrows={showArrows}
-        showHeadings={showHeadings}
         showLabels={showLabels}
         selectedCameraId={selectedCamera?.properties.camera_id ?? null}
         pulses={pulses}
@@ -212,11 +210,6 @@ export function MapPage() {
                 label="Direction arrows"
                 checked={showArrows}
                 onChange={(event) => setShowArrows(event.target.checked)}
-              />
-              <Switch
-                label="Camera facing"
-                checked={showHeadings}
-                onChange={(event) => setShowHeadings(event.target.checked)}
               />
               <Switch
                 label="Camera labels"

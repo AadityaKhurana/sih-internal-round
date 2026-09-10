@@ -4,7 +4,7 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="title" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=22;fontStyle=1;fontColor=#1a2733;" value="City-Wide ANPR Platform — System Architecture" vertex="1">
+        <mxCell id="title" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=22;fontStyle=1;fontColor=#1a2733;" value="MARG — System Architecture (Multi-camera ANPR &amp; Route Graph)" vertex="1">
           <mxGeometry height="36" width="620" x="360" y="60" as="geometry" />
         </mxCell>
         <mxCell id="CAMS" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#12324f;shadow=1;" value="&lt;b&gt;Per-approach cameras&lt;/b&gt;&lt;br&gt;one per junction arm · incoming left carriageway" vertex="1">
