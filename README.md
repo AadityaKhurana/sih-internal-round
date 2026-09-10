@@ -59,10 +59,12 @@ A centralized platform on top of the existing camera network with four component
 
 ## 6. Architecture
 
-Full diagram: **[docs/architecture.md](docs/architecture.md)** (Mermaid) and
-**[docs/architecture.drawio](docs/architecture.drawio)** (editable). Everything
-integrates at one `PlateSighting` event boundary — the OCR engine and the demo
-producer are interchangeable there.
+![City-Wide ANPR Platform — system architecture](assets/architecture.png)
+
+Editable source: **[docs/architecture.drawio](docs/architecture.drawio)** (draw.io) and
+**[docs/architecture.md](docs/architecture.md)** (Mermaid). Everything integrates at one
+`PlateSighting` event boundary — the OCR engine and the demo producer are
+interchangeable there.
 
 ```text
 Cameras ─PlateSighting─▶ Redis stream ─▶ persistence ─▶ PostgreSQL + PostGIS
