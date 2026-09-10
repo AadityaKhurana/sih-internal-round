@@ -1,113 +1,83 @@
 <mxfile host="app.diagrams.net" type="device">
   <diagram id="anpr-arch" name="ANPR Architecture">
-    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="1000" math="0" shadow="0" background="#ffffff">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="1020" math="0" shadow="0" background="#ffffff">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
 
         <mxCell id="title" value="City-Wide ANPR Platform — System Architecture" style="text;html=1;align=center;verticalAlign=middle;fontSize=22;fontStyle=1;fontColor=#1a2733;" vertex="1" parent="1">
-          <mxGeometry x="340" y="24" width="760" height="40" as="geometry" />
+          <mxGeometry x="320" y="24" width="620" height="36" as="geometry" />
         </mxCell>
-        <mxCell id="subtitle" value="Integrates at the PlateSighting event boundary — OCR (real) and the demo producer are interchangeable. Persistence aggregates per-approach cameras up to junctions." style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontColor=#607080;" vertex="1" parent="1">
-          <mxGeometry x="300" y="60" width="840" height="24" as="geometry" />
-        </mxCell>
-
-        <!-- ===== group boxes (drawn first = behind) ===== -->
-        <mxCell id="gEdge" value="EDGE / INGEST" style="rounded=1;arcSize=4;html=1;verticalAlign=top;fontStyle=1;fontSize=13;fontColor=#3b5a80;fillColor=#f2f7ff;strokeColor=#6c8ebf;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="340" y="96" width="760" height="150" as="geometry" />
-        </mxCell>
-        <mxCell id="gRedis" value="REDIS — event bus" style="rounded=1;arcSize=4;html=1;verticalAlign=top;fontStyle=1;fontSize=13;fontColor=#8a3b36;fillColor=#fff5f5;strokeColor=#b85450;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="340" y="278" width="760" height="120" as="geometry" />
-        </mxCell>
-        <mxCell id="gWork" value="WORKERS (Python)" style="rounded=1;arcSize=4;html=1;verticalAlign=top;fontStyle=1;fontSize=13;fontColor=#4f7a3a;fillColor=#f4faf2;strokeColor=#82b366;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="340" y="430" width="760" height="150" as="geometry" />
-        </mxCell>
-        <mxCell id="gStore" value="STORAGE" style="rounded=1;arcSize=4;html=1;verticalAlign=top;fontStyle=1;fontSize=13;fontColor=#9a6a00;fillColor=#fff8f0;strokeColor=#d79b00;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="1150" y="430" width="310" height="150" as="geometry" />
-        </mxCell>
-        <mxCell id="gApi" value="FASTAPI BACKEND" style="rounded=1;arcSize=4;html=1;verticalAlign=top;fontStyle=1;fontSize=13;fontColor=#6b4a86;fillColor=#f9f5fb;strokeColor=#9673a6;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="340" y="620" width="760" height="140" as="geometry" />
-        </mxCell>
-        <mxCell id="gFe" value="FRONTEND — React + TypeScript + Leaflet" style="rounded=1;arcSize=4;html=1;verticalAlign=top;fontStyle=1;fontSize=13;fontColor=#9a8300;fillColor=#fffdf2;strokeColor=#d6b656;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="340" y="800" width="760" height="110" as="geometry" />
+        <mxCell id="subtitle" value="One PlateSighting event boundary: real OCR and the demo producer are interchangeable. The backend aggregates per-approach cameras up to junctions." style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontColor=#607080;" vertex="1" parent="1">
+          <mxGeometry x="230" y="58" width="800" height="22" as="geometry" />
         </mxCell>
 
-        <!-- ===== nodes ===== -->
-        <mxCell id="CAMS" value="&lt;b&gt;Per-approach cameras&lt;/b&gt;&lt;br&gt;one per junction arm&lt;br&gt;incoming left carriageway" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#12324f;shadow=1;" vertex="1" parent="1">
-          <mxGeometry x="368" y="140" width="205" height="80" as="geometry" />
+        <!-- ===== nodes (spine, top -> bottom) ===== -->
+        <mxCell id="CAMS" value="&lt;b&gt;Per-approach cameras&lt;/b&gt;&lt;br&gt;one per junction arm · incoming left carriageway" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#12324f;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="500" y="110" width="300" height="58" as="geometry" />
         </mxCell>
         <mxCell id="OCR" value="&lt;b&gt;OCR worker — Lane A&lt;/b&gt;&lt;br&gt;YOLO + PaddleOCR + voting&lt;br&gt;&lt;i&gt;needs GPU / weights / video&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#12324f;shadow=1;" vertex="1" parent="1">
-          <mxGeometry x="603" y="140" width="235" height="80" as="geometry" />
+          <mxGeometry x="490" y="212" width="240" height="74" as="geometry" />
         </mxCell>
         <mxCell id="PROD" value="&lt;b&gt;Producer — demo feed&lt;/b&gt;&lt;br&gt;synthetic corridor trips&lt;br&gt;(stands in for OCR)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#eef3fb;strokeColor=#6c8ebf;fontColor=#12324f;dashed=1;shadow=1;" vertex="1" parent="1">
-          <mxGeometry x="868" y="140" width="205" height="80" as="geometry" />
+          <mxGeometry x="800" y="212" width="210" height="74" as="geometry" />
         </mxCell>
 
-        <mxCell id="STREAM" value="&lt;b&gt;plate_sightings&lt;/b&gt;&lt;br&gt;stream · consumer group + DLQ" style="shape=process;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontColor=#5a2320;shadow=1;" vertex="1" parent="1">
-          <mxGeometry x="368" y="318" width="330" height="62" as="geometry" />
-        </mxCell>
-        <mxCell id="CH1" value="sightings:new" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#ffe0de;strokeColor=#b85450;fontColor=#5a2320;shadow=1;" vertex="1" parent="1">
-          <mxGeometry x="740" y="312" width="180" height="32" as="geometry" />
-        </mxCell>
-        <mxCell id="CH2" value="alerts:new" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#ffe0de;strokeColor=#b85450;fontColor=#5a2320;shadow=1;" vertex="1" parent="1">
-          <mxGeometry x="740" y="352" width="180" height="32" as="geometry" />
+        <mxCell id="REDIS" value="&lt;b&gt;Redis — event bus&lt;/b&gt;&lt;br&gt;plate_sightings stream (consumer group + DLQ) · sightings:new / alerts:new pub·sub" style="shape=process;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontColor=#5a2320;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="470" y="330" width="380" height="66" as="geometry" />
         </mxCell>
 
-        <mxCell id="PERS" value="&lt;b&gt;persistence&lt;/b&gt;&lt;br&gt;validate (PlateSighting)&lt;br&gt;camera → junction&lt;br&gt;upsert sightings / plates" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#24401b;shadow=1;" vertex="1" parent="1">
-          <mxGeometry x="368" y="480" width="235" height="92" as="geometry" />
+        <mxCell id="WORK" value="&lt;b&gt;Workers (Python)&lt;/b&gt;" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontColor=#3f6b2b;fillColor=#eef7ea;strokeColor=#82b366;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="448" width="420" height="150" as="geometry" />
         </mxCell>
-        <mxCell id="ALRT" value="&lt;b&gt;alerts&lt;/b&gt;&lt;br&gt;blacklist match&lt;br&gt;+ route-anomaly&lt;br&gt;(travel-time feasibility)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#24401b;shadow=1;" vertex="1" parent="1">
-          <mxGeometry x="620" y="480" width="225" height="92" as="geometry" />
+        <mxCell id="PERS" value="&lt;b&gt;persistence&lt;/b&gt; — validate · camera→junction · upsert sightings/plates" style="rounded=1;arcSize=14;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#24401b;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="468" y="486" width="384" height="32" as="geometry" />
         </mxCell>
-        <mxCell id="ANAL" value="&lt;b&gt;analytics&lt;/b&gt;&lt;br&gt;5-min rollups&lt;br&gt;camera + link metrics" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#24401b;shadow=1;" vertex="1" parent="1">
-          <mxGeometry x="862" y="480" width="210" height="92" as="geometry" />
+        <mxCell id="ALRT" value="&lt;b&gt;alerts&lt;/b&gt; — blacklist match + route-anomaly (travel-time feasibility)" style="rounded=1;arcSize=14;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#24401b;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="468" y="522" width="384" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="ANAL" value="&lt;b&gt;analytics&lt;/b&gt; — 5-min camera &amp; link metric rollups" style="rounded=1;arcSize=14;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#24401b;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="468" y="558" width="384" height="32" as="geometry" />
         </mxCell>
 
-        <mxCell id="PG" value="&lt;b&gt;PostgreSQL + PostGIS&lt;/b&gt;&lt;br&gt;cameras(junctions) · approach_cameras&lt;br&gt;camera_links · roads · plates · sightings&lt;br&gt;blacklist · alerts · audit_logs · *_metrics_5m" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#ffe6cc;strokeColor=#d79b00;fontColor=#6b4a00;fontSize=10;shadow=1;" vertex="1" parent="1">
-          <mxGeometry x="1168" y="474" width="278" height="66" as="geometry" />
+        <mxCell id="PG" value="&lt;b&gt;PostgreSQL + PostGIS&lt;/b&gt;&lt;br&gt;cameras(junctions) · approach_cameras · camera_links&lt;br&gt;roads · plates · sightings · blacklist · alerts · audit_logs · *_metrics_5m" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#ffe6cc;strokeColor=#d79b00;fontColor=#6b4a00;fontSize=10;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="650" width="360" height="70" as="geometry" />
         </mxCell>
         <mxCell id="S3" value="&lt;b&gt;MinIO / S3&lt;/b&gt;&lt;br&gt;plate crops · clips" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=8;fillColor=#ffe6cc;strokeColor=#d79b00;fontColor=#6b4a00;fontSize=10;shadow=1;" vertex="1" parent="1">
-          <mxGeometry x="1210" y="548" width="196" height="26" as="geometry" />
+          <mxGeometry x="930" y="660" width="200" height="50" as="geometry" />
         </mxCell>
 
-        <mxCell id="REST" value="&lt;b&gt;REST /api&lt;/b&gt;&lt;br&gt;cameras · camera-links · plates · trajectory&lt;br&gt;sightings · alerts · blacklist · analytics · reports&lt;br&gt;&lt;i&gt;auth: X-Operator-Subject&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#3f2a52;shadow=1;" vertex="1" parent="1">
-          <mxGeometry x="368" y="682" width="470" height="82" as="geometry" />
-        </mxCell>
-        <mxCell id="WSP" value="&lt;b&gt;live publisher&lt;/b&gt;&lt;br&gt;→ WS /ws/live" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#3f2a52;shadow=1;" vertex="1" parent="1">
-          <mxGeometry x="866" y="692" width="205" height="62" as="geometry" />
+        <mxCell id="API" value="&lt;b&gt;FastAPI backend&lt;/b&gt;&lt;br&gt;REST /api — cameras · camera-links · plates · trajectory · sightings · alerts · blacklist · analytics · reports&lt;br&gt;live publisher → WS /ws/live&lt;br&gt;&lt;i&gt;auth: X-Operator-Subject&lt;/i&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#3f2a52;fontSize=11;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="470" y="772" width="400" height="92" as="geometry" />
         </mxCell>
 
-        <mxCell id="UI" value="&lt;b&gt;GIS Operations Dashboard&lt;/b&gt;&lt;br&gt;map · trajectory · alerts · analytics · reports · blacklist · live" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#6b5a00;shadow=1;" vertex="1" parent="1">
-          <mxGeometry x="368" y="852" width="700" height="52" as="geometry" />
+        <mxCell id="UI" value="&lt;b&gt;GIS Operations Dashboard&lt;/b&gt; — React + TypeScript + Leaflet&lt;br&gt;map · trajectory · alerts · analytics · reports · blacklist · live" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#6b5a00;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="470" y="902" width="400" height="58" as="geometry" />
         </mxCell>
 
         <mxCell id="CONTRACT" value="&lt;b&gt;anpr_common&lt;/b&gt;&lt;br&gt;PlateSighting contract&lt;br&gt;+ DB layer (shared)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#f5f5f5;strokeColor=#999999;fontColor=#333333;dashed=1;shadow=1;" vertex="1" parent="1">
-          <mxGeometry x="60" y="300" width="230" height="80" as="geometry" />
+          <mxGeometry x="90" y="250" width="210" height="80" as="geometry" />
         </mxCell>
 
         <!-- ===== edges ===== -->
-        <mxCell id="e_cams_ocr" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#4d6a8a;endArrow=block;" edge="1" parent="1" source="CAMS" target="OCR"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e_cams_prod" value="stubbed by" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;strokeColor=#8aa0bb;endArrow=open;fontSize=10;fontColor=#607080;" edge="1" parent="1" source="CAMS" target="PROD"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e_ocr_stream" value="PlateSighting" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8a3b36;endArrow=block;fontSize=10;fontColor=#8a3b36;fontStyle=1;" edge="1" parent="1" source="OCR" target="STREAM"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e_prod_stream" value="PlateSighting" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8a3b36;endArrow=block;fontSize=10;fontColor=#8a3b36;fontStyle=1;" edge="1" parent="1" source="PROD" target="STREAM"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e_stream_pers" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#555555;endArrow=block;" edge="1" parent="1" source="STREAM" target="PERS"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e_pers_ch1" value="sightings:new" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#b85450;endArrow=block;fontSize=10;fontColor=#8a3b36;" edge="1" parent="1" source="PERS" target="CH1"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e_pers_alrt" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#4f7a3a;endArrow=block;" edge="1" parent="1" source="PERS" target="ALRT"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e_alrt_ch2" value="alerts:new" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#b85450;endArrow=block;fontSize=10;fontColor=#8a3b36;" edge="1" parent="1" source="ALRT" target="CH2"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e_pers_anal" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#4f7a3a;endArrow=block;" edge="1" parent="1" source="PERS" target="ANAL"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e_pers_pg" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9a6a00;endArrow=block;" edge="1" parent="1" source="PERS" target="PG"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e_alrt_pg" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9a6a00;endArrow=block;" edge="1" parent="1" source="ALRT" target="PG"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e_anal_pg" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9a6a00;endArrow=block;" edge="1" parent="1" source="ANAL" target="PG"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e_ocr_s3" value="media" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;strokeColor=#c79a3a;endArrow=open;fontSize=10;fontColor=#9a6a00;" edge="1" parent="1" source="OCR" target="S3"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e_pg_rest" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6b4a86;endArrow=block;" edge="1" parent="1" source="PG" target="REST"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e_ch1_wsp" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9673a6;endArrow=block;" edge="1" parent="1" source="CH1" target="WSP"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e_ch2_wsp" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9673a6;endArrow=block;" edge="1" parent="1" source="CH2" target="WSP"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e_rest_ui" value="/api (Vite proxy)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9a8300;endArrow=block;fontSize=10;fontColor=#9a8300;" edge="1" parent="1" source="REST" target="UI"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e_wsp_ui" value="/ws/live" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9a8300;endArrow=block;fontSize=10;fontColor=#9a8300;" edge="1" parent="1" source="WSP" target="UI"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e_s3_ui" value="presigned media" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;strokeColor=#c79a3a;endArrow=open;fontSize=10;fontColor=#9a6a00;" edge="1" parent="1" source="S3" target="UI"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e_ct_ocr" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;strokeColor=#aaaaaa;endArrow=open;" edge="1" parent="1" source="CONTRACT" target="OCR"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e_ct_prod" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;strokeColor=#aaaaaa;endArrow=open;" edge="1" parent="1" source="CONTRACT" target="PROD"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e_ct_pers" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;strokeColor=#aaaaaa;endArrow=open;" edge="1" parent="1" source="CONTRACT" target="PERS"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#4d6a8a;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="CAMS" target="OCR"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e2" value="demo stand-in" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;startArrow=open;endArrow=open;strokeColor=#8aa0bb;fontSize=10;fontColor=#607080;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="OCR" target="PROD"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e3" value="PlateSighting" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#8a3b36;fontSize=10;fontColor=#8a3b36;fontStyle=1;exitX=0.5;exitY=1;entryX=0.4;entryY=0;" edge="1" parent="1" source="OCR" target="REDIS"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e4" value="PlateSighting" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;endArrow=block;strokeColor=#8a3b36;fontSize=10;fontColor=#8a3b36;exitX=0.4;exitY=1;entryX=0.85;entryY=0;" edge="1" parent="1" source="PROD" target="REDIS">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="884" y="312" /></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="e5" value="shared contract" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;endArrow=open;strokeColor=#aaaaaa;fontSize=10;fontColor=#888888;exitX=1;exitY=0.6;entryX=0;entryY=0.3;" edge="1" parent="1" source="CONTRACT" target="REDIS"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e6" value="consume" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#555555;fontSize=10;fontColor=#555555;exitX=0.38;exitY=1;entryX=0.38;entryY=0;" edge="1" parent="1" source="REDIS" target="WORK"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e7" value="publish sightings:new · alerts:new" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#b85450;fontSize=10;fontColor=#8a3b36;exitX=0.66;exitY=0;entryX=0.66;entryY=1;" edge="1" parent="1" source="WORK" target="REDIS">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="747" y="424" /></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="e8" value="write" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#9a6a00;fontSize=10;fontColor=#9a6a00;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="WORK" target="PG"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e9" value="media" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;endArrow=open;strokeColor=#c79a3a;fontSize=10;fontColor=#9a6a00;exitX=1;exitY=0.75;entryX=0;entryY=0.5;" edge="1" parent="1" source="WORK" target="S3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e10" value="query" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#6b4a86;fontSize=10;fontColor=#6b4a86;exitX=0.45;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="PG" target="API"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e11" value="live → WS" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#9673a6;fontSize=10;fontColor=#6b4a86;exitX=0;exitY=0.7;entryX=0;entryY=0.5;" edge="1" parent="1" source="REDIS" target="API">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="420" y="376" /><mxPoint x="420" y="818" /></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="e12" value="/api · /ws/live" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;strokeColor=#9a8300;fontSize=10;fontColor=#9a8300;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="API" target="UI"><mxGeometry relative="1" as="geometry" /></mxCell>
       </root>
     </mxGraphModel>
   </diagram>
