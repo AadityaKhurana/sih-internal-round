@@ -136,3 +136,10 @@ Team name: Coding_Uncles
 
 Team Members:
 - Aaditya Khurana: 2024UCS1568
+- Aashna Gupta: 2024UCS1702
+- Armaan Bawa: 2024UIT3317
+- Bhavya Chand: 2024UCS1743
+- Rasika Gautam: 2024UCM2694
+- Saksham Jain: 2024UCS1632
+
+
