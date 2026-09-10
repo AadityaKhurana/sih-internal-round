@@ -1,6 +1,5 @@
 # System Architecture — City-Wide ANPR Platform
 
-Rendered with [Mermaid](https://mermaid.js.org/) (GitHub/most viewers render it inline).
 
 Everything integrates at the **`PlateSighting`** event boundary: the real OCR
 worker (Lane A) and the demo producer are interchangeable there. Persistence
@@ -9,80 +8,44 @@ pub/sub → the API's in-process WebSocket publisher → the dashboard.
 
 ```mermaid
 flowchart TB
-  subgraph EDGE["Edge / Ingest"]
-    CAMS["Per-approach cameras<br/>(one per junction arm)"]
-    OCR["OCR worker — Lane A<br/>YOLO + PaddleOCR + voting<br/>(needs GPU/weights/video)"]
-    PROD["Producer — demo feed<br/>synthetic corridor trips"]
-    CAMS --> OCR
-    CAMS -. "stubbed in demo by" .-> PROD
-  end
+  CAMS["Per-approach cameras<br/>one per junction arm · incoming left carriageway"]
+  OCR["OCR worker<br/>YOLO + PaddleOCR + voting"]
+  PROD["Producer — demo feed<br/>synthetic corridor trips · stands in for OCR"]
+  REDIS[["Redis event bus<br/>plate_sightings stream (consumer group + DLQ)<br/>sightings:new / alerts:new pub·sub"]]
+  WORK["Workers (Python)<br/>persistence — validate · camera→junction · upsert sightings/plates<br/>alerts — blacklist + route-anomaly (travel-time feasibility)<br/>analytics — 5-min camera & link metric rollups"]
+  PG[("PostgreSQL + PostGIS<br/>cameras(junctions) · approach_cameras · camera_links<br/>roads · plates · sightings · blacklist · alerts · audit_logs · *_metrics_5m")]
+  S3[("MinIO / S3<br/>plate crops · clips")]
+  API["FastAPI backend<br/>REST /api — cameras · camera-links · plates · trajectory<br/>sightings · alerts · blacklist · analytics · reports<br/>live publisher → WS /ws/live · auth: X-Operator-Subject"]
+  UI["GIS Operations Dashboard — React + TypeScript + Leaflet<br/>map · trajectory · alerts · analytics · reports · blacklist · live"]
+  CONTRACT["anpr_common<br/>PlateSighting contract + DB layer (shared)"]
 
-  subgraph BUS["Redis"]
-    STREAM[["plate_sightings<br/>stream · consumer group + DLQ"]]
-    CH1(["sightings:new · pub/sub"])
-    CH2(["alerts:new · pub/sub"])
-  end
-
-  OCR -- PlateSighting --> STREAM
-  PROD -- PlateSighting --> STREAM
-
-  subgraph WORK["Workers (Python)"]
-    PERS["persistence<br/>validate · camera→junction<br/>upsert sightings/plates"]
-    ALRT["alerts<br/>blacklist + route-anomaly<br/>(travel-time feasibility)"]
-    ANAL["analytics<br/>5-min camera/link rollups"]
-  end
-
-  STREAM --> PERS
-  PERS -- sightings:new --> CH1
-  PERS --> ALRT
-  ALRT -- alerts:new --> CH2
-  PERS --> ANAL
-
-  subgraph STORE["Storage"]
-    PG[("PostgreSQL + PostGIS<br/>cameras(junction nodes) · approach_cameras<br/>camera_links · roads · plates · sightings<br/>blacklist_entries · alerts · audit_logs<br/>camera_metrics_5m · traffic_metrics_5m")]
-    S3[("MinIO / S3<br/>plate crops · clips")]
-  end
-
-  PERS --> PG
-  ALRT --> PG
-  ANAL --> PG
-  OCR -. media keys .-> S3
-
-  subgraph APP["FastAPI backend"]
-    REST["REST /api<br/>cameras · camera-links · plates · trajectory<br/>sightings · alerts · blacklist · analytics · reports<br/>(auth: X-Operator-Subject)"]
-    WSP["live publisher → WS /ws/live"]
-  end
-
-  PG --> REST
-  CH1 --> WSP
-  CH2 --> WSP
-
-  subgraph FE["Frontend — React + TS + Leaflet"]
-    UI["map · trajectory · alerts<br/>analytics · reports · blacklist · live"]
-  end
-
-  REST -->|"/api (Vite proxy)"| UI
-  WSP -->|"/ws/live"| UI
-
-  CONTRACT["anpr_common<br/>PlateSighting contract + DB layer"]
-  CONTRACT -. shared .-> OCR
-  CONTRACT -. shared .-> PROD
-  CONTRACT -. shared .-> PERS
-
-  S3 -. presigned media .-> UI
+  CAMS --> OCR
+  OCR <-. "demo stand-in" .-> PROD
+  OCR -- PlateSighting --> REDIS
+  PROD -. PlateSighting .-> REDIS
+  CONTRACT -. "shared contract" .-> REDIS
+  REDIS -- consume --> WORK
+  WORK -- "publish sightings:new · alerts:new" --> REDIS
+  WORK -- write --> PG
+  WORK -. media .-> S3
+  PG -- query --> API
+  REDIS -- "live → WS" --> API
+  API -- "/api · /ws/live" --> UI
 ```
 
 ## Runtime seams
 
-| From | Via | To | Payload |
+| From | Via | To | Payload / note |
 |---|---|---|---|
-| OCR / Producer | Redis stream `plate_sightings` | persistence | `PlateSighting` (anpr_common) |
-| persistence | Postgres | — | upsert `sightings` (idempotent on `source_event_id`), resolve plate, camera→junction |
-| persistence | Redis `sightings:new` | API live publisher | new sighting id |
-| persistence → alerts | (stream/derived) | alerts | accepted sightings |
-| alerts | Redis `alerts:new` | API live publisher | new alert |
-| analytics | Postgres | — | `camera_metrics_5m`, `traffic_metrics_5m` |
-| API | REST `/api` + WS `/ws/live` | frontend | contract shapes in `src/types/api.ts` |
+| OCR / Producer | Redis stream `plate_sightings` (consumer group + DLQ) | Workers (persistence) | `PlateSighting` (anpr_common) |
+| Workers (persistence) | `camera→junction`, upsert | Postgres | idempotent on `source_event_id`; resolves plate + aggregates camera→junction |
+| Workers | publish `sightings:new` / `alerts:new` | Redis | ids for the live feed (alerts = blacklist + route-anomaly) |
+| Workers (analytics) | 5-min rollup | Postgres | `camera_metrics_5m`, `traffic_metrics_5m` |
+| Redis (`sightings:new` / `alerts:new`) | live → WS | FastAPI live publisher | fanned out on `/ws/live` |
+| Postgres | query | FastAPI REST `/api` | contract shapes in `src/types/api.ts` |
+| FastAPI | `/api` + `/ws/live` (Vite proxy) | Frontend | REST + live |
+| Workers | media (dormant) | MinIO / S3 | plate crops — provisioned; activates only with real OCR |
+| `anpr_common` | shared `PlateSighting` contract + DB layer | producers · workers · API | one event schema everywhere |
 
 ## Display model
 
