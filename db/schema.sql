@@ -48,6 +48,26 @@ CREATE TABLE cameras (
     last_seen_at    timestamptz                  -- last heartbeat / last frame processed
 );
 
+-- Behind-the-scenes per-approach cameras: the REAL ANPR data sources. Each
+-- junction (a row in `cameras`, with NULL heading so the map draws a plain
+-- circle) has one approach camera per incoming road arm, sitting a few metres
+-- before the junction on the incoming (left) carriageway and facing upstream.
+-- Sightings are aggregated up to the junction, so `sightings.camera_id` points
+-- at the junction node in `cameras`; this table records where the data came
+-- from. Populated by db/gen_dwarka_seed.py (which also carries a compatible
+-- CREATE TABLE IF NOT EXISTS as a fallback).
+CREATE TABLE approach_cameras (
+    approach_camera_id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    camera_code     text NOT NULL UNIQUE,        -- physical per-approach camera code, e.g. 'CAM-07'
+    junction_code   text NOT NULL                -- the junction it feeds (cameras.camera_code)
+                        REFERENCES cameras (camera_code) ON UPDATE CASCADE ON DELETE CASCADE,
+    from_road       text,                         -- the arm / upstream neighbour it watches
+    location        geometry(Point, 4326) NOT NULL,
+    heading_degrees numeric(5,2),                 -- camera facing (upstream, toward oncoming traffic)
+    travel_degrees  numeric(5,2)                  -- incoming traffic travel direction toward the junction
+);
+CREATE INDEX approach_cameras_junction_idx ON approach_cameras (junction_code);
+
 CREATE INDEX idx_cameras_location ON cameras USING gist (location);
 CREATE INDEX idx_cameras_status   ON cameras (status);
 
